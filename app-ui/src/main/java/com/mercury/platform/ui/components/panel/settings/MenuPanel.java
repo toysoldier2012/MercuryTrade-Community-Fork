@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.components.panel.settings;
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.misc.ViewInit;
@@ -44,7 +45,7 @@ public class MenuPanel extends JPanel implements ViewInit {
                 list.getSelectedValue().getAction().onClick());
 
         JLabel appIcon = this.componentsFactory.getTextLabel("MercuryTrade", FontStyle.BOLD, 22);
-        appIcon.setIcon(this.componentsFactory.getIcon("app/app-icon.png", 50));
+        appIcon.setIcon(this.componentsFactory.getIcon(IconConst.APP_ICON, 50));
         appIcon.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         appIcon.setBackground(AppThemeColor.FRAME);
         this.add(appIcon, BorderLayout.PAGE_START);

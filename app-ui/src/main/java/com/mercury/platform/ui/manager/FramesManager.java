@@ -2,6 +2,7 @@ package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
@@ -203,12 +204,18 @@ public class FramesManager implements AsSubscriber {
         restore.addActionListener(e -> {
             FramesManager.INSTANCE.restoreDefaultLocation();
         });
+
+        MenuItem settings = new MenuItem("Settings");
+        settings.addActionListener(e -> {
+            FramesManager.INSTANCE.showFrame(SettingsFrame.class);
+        });
         trayMenu.add(restore);
+        trayMenu.add(settings);
         trayMenu.add(exit);
 
         BufferedImage icon = null;
         try {
-            icon = ImageIO.read(getClass().getClassLoader().getResource("app/app-icon.png"));
+            icon = ImageIO.read(getClass().getClassLoader().getResource(IconConst.APP_ICON));
         } catch (IOException e) {
             e.printStackTrace();
         }

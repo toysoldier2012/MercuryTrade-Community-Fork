@@ -27,5 +27,6 @@ public class IconConst {
     public final static String SCALE_SETTINGS = PREFIX + "scale-settings.png";
     public final static String SETTINGS = PREFIX + "settings.png";
     public final static String EXIT = PREFIX + "exit.png";
+    public final static String APP_ICON = PREFIX + "app-icon.png";
 
 }

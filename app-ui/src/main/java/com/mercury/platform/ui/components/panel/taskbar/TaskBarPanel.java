@@ -16,6 +16,7 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.NonNull;
 
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -163,7 +164,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 IconConst.SETTINGS,
                 26,
                 AppThemeColor.FRAME,
-                "");
+                TooltipConstants.SETTINGS);
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -180,7 +181,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 IconConst.EXIT,
                 24,
                 AppThemeColor.FRAME,
-                "");
+                TooltipConstants.EXIT);
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

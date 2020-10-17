@@ -30,7 +30,7 @@ public abstract class AbstractTitledComponentFrame extends AbstractComponentFram
             this.headerPanel.setPreferredSize(new Dimension(100, 26));
             this.headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppThemeColor.MSG_HEADER_BORDER));
 
-            JLabel appIcon = componentsFactory.getIconLabel("app/app-icon.png", 16);
+            JLabel appIcon = componentsFactory.getIconLabel(IconConst.APP_ICON, 16);
             this.frameTitleLabel = componentsFactory.getTextLabel(getFrameTitle());
             this.frameTitleLabel.setHorizontalAlignment(SwingConstants.LEFT);
             this.frameTitleLabel.setVerticalAlignment(SwingConstants.CENTER);
