@@ -1,0 +1,35 @@
+[
+  {
+    "version": "1.1.0",
+    "fix": [
+      {
+        "changed": "Fixed occasional crashes"
+      },
+      {
+        "changed": "Fixed issue with nullpointer exception while message was corrupted"
+      }
+    ],
+    "features": [
+      {
+        "changed": "Expanded scale values from 90-150% to 50-200%"
+      },
+      {
+        "changed": "Added kick/leave feature which can be set up for incoming messages responses"
+      }
+    ],
+    "minorChanges": [
+      {
+        "changed": "Changed font size of game path to make it more readable"
+      },
+      {
+        "changed": "Deleted all paypal and discord links"
+      },
+      {
+        "changed": "Changed github repo links from Exslims to this Fork"
+      },
+      {
+        "changed": "Disabled not working update service (startup is faster now)"
+      }
+    ]
+  }
+]
