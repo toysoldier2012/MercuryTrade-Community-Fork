@@ -13,6 +13,7 @@ public class ProfileDescriptor {
     private Map<String, FrameDescriptor> frameDescriptorMap;
     private Map<String, SoundDescriptor> soundDescriptorMap;
     private ApplicationDescriptor applicationDescriptor;
+    private VulkanDescriptor vulkanDescriptor;
     private NotificationSettingsDescriptor notificationDescriptor;
     private TaskBarDescriptor taskBarDescriptor;
     private ScannerDescriptor scannerDescriptor;

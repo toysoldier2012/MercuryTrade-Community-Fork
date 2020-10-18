@@ -28,6 +28,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     private ProfileDescriptor selectedProfile;
     private FramesConfigurationService framesConfigurationService;
     private PlainConfigurationService<ApplicationDescriptor> applicationConfigurationService;
+    private PlainConfigurationService<VulkanDescriptor> vulkanConfigurationService;
     private PlainConfigurationService<NotificationSettingsDescriptor> notificationConfigurationService;
     private PlainConfigurationService<TaskBarDescriptor> taskBarConfigurationService;
     private PlainConfigurationService<ScannerDescriptor> scannerConfigurationService;
@@ -54,6 +55,11 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
     @Override
     public PlainConfigurationService<ApplicationDescriptor> applicationConfiguration() {
         return this.applicationConfigurationService;
+    }
+
+    @Override
+    public PlainConfigurationService<VulkanDescriptor> vulkanConfiguration() {
+        return this.vulkanConfigurationService;
     }
 
     @Override
@@ -147,6 +153,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.framesConfigurationService = new FramesConfigurationServiceImpl(selectedProfile);
             this.soundConfigurationService = new SoundConfigurationService(selectedProfile);
             this.applicationConfigurationService = new ApplicationConfigurationService(selectedProfile);
+            this.vulkanConfigurationService = new VulkanConfigurationService(selectedProfile);
             this.taskBarConfigurationService = new TaskBarConfigurationService(selectedProfile);
             this.scannerConfigurationService = new ScannerConfigurationService(selectedProfile);
             this.notificationConfigurationService = new NotificationConfigurationService(selectedProfile);
@@ -159,6 +166,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.services.add((BaseConfigurationService) this.framesConfigurationService);
             this.services.add((BaseConfigurationService) this.soundConfigurationService);
             this.services.add((BaseConfigurationService) this.applicationConfigurationService);
+            this.services.add((BaseConfigurationService) this.vulkanConfigurationService);
             this.services.add((BaseConfigurationService) this.scannerConfigurationService);
             this.services.add((BaseConfigurationService) this.taskBarConfigurationService);
             this.services.add((BaseConfigurationService) this.notificationConfigurationService);

@@ -22,54 +22,33 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 public class AppMain {
-    private static final int POE_WINDOWED_FULLSCREEN = 0x94000000;
-    private static final int POE_WINDOWED = 0x14cf0000;
-    private static final int WS_VISIBLE = 0x10000000;
     private static final Logger logger = LogManager.getLogger(AppMain.class);
     private static boolean shouldLogPerformance = false;
     private final static String MERCURY_TRADE_FOLDER = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
 
 
     public static void main(String[] args) {
-        PerformanceHelper pf = new PerformanceHelper(shouldLogPerformance);
-        pf.step("start");
         System.setProperty("sun.java2d.d3d", "false");
         System.setProperty("jna.nosys", "true");
-        pf.step("set props");
-        boolean vulkanSupportSetted = setVulkanSupport();
-        pf.step("set vulkan support");
-        if (!vulkanSupportSetted) {
-            logger.error("Vulkan support failed, try to run mercury trade after running poe");
-        }
         new ErrorHandler();
-        pf.step("error handler");
         MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
-        pf.step("new MercuryLoadingFrame()");
         mercuryLoadingFrame.init();
-        pf.step("mercuryLoadingFrame.init()");
         mercuryLoadingFrame.showComponent();
-        pf.step("mercuryLoadingFrame.showComponent()");
 
         checkCreateAppDataFolder();
-        pf.step("mercuryTradeFolder creation");
         if (args.length == 0) {
             new ProdStarter().startApplication();
         } else {
             new DevStarter().startApplication();
         }
-        pf.step("startApplication()");
 
         String configGamePath = Configuration.get().applicationConfiguration().get().getGamePath();
-        pf.step("Configuration.get().applicationConfiguration().get().getGamePath()");
         if (configGamePath.equals("") || !isValidGamePath(configGamePath)) {
-            pf.step("valid game path");
             String gamePath = getGamePath();
-            pf.step("getGamePath");
             if (gamePath == null) {
                 MercuryStoreCore.appLoadingSubject.onNext(false);
                 GamePathChooser gamePathChooser = new GamePathChooser();
                 gamePathChooser.init();
-                pf.step("gamePathChooser.init()");
             } else {
                 gamePath = gamePath + "\\";
                 Configuration.get().applicationConfiguration().get().setGamePath(gamePath);
@@ -77,17 +56,12 @@ public class AppMain {
                 new FileMonitor().start();
                 FramesManager.INSTANCE.start();
                 MercuryStoreCore.appLoadingSubject.onNext(false);
-                pf.step("MercuryStoreCore.appLoadingSubject.onNext");
             }
         } else {
             new FileMonitor().start();
-            pf.step("new FileMonitor().start()");
             FramesManager.INSTANCE.start();
-            pf.step("FramesManager.INSTANCE.start()");
             MercuryStoreCore.appLoadingSubject.onNext(false);
-            pf.step("MercuryStoreCore.appLoadingSubject.onNext(false);");
         }
-        pf.step("end loading");
     }
 
     private static boolean isValidGamePath(String gamePath) {
@@ -104,19 +78,6 @@ public class AppMain {
             String filePath = it.getFilePath();
             return StringUtils.substringBeforeLast(filePath, "\\");
         }).findAny().orElse(null);
-    }
-
-    private static boolean setVulkanSupport() {
-        HWND poeWindowClass = WindowUtils.getAllWindows(false).stream().filter(window -> {
-            char[] className = new char[512];
-            User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
-            return Native.toString(className).equals("POEWindowClass");
-        }).map(DesktopWindow::getHWND).findFirst().orElse(null);
-        if (poeWindowClass == null) {
-            return false;
-        }
-        User32.INSTANCE.SetWindowLong(poeWindowClass, -16, WS_VISIBLE);
-        return true;
     }
 
     private static void checkCreateAppDataFolder() {

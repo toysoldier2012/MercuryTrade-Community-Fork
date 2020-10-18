@@ -3,6 +3,7 @@ package com.mercury.platform.ui.manager;
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.IconConst;
+import com.mercury.platform.shared.VulkanManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
@@ -209,8 +210,16 @@ public class FramesManager implements AsSubscriber {
         settings.addActionListener(e -> {
             FramesManager.INSTANCE.showFrame(SettingsFrame.class);
         });
+
+        CheckboxMenuItem vulkanSupport = new CheckboxMenuItem("Vulkan support");
+        vulkanSupport.setState(VulkanManager.INSTANCE.getSetting());
+        vulkanSupport.addItemListener(e -> {
+            VulkanManager.INSTANCE.changeSetting();
+            MercuryStoreUI.settingsSaveSubject.onNext(true);
+        });
         trayMenu.add(restore);
         trayMenu.add(settings);
+        trayMenu.add(vulkanSupport);
         trayMenu.add(exit);
 
         BufferedImage icon = null;
