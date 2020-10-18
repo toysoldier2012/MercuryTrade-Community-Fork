@@ -30,7 +30,6 @@ public class VulkanManager {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    System.out.println("vulkan support");
                     setVulkanSupport();
                 }
             }, 0, 2000);
@@ -46,7 +45,6 @@ public class VulkanManager {
     }
 
     private boolean setVulkanSupport() {
-        System.out.println(this.vulkanSnapshot.isVulkanSupportEnabled());
         if (this.vulkanSnapshot.isVulkanSupportEnabled()) {
             HWND poeWindowClass = WindowUtils.getAllWindows(false).stream().filter(window -> {
                 char[] className = new char[512];
