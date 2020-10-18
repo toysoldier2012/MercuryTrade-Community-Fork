@@ -5,6 +5,7 @@ import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
 import com.mercury.platform.shared.UpdateManager;
+import com.mercury.platform.shared.VulkanManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;

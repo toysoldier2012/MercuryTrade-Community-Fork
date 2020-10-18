@@ -2,6 +2,8 @@ package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.IconConst;
+import com.mercury.platform.shared.VulkanManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.FramesConfigurationService;
 import com.mercury.platform.shared.config.configration.impl.FramesConfigurationServiceImpl;
@@ -207,12 +209,26 @@ public class FramesManager implements AsSubscriber {
         restore.addActionListener(e -> {
             FramesManager.INSTANCE.restoreDefaultLocation();
         });
+
+        MenuItem settings = new MenuItem("Settings");
+        settings.addActionListener(e -> {
+            FramesManager.INSTANCE.showFrame(SettingsFrame.class);
+        });
+
+        CheckboxMenuItem vulkanSupport = new CheckboxMenuItem("Vulkan support");
+        vulkanSupport.setState(VulkanManager.INSTANCE.getSetting());
+        vulkanSupport.addItemListener(e -> {
+            VulkanManager.INSTANCE.changeSetting();
+            MercuryStoreUI.settingsSaveSubject.onNext(true);
+        });
         trayMenu.add(restore);
+        trayMenu.add(settings);
+        trayMenu.add(vulkanSupport);
         trayMenu.add(exit);
 
         BufferedImage icon = null;
         try {
-            icon = ImageIO.read(getClass().getClassLoader().getResource("app/app-icon.png"));
+            icon = ImageIO.read(getClass().getClassLoader().getResource(IconConst.APP_ICON));
         } catch (IOException e) {
             e.printStackTrace();
         }

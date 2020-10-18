@@ -3,9 +3,11 @@ package com.mercury.platform.ui.components.panel.settings.page;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.CloneHelper;
+import com.mercury.platform.shared.VulkanManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
+import com.mercury.platform.shared.config.descriptor.VulkanDescriptor;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.manager.HideSettingsManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
@@ -19,7 +21,9 @@ import java.awt.event.MouseEvent;
 
 public class GeneralSettingsPagePanel extends SettingsPagePanel {
     private PlainConfigurationService<ApplicationDescriptor> applicationConfig;
+    private PlainConfigurationService<VulkanDescriptor> vulkanConfig;
     private ApplicationDescriptor applicationSnapshot;
+    private VulkanDescriptor vulkanSnapshot;
 
     private JSlider minSlider;
     private JSlider maxSlider;
@@ -29,6 +33,9 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         super.onViewInit();
         this.applicationConfig = Configuration.get().applicationConfiguration();
         this.applicationSnapshot = CloneHelper.cloneObject(this.applicationConfig.get());
+        this.vulkanConfig = Configuration.get().vulkanConfiguration();
+        this.vulkanSnapshot = CloneHelper.cloneObject(this.vulkanConfig.get());
+        VulkanManager.INSTANCE.runSupport(vulkanSnapshot);
 
         JPanel root = componentsFactory.getJPanel(new GridLayout(0, 2, 4, 4));
         root.setBorder(BorderFactory.createLineBorder(AppThemeColor.ADR_PANEL_BORDER));
@@ -38,6 +45,12 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         checkEnable.addActionListener(action -> {
             this.applicationSnapshot.setCheckOutUpdate(checkEnable.isSelected());
         });
+
+        JCheckBox vulkanEnableCheck = this.componentsFactory.getCheckBox(this.vulkanSnapshot.isVulkanSupportEnabled());
+        vulkanEnableCheck.addActionListener(action -> {
+            this.vulkanSnapshot.setVulkanSupportEnabled(vulkanEnableCheck.isSelected());
+        });
+
         JSlider fadeTimeSlider = this.componentsFactory.getSlider(0, 10, this.applicationSnapshot.getFadeTime(), AppThemeColor.SLIDE_BG);
         fadeTimeSlider.addChangeListener(e -> {
             this.applicationSnapshot.setFadeTime(fadeTimeSlider.getValue());
@@ -98,6 +111,8 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
 
         root.add(this.componentsFactory.getTextLabel("Notify me when an update is available", FontStyle.REGULAR, 16));
         root.add(checkEnable);
+        root.add(this.componentsFactory.getTextLabel("Vulkan support enabled", FontStyle.REGULAR, 16));
+        root.add(vulkanEnableCheck);
         root.add(this.componentsFactory.getTextLabel("Component fade out time: ", FontStyle.REGULAR, 16));
         root.add(fadeTimeSlider);
         root.add(this.componentsFactory.getTextLabel("Min opacity: ", FontStyle.REGULAR, 16));
@@ -116,6 +131,7 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
     public void onSave() {
         HideSettingsManager.INSTANCE.apply(applicationSnapshot.getFadeTime(), applicationSnapshot.getMinOpacity(), applicationSnapshot.getMaxOpacity());
         this.applicationConfig.set(CloneHelper.cloneObject(this.applicationSnapshot));
+        this.vulkanConfig.set(CloneHelper.cloneObject(this.vulkanSnapshot));
     }
 
     @Override

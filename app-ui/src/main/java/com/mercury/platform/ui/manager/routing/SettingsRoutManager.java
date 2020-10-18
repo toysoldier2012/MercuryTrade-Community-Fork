@@ -27,7 +27,6 @@ public class SettingsRoutManager implements AsSubscriber {
 
         this.generalSettings = new GeneralSettingsPagePanel();
         this.soundSettings = new SoundSettingsPagePanel();
-        this.generalSettings = new GeneralSettingsPagePanel();
         this.notificationSettings = new NotificationSettingsPagePanel();
         this.taskBarSettings = new TaskBarSettingsPagePanel();
         this.supportPanel = new SupportPagePanel();
