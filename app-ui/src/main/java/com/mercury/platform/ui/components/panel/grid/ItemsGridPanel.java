@@ -81,6 +81,7 @@ public class ItemsGridPanel extends JPanel implements ViewInit {
 
         this.add(getHeaderPanel(), BorderLayout.PAGE_START);
         this.add(defaultGrid, BorderLayout.CENTER);
+        this.add(quadTabGrid, BorderLayout.CENTER);
         this.add(rightPanel, BorderLayout.LINE_END);
         this.add(downPanel, BorderLayout.PAGE_END);
         this.setPreferredSize(this.getMaximumSize());
