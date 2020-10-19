@@ -24,6 +24,7 @@ public class MercuryStoreCore {
     public static final PublishSubject<MessageInterceptor> removeInterceptorSubject = PublishSubject.create();
     public static final PublishSubject<String> chatCommandSubject = PublishSubject.create();
     public static final PublishSubject<String> openChatSubject = PublishSubject.create();
+    public static final PublishSubject<String> findInStashTab = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> messageSubject = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> outMessageSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> appLoadingSubject = PublishSubject.create();

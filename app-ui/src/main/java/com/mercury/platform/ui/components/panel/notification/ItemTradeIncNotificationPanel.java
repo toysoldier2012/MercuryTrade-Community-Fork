@@ -60,6 +60,7 @@ public class ItemTradeIncNotificationPanel extends TradeIncNotificationPanel<Ite
                 btn.setBorder(new EmptyBorder(4,4,4,4));
                 btn.addActionListener(action -> {
                     this.controller.showITH();
+                    MercuryStoreCore.findInStashTab.onNext(item);
                 });
                 itemsPanel.add(btn);
             });
@@ -75,6 +76,7 @@ public class ItemTradeIncNotificationPanel extends TradeIncNotificationPanel<Ite
             btn.setBorder(new EmptyBorder(4,4,4,4));
             btn.addActionListener(action -> {
                 this.controller.showITH();
+                MercuryStoreCore.findInStashTab.onNext(this.data.getItemName());
             });
             itemsPanel.add(btn);
         }

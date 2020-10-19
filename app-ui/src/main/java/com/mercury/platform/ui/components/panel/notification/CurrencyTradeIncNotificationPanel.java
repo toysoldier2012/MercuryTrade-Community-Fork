@@ -54,7 +54,13 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
             itemsPanel.setBorder(new EmptyBorder(0, 0, 2, 0));
 
             this.data.getItems().forEach((item) -> {
-                itemsPanel.add(this.componentsFactory.getTextLabel(item));
+                JButton itemBtn = this.componentsFactory.getButton(item);
+                itemBtn.setBackground(AppThemeColor.FRAME);
+                itemBtn.setBorder(new EmptyBorder(4,4,4,4));
+                itemBtn.addActionListener(action -> {
+                    MercuryStoreCore.findInStashTab.onNext(item);
+                });
+                itemsPanel.add(itemBtn);
             });
             fromPanel.add(itemsPanel, BorderLayout.LINE_START);
 
@@ -65,7 +71,13 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
             JPanel itemsPanel = new JPanel();
             itemsPanel.setBackground(AppThemeColor.FRAME);
             itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
-            itemsPanel.add(this.componentsFactory.getTextLabel(this.data.getCurrForSaleCount().intValue() + " " + this.data.getCurrForSaleTitle()));
+            JButton itemBtn = this.componentsFactory.getButton(this.data.getCurrForSaleCount().intValue() + " " + this.data.getCurrForSaleTitle());
+            itemBtn.setBackground(AppThemeColor.FRAME);
+            itemBtn.setBorder(new EmptyBorder(4,4,4,4));
+            itemBtn.addActionListener(action -> {
+                MercuryStoreCore.findInStashTab.onNext(this.data.getCurrForSaleTitle());
+            });
+            itemsPanel.add(itemBtn);
             fromPanel.add(itemsPanel, BorderLayout.LINE_START);
         } else {
             JPanel currencyPanel = this.getCurrencyPanel(this.data.getCurrForSaleCount(), this.data.getCurrForSaleTitle());

@@ -124,6 +124,30 @@ public class ChatHelper implements AsSubscriber {
         MercuryStoreCore.blockHotkeySubject.onNext(false);
     }
 
+    private void findInStashTab(String toBeFound) {
+        this.gameToFront();
+        StringSelection selection = new StringSelection(toBeFound);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, null);
+        MercuryStoreCore.blockHotkeySubject.onNext(true);
+
+        robot.keyRelease(KeyEvent.VK_ALT);
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_F);
+
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_F);
+
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_V);
+
+        MercuryStoreCore.blockHotkeySubject.onNext(false);
+    }
+
     private void gameToFront() {
         User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
             char[] className = new char[512];
@@ -145,6 +169,7 @@ public class ChatHelper implements AsSubscriber {
     public void subscribe() {
         MercuryStoreCore.chatCommandSubject.subscribe(this::executeMessage);
         MercuryStoreCore.openChatSubject.subscribe(this::openChat);
+        MercuryStoreCore.findInStashTab.subscribe(this::findInStashTab);
         MercuryStoreCore.tradeWhisperSubject.subscribe(state -> this.executeTradeMessage());
         MercuryStoreCore.dndSubject.subscribe(state -> {
             TaskBarDescriptor config = Configuration.get().taskBarConfiguration().get();
