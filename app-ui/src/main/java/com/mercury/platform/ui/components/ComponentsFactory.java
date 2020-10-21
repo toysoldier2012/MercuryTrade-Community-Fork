@@ -681,6 +681,16 @@ public class ComponentsFactory {
         return area;
     }
 
+    public JPanel getSeparator() {
+        JPanel panel = getTransparentPanel();
+        JTextPane textPane = new JTextPane();
+        textPane.setBackground(AppThemeColor.FRAME);
+        textPane.setContentType("text/html");
+        textPane.setText("<hr>");
+        panel.add(textPane);
+        return panel;
+    }
+
     public float getScale() {
         return scale;
     }
