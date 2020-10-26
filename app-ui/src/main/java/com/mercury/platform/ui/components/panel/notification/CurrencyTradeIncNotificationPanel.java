@@ -7,6 +7,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.Ratio;
 import com.mercury.platform.ui.misc.TooltipConstants;
 
 import javax.swing.*;
@@ -99,7 +100,7 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
         JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + this.data.getCurrency() + ".png", 26);
         currencyLabel.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 18f));
         currencyLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
-        currencyLabel.setText(decimalFormat.format(rate) + ")");
+        currencyLabel.setText(Ratio.getRatio(curCount, currForSaleCount) + ")");
         currencyLabel.setBorder(null);
         ratePanel.add(currencyLabel, BorderLayout.CENTER);
         return ratePanel;

@@ -50,8 +50,10 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
     private abstract class LocalizationMatcher {
         public boolean isSuitableFor(String message) {
             return message.contains("Hi, I would like") ||
-                    message.contains("Hi, I'd like") || message.contains("I'd like") ||
-                    (message.contains("wtb") && message.contains("(stash"));
+                   message.contains("Hi, I'd like") ||
+                   message.contains("I'd like") ||
+                   (message.contains("wtb") && message.contains("(stash") ||
+                    message.contains("안녕하세요, 강탈")); //pathofexile.com/trade/
         }
 
         public abstract String trimString(String src);
