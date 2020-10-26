@@ -57,7 +57,7 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
             this.data.getItems().forEach((item) -> {
                 JButton itemBtn = this.componentsFactory.getButton(item);
                 itemBtn.setBackground(AppThemeColor.FRAME);
-                itemBtn.setBorder(new EmptyBorder(4,4,4,4));
+                itemBtn.setBorder(new EmptyBorder(4, 4, 4, 4));
                 itemBtn.addActionListener(action -> {
                     MercuryStoreCore.findInStashTab.onNext(item);
                 });
@@ -74,7 +74,7 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
             itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
             JButton itemBtn = this.componentsFactory.getButton(this.data.getCurrForSaleCount().intValue() + " " + this.data.getCurrForSaleTitle());
             itemBtn.setBackground(AppThemeColor.FRAME);
-            itemBtn.setBorder(new EmptyBorder(4,4,4,4));
+            itemBtn.setBorder(new EmptyBorder(4, 4, 4, 4));
             itemBtn.addActionListener(action -> {
                 MercuryStoreCore.findInStashTab.onNext(this.data.getCurrForSaleTitle());
             });
@@ -92,15 +92,19 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
     private JPanel getCurrencyRatePanel() {
         Double currForSaleCount = this.data.getCurrForSaleCount();
         Double curCount = this.data.getCurCount();
-        double rate = curCount / currForSaleCount;
-        DecimalFormat decimalFormat = new DecimalFormat("#.####");
         JPanel ratePanel = componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
-        ratePanel.add(componentsFactory.
-                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 18f, null, "("), BorderLayout.LINE_START);
+        ratePanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,
+                                                     AppThemeColor.TEXT_DEFAULT,
+                                                     TextAlignment.CENTER,
+                                                     18f,
+                                                     null,
+                                                     "(" + Ratio.getRatio(currForSaleCount, curCount)),
+                      BorderLayout.LINE_START);
+
         JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + this.data.getCurrency() + ".png", 26);
         currencyLabel.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 18f));
         currencyLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
-        currencyLabel.setText(Ratio.getRatio(curCount, currForSaleCount) + ")");
+        currencyLabel.setText(")");
         currencyLabel.setBorder(null);
         ratePanel.add(currencyLabel, BorderLayout.CENTER);
         return ratePanel;
@@ -114,7 +118,7 @@ public class CurrencyTradeIncNotificationPanel extends TradeIncNotificationPanel
             String responseText = "Hi, are you still interested in ";
             String curForSaleCount = this.data.getCurrForSaleCount().toString();
             responseText += curForSaleCount + " " + this.data.getCurrForSaleTitle() + " for " +
-                    curCount + " " + this.data.getCurrency() + "?";
+                            curCount + " " + this.data.getCurrency() + "?";
             this.controller.performResponse(responseText);
         });
         return stillIntButton;
