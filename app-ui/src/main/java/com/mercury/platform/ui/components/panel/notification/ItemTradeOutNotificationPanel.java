@@ -2,8 +2,10 @@ package com.mercury.platform.ui.components.panel.notification;
 
 import com.mercury.platform.shared.config.descriptor.HotKeyType;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
+import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.MercuryStoreUI;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -52,6 +54,9 @@ public class ItemTradeOutNotificationPanel extends TradeOutNotificationPanel<Ite
 
             itemsWanted.forEach((item) -> {
                 JButton btn = this.componentsFactory.getButton(item);
+                btn.addActionListener((action) -> {
+                    MercuryStoreCore.findInStashTab.onNext(item);
+                });
                 btn.setForeground(AppThemeColor.INC_PANEL_ARROW);
                 btn.setBackground(AppThemeColor.FRAME);
                 btn.setBorder(new EmptyBorder(4,4,4,4));
@@ -64,6 +69,9 @@ public class ItemTradeOutNotificationPanel extends TradeOutNotificationPanel<Ite
             itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
             itemsPanel.setBorder(new EmptyBorder(0, 0, 2, 0));
             JButton btn = this.componentsFactory.getButton(this.data.getItemName());
+            btn.addActionListener((action) -> {
+                MercuryStoreCore.findInStashTab.onNext(this.data.getItemName());
+            });
             btn.setForeground(AppThemeColor.INC_PANEL_ARROW);
             btn.setBackground(AppThemeColor.FRAME);
             btn.setBorder(new EmptyBorder(4,4,4,4));

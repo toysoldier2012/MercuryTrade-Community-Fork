@@ -9,6 +9,9 @@
     "features": [
       {
         "changed": "When stash tab is open and name of item is pressed in notification window it will be copied into stash tab search"
+      },
+      {
+        "changed": "Added rational fractions instead of decimal ratios while buying/selling currency"
       }
     ],
     "minorChanges": [

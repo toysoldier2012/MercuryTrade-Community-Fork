@@ -193,13 +193,16 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
                           String.valueOf(curCount);
         }
         if (!Objects.equals(curCountStr, "") && curIconPath != null) {
-            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 26);
+            JButton currencyButton = componentsFactory.getIconButton("currency/" + curIconPath + ".png", 24, AppThemeColor.TRANSPARENT, "Find in stashtab");
+            currencyButton.addActionListener((action) -> {
+                MercuryStoreCore.findInStashTab.onNext(curIconPath);
+            });
             JPanel curPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.MSG_HEADER);
             curPanel.setAlignmentX(SwingConstants.LEFT);
             JLabel countLabel = this.componentsFactory.getTextLabel(curCountStr, FontStyle.BOLD, 17f);
             countLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             curPanel.add(countLabel);
-            curPanel.add(currencyLabel);
+            curPanel.add(currencyButton);
             return curPanel;
         }
         return null;
