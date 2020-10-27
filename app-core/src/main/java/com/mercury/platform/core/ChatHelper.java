@@ -29,6 +29,30 @@ public class ChatHelper implements AsSubscriber {
         }
     }
 
+    private void executeClipboardMessage() {
+        this.gameToFront();
+        MercuryStoreCore.blockHotkeySubject.onNext(true);
+        robot.keyRelease(KeyEvent.VK_ALT);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_A);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_A);
+
+        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        MercuryStoreCore.blockHotkeySubject.onNext(false);
+    }
+
     private void executeMessage(String message) {
         this.gameToFront();
         StringSelection selection = new StringSelection(message);
@@ -168,6 +192,7 @@ public class ChatHelper implements AsSubscriber {
     @Override
     public void subscribe() {
         MercuryStoreCore.chatCommandSubject.subscribe(this::executeMessage);
+        MercuryStoreCore.chatClipboardSubject.subscribe(state -> this.executeClipboardMessage());
         MercuryStoreCore.openChatSubject.subscribe(this::openChat);
         MercuryStoreCore.findInStashTab.subscribe(this::findInStashTab);
         MercuryStoreCore.tradeWhisperSubject.subscribe(state -> this.executeTradeMessage());

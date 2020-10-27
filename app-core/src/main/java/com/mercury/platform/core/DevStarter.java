@@ -10,10 +10,13 @@ import com.mercury.platform.shared.VulkanManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
+import com.mercury.platform.shared.hotkey.ClipboardListener;
 import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.shared.wh.WhisperHelperHandler;
 
+import java.awt.*;
+import java.awt.datatransfer.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -30,6 +33,7 @@ public class DevStarter {
         new ChatHelper();
         new HotKeysInterceptor();
         new WhisperHelperHandler();
+        ClipboardListener.createListener();
 
         HistoryManager.INSTANCE.load();
         MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
@@ -39,4 +43,5 @@ public class DevStarter {
         MercuryStoreCore.showingDelaySubject.subscribe(state -> this.delay = 300);
         MercuryStoreCore.shutdownAppSubject.subscribe(state -> System.exit(0));
     }
+
 }

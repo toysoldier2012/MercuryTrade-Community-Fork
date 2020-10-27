@@ -31,9 +31,12 @@ public class AppMain {
         System.setProperty("sun.java2d.d3d", "false");
         System.setProperty("jna.nosys", "true");
         new ErrorHandler();
-        MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
-        mercuryLoadingFrame.init();
-        mercuryLoadingFrame.showComponent();
+        Thread mercuryLoadingFrameThread = new Thread(() -> {
+            MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
+            mercuryLoadingFrame.init();
+            mercuryLoadingFrame.showComponent();
+        });
+        mercuryLoadingFrameThread.start();
 
         checkCreateAppDataFolder();
         if (args.length == 0) {
@@ -61,6 +64,11 @@ public class AppMain {
             new FileMonitor().start();
             FramesManager.INSTANCE.start();
             MercuryStoreCore.appLoadingSubject.onNext(false);
+        }
+        try {
+            mercuryLoadingFrameThread.join();
+        } catch (InterruptedException ex) {
+            logger.error(ex);
         }
     }
 

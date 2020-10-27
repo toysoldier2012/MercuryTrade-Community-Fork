@@ -1,15 +1,13 @@
 package com.mercury.platform.core;
 
 import com.mercury.platform.core.misc.SoundNotifier;
-import com.mercury.platform.core.update.UpdateClientStarter;
 import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.HistoryManager;
-import com.mercury.platform.shared.UpdateManager;
-import com.mercury.platform.shared.VulkanManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
+import com.mercury.platform.shared.hotkey.ClipboardListener;
 import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.shared.wh.WhisperHelperHandler;
@@ -19,10 +17,11 @@ import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class ProdStarter {
     private static final Logger logger = LogManager.getLogger(ProdStarter.class.getSimpleName());
@@ -37,6 +36,27 @@ public class ProdStarter {
         new ChatHelper();
         new HotKeysInterceptor();
         new WhisperHelperHandler();
+        ClipboardListener.createListener();
+
+        Toolkit.getDefaultToolkit().getSystemClipboard().addFlavorListener(e -> {
+            Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            try {
+                if (systemClipboard.getContents(this) != null && systemClipboard.getContents(this).isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    Object transferData = systemClipboard.getContents(this).getTransferData(DataFlavor.stringFlavor);
+                    if (transferData instanceof String) {
+                        String message = (String) transferData;
+
+                        if (message.contains("@")) {
+
+                            System.out.println("ClipBoard UPDATED: " + message);
+                            MercuryStoreCore.chatClipboardSubject.onNext(true);
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
         HistoryManager.INSTANCE.load();
         MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
