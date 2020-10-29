@@ -10,6 +10,7 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.MercuryConfigManager;
 import com.mercury.platform.shared.config.MercuryConfigurationSource;
 import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
+import com.mercury.platform.shared.hotkey.ClipboardListener;
 import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.shared.wh.WhisperHelperHandler;
@@ -19,6 +20,10 @@ import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
@@ -37,6 +42,7 @@ public class ProdStarter {
         new ChatHelper();
         new HotKeysInterceptor();
         new WhisperHelperHandler();
+        ClipboardListener.createListener();
 
         HistoryManager.INSTANCE.load();
         MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
