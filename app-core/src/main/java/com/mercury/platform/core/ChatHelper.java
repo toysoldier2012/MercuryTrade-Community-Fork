@@ -6,7 +6,10 @@ import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
 import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinUser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +22,7 @@ import java.io.IOException;
 
 public class ChatHelper implements AsSubscriber {
     private Robot robot;
+    private static boolean clipboardMessageOn = true;
 
     public ChatHelper() {
         subscribe();
@@ -30,30 +34,33 @@ public class ChatHelper implements AsSubscriber {
     }
 
     private void executeClipboardMessage() {
-        this.gameToFront();
-        MercuryStoreCore.blockHotkeySubject.onNext(true);
-        robot.keyRelease(KeyEvent.VK_ALT);
-        robot.keyPress(KeyEvent.VK_ENTER);
-        robot.keyRelease(KeyEvent.VK_ENTER);
+        if (clipboardMessageOn) {
+            this.gameToFront();
+            MercuryStoreCore.blockHotkeySubject.onNext(true);
+            robot.keyRelease(KeyEvent.VK_ALT);
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
 
-        robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_A);
-        robot.keyRelease(KeyEvent.VK_CONTROL);
-        robot.keyRelease(KeyEvent.VK_A);
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_A);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            robot.keyRelease(KeyEvent.VK_A);
 
-        robot.keyPress(KeyEvent.VK_BACK_SPACE);
-        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+            robot.keyPress(KeyEvent.VK_BACK_SPACE);
+            robot.keyRelease(KeyEvent.VK_BACK_SPACE);
 
-        robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_V);
-        robot.keyRelease(KeyEvent.VK_V);
-        robot.keyRelease(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_ENTER);
-        robot.keyRelease(KeyEvent.VK_ENTER);
-        MercuryStoreCore.blockHotkeySubject.onNext(false);
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+            MercuryStoreCore.blockHotkeySubject.onNext(false);
+        }
     }
 
     private void executeMessage(String message) {
+        clipboardMessageOn = false;
         this.gameToFront();
         StringSelection selection = new StringSelection(message);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -78,9 +85,11 @@ public class ChatHelper implements AsSubscriber {
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
         MercuryStoreCore.blockHotkeySubject.onNext(false);
+        clipboardMessageOn = true;
     }
 
     private void executeTradeMessage() {
+        clipboardMessageOn = false;
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Clipboard clipboard = toolkit.getSystemClipboard();
         try {
@@ -119,9 +128,11 @@ public class ChatHelper implements AsSubscriber {
         } catch (UnsupportedFlavorException | IOException e) {
             MercuryStoreCore.errorHandlerSubject.onNext(new MercuryError(e));
         }
+        clipboardMessageOn = true;
     }
 
     private void openChat(String whisper) {
+        clipboardMessageOn = false;
         this.gameToFront();
         StringSelection selection = new StringSelection("@" + whisper);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -146,9 +157,11 @@ public class ChatHelper implements AsSubscriber {
         robot.keyPress(KeyEvent.VK_SPACE);
         robot.keyRelease(KeyEvent.VK_SPACE);
         MercuryStoreCore.blockHotkeySubject.onNext(false);
+        clipboardMessageOn = true;
     }
 
     private void findInStashTab(String toBeFound) {
+        clipboardMessageOn = false;
         this.gameToFront();
         StringSelection selection = new StringSelection(toBeFound);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -170,7 +183,13 @@ public class ChatHelper implements AsSubscriber {
         robot.keyRelease(KeyEvent.VK_V);
 
         MercuryStoreCore.blockHotkeySubject.onNext(false);
+        clipboardMessageOn = true;
     }
+
+    final WinDef.HWND HWND_TOPMOST = new WinDef.HWND(new Pointer(-1));
+    final int SWP_NOSIZE = 0x0001;
+    final int SWP_NOMOVE = 0x0002;
+    final int SWP_SHOWWINDOW = 0x0040;
 
     private void gameToFront() {
         User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
@@ -183,6 +202,8 @@ public class ChatHelper implements AsSubscriber {
             }
             if (wText.equals("POEWindowClass")) {
                 User32.INSTANCE.SetForegroundWindow(hWnd);
+                User32.INSTANCE.SetFocus(hWnd);
+//                User32.INSTANCE.SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
                 return false;
             }
             return true;

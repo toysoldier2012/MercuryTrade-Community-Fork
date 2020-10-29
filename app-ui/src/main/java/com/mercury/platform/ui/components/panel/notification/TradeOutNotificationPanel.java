@@ -83,6 +83,7 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
         super.subscribe();
         this.autoCloseSubscription = MercuryStoreCore.plainMessageSubject.subscribe(message -> {
             if (this.data.getWhisperNickname().equals(message.getNickName())) {
+
                 if (this.notificationConfig.get()
                         .getAutoCloseTriggers().stream()
                         .anyMatch(it -> message.getMessage().toLowerCase()

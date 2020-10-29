@@ -298,4 +298,8 @@ public class AdrManager implements AsSubscriber {
             }
         });
     }
+
+    public List<AbstractAdrFrame> getFrames() {
+        return frames;
+    }
 }

@@ -26,6 +26,11 @@ import com.mercury.platform.ui.manager.routing.SettingsRoutManager;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
+import com.sun.jna.Native;
+import com.sun.jna.platform.WindowUtils;
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -237,7 +242,7 @@ public class FramesManager implements AsSubscriber {
             FramesConfigurationServiceImpl service = (FramesConfigurationServiceImpl) Configuration.get().framesConfiguration();
             if (service != null) {
                 FrameDescriptor settings = service.getDefault().get(k.getSimpleName());
-                if (!v.getClass().equals(ItemsGridFrame.class) && settings != null) {
+                if (settings != null) {
                     v.setLocation(settings.getFrameLocation());
                     if (v instanceof AbstractMovableComponentFrame) {
                         ((AbstractMovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
@@ -245,6 +250,40 @@ public class FramesManager implements AsSubscriber {
                 }
             }
         });
+    }
+
+    public void setLocationToCurrentMonitor() {
+        this.framesMap.forEach((k, v) -> {
+            if (v.getClass().equals(ItemsGridFrame.class)) {
+                Point location = v.getLocation();
+                System.out.println(location);
+            }
+            Point frameLocation = v.getLocation();
+            frameLocation.x += getWindowLeftLocation();
+            v.setLocation(frameLocation);
+            if (v instanceof AbstractMovableComponentFrame) {
+                ((AbstractMovableComponentFrame) v).onLocationChange(frameLocation);
+            }
+        });
+
+        this.adrManager.getFrames().forEach((v) -> {
+            Point frameLocation = v.getLocation();
+            frameLocation.x += getWindowLeftLocation();
+            v.setLocation(frameLocation);
+        });
+    }
+
+
+    private int getWindowLeftLocation() {
+        return WindowUtils.getAllWindows(false).stream().filter(window -> {
+            char[] className = new char[512];
+            User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+            return Native.toString(className).equals("POEWindowClass");
+        }).map(it -> {
+            WinDef.RECT rect = new WinDef.RECT();
+            User32.INSTANCE.GetWindowRect(it.getHWND(), rect);
+            return rect.left;
+        }).findAny().orElse(0);
     }
 
     private void createTrayIcon() {
