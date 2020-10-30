@@ -203,7 +203,6 @@ public class ChatHelper implements AsSubscriber {
             if (wText.equals("POEWindowClass")) {
                 User32.INSTANCE.SetForegroundWindow(hWnd);
                 User32.INSTANCE.SetFocus(hWnd);
-//                User32.INSTANCE.SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
                 return false;
             }
             return true;
