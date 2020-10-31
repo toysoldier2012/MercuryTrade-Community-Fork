@@ -74,3 +74,4 @@ logs/
 *dependency-reduced-pom.xml
 
 release_files/MercuryTrad*
+release_files/resources/

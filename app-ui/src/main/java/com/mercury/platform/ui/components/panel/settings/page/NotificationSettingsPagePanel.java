@@ -8,6 +8,7 @@ import com.mercury.platform.shared.config.descriptor.HotKeysSettingsDescriptor;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
 import com.mercury.platform.shared.entity.message.FlowDirections;
 import com.mercury.platform.shared.IconConst;
+import com.mercury.platform.shared.hotkey.ClipboardListener;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
 
@@ -129,22 +130,21 @@ public class NotificationSettingsPagePanel extends SettingsPagePanel {
     private JPanel getWhisperHelperPanel() {
         JPanel root = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
 
-        JPanel parametersPanel = this.componentsFactory.getJPanel(new GridLayout(2, 2), AppThemeColor.ADR_BG);
+        JPanel parametersPanel = this.componentsFactory.getJPanel(new GridLayout(1, 2), AppThemeColor.ADR_BG);
         JCheckBox enableCheckbox = this.componentsFactory.getCheckBox(this.generalSnapshot.isWhisperHelperEnable());
-        enableCheckbox.addActionListener(action -> this.generalSnapshot.setWhisperHelperEnable(enableCheckbox.isSelected()));
+        enableCheckbox.addActionListener(action -> {
+            this.generalSnapshot.setWhisperHelperEnable(enableCheckbox.isSelected());
+            ClipboardListener.enabled = enableCheckbox.isSelected();
+        });
         parametersPanel.add(this.componentsFactory.getTextLabel("Enabled:", FontStyle.REGULAR, 16));
         parametersPanel.add(enableCheckbox);
-        parametersPanel.add(this.componentsFactory.getTextLabel("Hotkey:", FontStyle.REGULAR, 16));
-        HotKeyPanel hotKeyPanel = new HotKeyPanel(this.generalSnapshot.getWhisperHelperHotKey());
-        this.whHotkeyGroup.registerHotkey(hotKeyPanel);
-        parametersPanel.add(hotKeyPanel);
 
         JPanel showcasePanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.ADR_BG);
-        showcasePanel.add(this.componentsFactory.getTextLabel("When you release hotkey button clipboard content will be transferred to chat.", FontStyle.REGULAR, 16), BorderLayout.PAGE_START);
+        showcasePanel.add(this.componentsFactory.getTextLabel("When you copy a text which is in format of trade message it will be automatically pasted into chat window in PoE", FontStyle.REGULAR, 16), BorderLayout.PAGE_START);
         JLabel img = new JLabel();
         img.setIcon(this.componentsFactory.getImage("app/whisper-helper.png"));
         showcasePanel.add(this.componentsFactory.wrapToSlide(img, AppThemeColor.ADR_BG, 4, 4, 4, 4), BorderLayout.CENTER);
-        showcasePanel.add(this.componentsFactory.getTextLabel("Example: press hotkey button => click on 'Whisper' button => release hotkey button.", FontStyle.REGULAR, 16), BorderLayout.PAGE_END);
+        showcasePanel.add(this.componentsFactory.getTextLabel("Example: click on 'Whisper' button, message will be copied to your clipboard => MT will paste it into chat in PoE.", FontStyle.REGULAR, 16), BorderLayout.PAGE_END);
         root.add(parametersPanel, BorderLayout.PAGE_START);
         root.add(showcasePanel, BorderLayout.CENTER);
         root.setVisible(false);
