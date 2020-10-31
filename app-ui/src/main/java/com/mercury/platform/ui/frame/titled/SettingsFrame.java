@@ -126,8 +126,21 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
             MercuryStoreUI.settingsRestoreSubject.onNext(true);
         });
 
+        JButton donate = componentsFactory.getIconButton("app/paypal.png", 70f, AppThemeColor.ADR_FOOTER_BG, "Donate");
+        donate.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/Morph21MT"));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         saveButton.setPreferredSize(new Dimension(110, 26));
         cancelButton.setPreferredSize(new Dimension(110, 26));
+        root.add(this.componentsFactory.wrapToSlide(donate, AppThemeColor.HEADER, 2, 2, 2, 2));
         root.add(this.componentsFactory.wrapToSlide(cancelButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         root.add(this.componentsFactory.wrapToSlide(saveButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         return root;

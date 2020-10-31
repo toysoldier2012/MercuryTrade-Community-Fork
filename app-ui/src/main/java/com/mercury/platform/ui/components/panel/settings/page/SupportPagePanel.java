@@ -27,7 +27,7 @@ public class SupportPagePanel extends SettingsPagePanel {
 
 
         JTextArea donateText = componentsFactory.getSimpleTextArea("We aimed to create a convenience tool in form of an easy-to-use application, primarily for trading purposes. If MercuryTrade successfully managed to save your time or improve your experience, you can thank us by donating or telling your friends. If you want your name to be featured in our in-app Hall of Fame please provide this information within the transaction!");
-        donateText.setPreferredSize(new Dimension(300, 150));
+        donateText.setPreferredSize(new Dimension(300, 450));
         JPanel donateButtonPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
         donateButtonPanel.setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
         donatePanel.add(donateButtonPanel);
@@ -82,6 +82,7 @@ public class SupportPagePanel extends SettingsPagePanel {
 
     private List<DonationPair> getDonations() {
         List<DonationPair> donations = new ArrayList<>();
+        donations.add(new DonationPair("SmoofBrane", AppThemeColor.TEXT_NICKNAME));
         donations.add(new DonationPair("LiftingNerdBro", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("Sklifan", AppThemeColor.TEXT_DEFAULT));
         donations.add(new DonationPair("222Craft", AppThemeColor.TEXT_DEFAULT));
