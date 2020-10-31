@@ -7,6 +7,8 @@ import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.platform.DesktopWindow;
+import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
@@ -19,6 +21,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+
 
 public class ChatHelper implements AsSubscriber {
     private Robot robot;
@@ -34,7 +37,7 @@ public class ChatHelper implements AsSubscriber {
     }
 
     private void executeClipboardMessage() {
-        if (clipboardMessageOn) {
+        if (clipboardMessageOn && isGameOpen()) {
             this.gameToFront();
             MercuryStoreCore.blockHotkeySubject.onNext(true);
             robot.keyRelease(KeyEvent.VK_ALT);
@@ -207,6 +210,16 @@ public class ChatHelper implements AsSubscriber {
             }
             return true;
         }, null);
+    }
+
+    private boolean isGameOpen() {
+        WinDef.HWND poeWindowClass = WindowUtils.getAllWindows(false).stream().filter(window -> {
+            char[] className = new char[512];
+            User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+            return Native.toString(className).equals("POEWindowClass");
+        }).map(DesktopWindow::getHWND).findFirst().orElse(null);
+
+        return poeWindowClass != null;
     }
 
     @Override

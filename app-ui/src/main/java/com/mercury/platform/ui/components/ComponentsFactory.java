@@ -254,7 +254,7 @@ public class ComponentsFactory {
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
             icon = Scalr.resize(buttonIcon, (int) (scale * iconSize));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (icon != null) {
