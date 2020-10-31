@@ -1,9 +1,17 @@
 [
   {
     "version": "1.1.5",
-    "fix": [
+    "features": [
       {
-        "changed": "Fixed part of keyboard not working when using Portuguese (Brazil) language"
+        "changed": "Automatic hotkeyless whisper after copy trade message is now available"
+      },
+      {
+        "changed": "Changing sounds of notification is now available (check README.txt in MercuryTrade/resources/app"
+      }
+    ],
+    "minorChanges": [
+      {
+        "changed": "Speed up startup time"
       }
     ]
   },
