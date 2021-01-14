@@ -91,20 +91,20 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
     }
 
     @Override
-    public void paint(Graphics g) {
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.paintAlphaValue));
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        super.paint(g2);
         if (this.paintAlphaValue < 1.0f) {
             this.paintAlphaValue += 0.004;
             if (this.paintAlphaValue > 1.0f) {
                 this.paintAlphaValue = 1.0f;
             }
-            this.repaint();
         }
+        this.repaint();
     }
 
     protected JPanel getTimePanel() {

@@ -6,7 +6,12 @@ import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
 import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.sun.jna.Native;
+import com.sun.jna.platform.DesktopWindow;
+import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinUser;
+import org.apache.commons.lang3.SystemUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -125,20 +130,37 @@ public class ChatHelper implements AsSubscriber {
     }
 
     private void gameToFront() {
-        User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
-            char[] className = new char[512];
-            User32.INSTANCE.GetClassName(hWnd, className, 512);
-            String wText = Native.toString(className);
+        if (SystemUtils.IS_OS_WINDOWS) {
+            User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
+                char[] className = new char[512];
+                User32.INSTANCE.GetClassName(hWnd, className, 512);
+                String wText = Native.toString(className);
 
-            if (wText.isEmpty()) {
+                if (wText.isEmpty()) {
+                    return true;
+                }
+                if (wText.equals("POEWindowClass")) {
+                    User32.INSTANCE.SetForegroundWindow(hWnd);
+                    User32.INSTANCE.SetFocus(hWnd);
+                    return false;
+                }
                 return true;
-            }
-            if (wText.equals("POEWindowClass")) {
-                User32.INSTANCE.SetForegroundWindow(hWnd);
-                return false;
-            }
+            }, null);
+        }
+    }
+
+    private boolean isGameOpen() {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            WinDef.HWND poeWindowClass = WindowUtils.getAllWindows(false).stream().filter(window -> {
+                char[] className = new char[512];
+                User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+                return Native.toString(className).equals("POEWindowClass");
+            }).map(DesktopWindow::getHWND).findFirst().orElse(null);
+
+            return poeWindowClass != null;
+        } else {
             return true;
-        }, null);
+        }
     }
 
     @Override

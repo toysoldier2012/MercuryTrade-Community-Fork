@@ -17,6 +17,7 @@ import java.io.IOException;
 public class SquareIconTrackerUI extends BasicMercuryIconTrackerUI<AdrIconDescriptor> {
     @Override
     public void paint(Graphics g, JComponent c) {
+        super.paint(g,c);
         if (!tracker.isShowCase()) {
             if (!descriptor.isVisible()) {
                 return;

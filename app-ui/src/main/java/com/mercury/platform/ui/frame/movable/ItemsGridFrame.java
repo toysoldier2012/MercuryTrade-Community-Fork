@@ -127,6 +127,8 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                     this.pack();
                     this.repaint();
                 }
+                this.pack();
+                this.repaint();
             }
         });
         tabType.setPreferredSize(new Dimension((int) (componentsFactory.getScale() * 70), tabType.getHeight()));
