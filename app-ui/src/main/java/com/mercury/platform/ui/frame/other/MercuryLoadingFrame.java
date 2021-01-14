@@ -23,7 +23,6 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
 
     @Override
     protected void initialize() {
-        this.setOpacity(0f);
         this.setBackground(AppThemeColor.TRANSPARENT);
     }
 
@@ -77,7 +76,7 @@ public class MercuryLoadingFrame extends AbstractOverlaidFrame {
         });
 
         showAnimation = new Timeline(this);
-        showAnimation.setDuration(400);
+        showAnimation.setDuration(100);
         showAnimation.addPropertyToInterpolate("opacity", 0f, 1f);
         this.add(this.loadingTracker);
         this.pack();

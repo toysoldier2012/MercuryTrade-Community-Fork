@@ -4,12 +4,12 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
-        <File name="LogFile" fileName="${env:USERPROFILE}/AppData/Local/MercuryTrade/app.log" append="true">
+        <File name="LogFile" fileName="logs/mercury-app.log" append="true">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
     <Loggers>
-        <Root level="error">
+        <Root level="warn">
             <AppenderRef ref="LogFile"/>
             <AppenderRef ref="Console" />
         </Root>

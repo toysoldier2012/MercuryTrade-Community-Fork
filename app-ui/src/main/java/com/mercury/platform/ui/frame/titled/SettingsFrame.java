@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame.titled;
 
 
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
+import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
@@ -16,6 +17,8 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.net.URI;
 
 public class SettingsFrame extends AbstractTitledComponentFrame {
+    private final static Logger logger = LogManager.getLogger(SettingsFrame.class.getSimpleName());
     private JPanel currentPanel;
     private JPanel root;
 
@@ -92,11 +96,11 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         donateDescriptor.setBorderColor(AppThemeColor.ADR_DEFAULT_BORDER);
         donateDescriptor.setBackgroundColor(AppThemeColor.FRAME);
         donateDescriptor.setForegroundColor(AppThemeColor.BUTTON);
-        MercuryTracker tracker = new MercuryTracker(donateDescriptor);
-        tracker.setValue(1000);
-        tracker.setPreferredSize(donateDescriptor.getSize());
-        root.add(this.componentsFactory.getTextLabel("Monthly donations:", FontStyle.BOLD, 16), BorderLayout.LINE_START);
-        root.add(this.componentsFactory.wrapToSlide(tracker, AppThemeColor.ADR_FOOTER_BG, 2, 2, 2, 1), BorderLayout.CENTER);
+//        MercuryTracker tracker = new MercuryTracker(donateDescriptor);
+//        tracker.setValue(1000);
+//        tracker.setPreferredSize(donateDescriptor.getSize());
+//        root.add(this.componentsFactory.getTextLabel("Monthly donations:", FontStyle.BOLD, 16), BorderLayout.LINE_START);
+//        root.add(this.componentsFactory.wrapToSlide(tracker, AppThemeColor.ADR_FOOTER_BG, 2, 2, 2, 1), BorderLayout.CENTER);
         root.add(this.getSaveButtonPanel(), BorderLayout.LINE_END);
         return root;
     }
@@ -121,20 +125,9 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
             this.hideComponent();
             MercuryStoreUI.settingsRestoreSubject.onNext(true);
         });
-        JButton donate = componentsFactory.getIconButton("app/paypal.png", 70f, AppThemeColor.ADR_FOOTER_BG, "Donate");
-        donate.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                try {
-                    Desktop.getDesktop().browse(new URI("https://www.paypal.me/mercurytrade"));
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
+
         saveButton.setPreferredSize(new Dimension(110, 26));
         cancelButton.setPreferredSize(new Dimension(110, 26));
-        root.add(this.componentsFactory.wrapToSlide(donate, AppThemeColor.HEADER, 0, 2, 0, 2));
         root.add(this.componentsFactory.wrapToSlide(cancelButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         root.add(this.componentsFactory.wrapToSlide(saveButton, AppThemeColor.HEADER, 2, 2, 2, 2));
         return root;
@@ -150,8 +143,11 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         });
         JButton checkUpdates = this.getOperationButton("Check for updates", "app/check-update.png");
         checkUpdates.addActionListener(action -> {
-            ApplicationHolder.getInstance().setManualRequest(true);
-            MercuryStoreCore.requestPatchSubject.onNext(true);
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/Morph21/MercuryTrade-Community-Fork/releases"));
+            } catch (Exception e) {
+                logger.error("Opening browser failed", e);
+            }
         });
         JButton openTests = this.getOperationButton("Open tests", "app/open-tests.png");
         openTests.addActionListener(action -> {

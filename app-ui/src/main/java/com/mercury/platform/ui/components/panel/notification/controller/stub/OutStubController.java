@@ -17,6 +17,11 @@ public class OutStubController implements OutgoingPanelController {
     }
 
     @Override
+    public void performKickLeave(String nickName) {
+
+    }
+
+    @Override
     public void performOpenChat() {
 
     }

@@ -39,7 +39,7 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
         });
         JButton kickButton = componentsFactory.getIconButton("app/kick.png", 15, AppThemeColor.MSG_HEADER, TooltipConstants.KICK);
         kickButton.addActionListener(e -> {
-            this.controller.performKick();
+            this.controller.performKickLeave(nicknameLabel.getText());
             if (this.notificationConfig.get().isDismissAfterKick()) {
                 this.controller.performHide();
             }
@@ -91,7 +91,7 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
                 this.hotKeysPool.put(hotKeyPair.getDescriptor(), button);
             }
         });
-        this.initResponseButtonsPanel(this.notificationConfig.get().getButtons());
+        this.initResponseButtonsPanel(this.notificationConfig.get().getButtons(), false);
         Window windowAncestor = SwingUtilities.getWindowAncestor(TradeIncNotificationPanel.this);
         if (windowAncestor != null) {
             windowAncestor.pack();

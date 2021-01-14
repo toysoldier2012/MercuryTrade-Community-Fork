@@ -27,9 +27,7 @@ import java.util.concurrent.Executors;
 public class ProdStarter {
     private static final Logger logger = LogManager.getLogger(ProdStarter.class.getSimpleName());
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
-    private boolean shutdown = false;
     private volatile int delay = 100;
-    private boolean updating = false;
 
     public void startApplication() {
         MercuryConfigManager configuration = new MercuryConfigManager(new MercuryConfigurationSource());
@@ -40,9 +38,6 @@ public class ProdStarter {
         new HotKeysInterceptor();
         new WhisperHelperHandler();
 
-        Executor executor = Executors.newSingleThreadExecutor();
-        UpdateClientStarter updateClientStarter = new UpdateClientStarter();
-        executor.execute(updateClientStarter);
         HistoryManager.INSTANCE.load();
 
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -91,10 +86,6 @@ public class ProdStarter {
             });
         }
         MercuryStoreCore.showingDelaySubject.subscribe(state -> this.delay = 300);
-        MercuryStoreCore.shutdownAppSubject.subscribe(state -> this.shutdown = true);
-        MercuryStoreCore.shutdownForUpdateSubject.subscribe(state -> {
-            this.updating = true;
-            this.shutdown = true;
-        });
+        MercuryStoreCore.shutdownAppSubject.subscribe(state -> System.exit(0));
     }
 }

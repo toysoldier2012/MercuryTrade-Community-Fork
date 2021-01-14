@@ -17,6 +17,11 @@ public class ScannerStubController implements ScannerPanelController {
     }
 
     @Override
+    public void performKickLeave(String nickName) {
+
+    }
+
+    @Override
     public void performOpenChat() {
 
     }

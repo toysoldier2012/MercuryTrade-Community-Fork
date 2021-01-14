@@ -1,25 +1,28 @@
-### This project is no longer maintained but it will still work until there are some breaking changes in the game, please use alternative app.
+### This fork was created for those of you who prefer mercury trade. I will do my best to solve issues here. Every help will be appreciated.
 ___
-
-[![Donate](https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png)](https://www.paypal.me/mercurytrade) 
 
 Already more than 10k happy users! Don't forget to support it! And if you want your name to be featured in our in-app Hall of Fame (see Support tab) please provide this information within the transaction!
 
+If you want to help with development with donations it's possible to do it by paypal or liberapay
 
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FPFD6SGZ2E5GU)
+<noscript><a href="https://liberapay.com/Morph21/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
+
+<br>
 
 # MercuryTrade
 
 Download and Install Java: [https://java.com/download](https://java.com/download)
 
-Download MercuryTrade.jar: [Latest release](https://github.com/Exslims/MercuryTrade/releases)
+Download MercuryTrade.jar: [Latest release](https://github.com/Morph21/MercuryTrade-Community-Fork/releases)
 
-**ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Exslims/MercuryTrade/releases). Unpack and run the attached .exe as administrator! Try this launcher when **something is not working**.
+**ALTERNATIVE LAUNCHER**: MercuryTrade.**RAR**: [Latest release](https://github.com/Morph21/MercuryTrade-Community-Fork/releases). Unpack and run the attached .exe as administrator! Try this launcher when **something is not working**.
 
-I have a problem: [Troubleshooting](https://github.com/Exslims/MercuryTrade/wiki)
+I have a problem: [Troubleshooting](https://github.com/Morph21/MercuryTrade-Community-Fork/wiki)
 
-Feedback and suggestions: [Github](https://github.com/Exslims/MercuryTrade/issues) [Discord](https://discord.gg/aG9C8XJ)
+Feedback and suggestions: [Github](https://github.com/Morph21/MercuryTrade-Community-Fork/issues)
 
-User-agreement: [Link](https://github.com/Exslims/MercuryTrade/wiki/User-agreement)
+User-agreement: [Link](https://github.com/Morph21/MercuryTrade-Community-Fork/wiki/User-agreement)
 
 
 ---
@@ -138,3 +141,4 @@ Activate this mode if you don't want to see (and hear!) anything from the applic
 Download and install Java on your computer, then open MercuryTrade.jar. Because the program operates on top of a Path of Exile window as an overlay, **make sure your client is not in fullscreen mode**.
 
 Upon launch you'll be greeted with a short overview of the application (identical to this ReadMe) and patch notes. Afterwards you should see **Task Panel** and **Notification Panel**.
+

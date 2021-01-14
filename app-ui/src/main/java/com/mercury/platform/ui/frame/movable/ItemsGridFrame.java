@@ -116,16 +116,13 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         tabType.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 String item = (String) e.getItem();
+
                 if (item.equals("4x4")) {
                     panel.remove(defaultGridPanel);
                     panel.add(quadGridPanel, BorderLayout.CENTER);
-                    this.pack();
-                    this.repaint();
                 } else {
                     panel.remove(quadGridPanel);
                     panel.add(defaultGridPanel, BorderLayout.CENTER);
-                    this.pack();
-                    this.repaint();
                 }
                 this.pack();
                 this.repaint();
