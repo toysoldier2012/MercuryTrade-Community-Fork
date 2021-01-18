@@ -125,6 +125,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
     @Override
     public void paint(Graphics g, JComponent c) {
+        super.paint(g,c);
         //public void paintDeterminate(Graphics g, JComponent c) {
         Insets b = progressBar.getInsets(); // area for border
         int barRectWidth = progressBar.getWidth() - b.right - b.left;
@@ -166,6 +167,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
         if (progressBar.isStringPainted()) {
             paintString(g, b.left, b.top, barRectWidth, barRectHeight, 0, b);
         }
+
     }
 }
 

@@ -12,6 +12,7 @@ import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
+import org.apache.commons.lang3.SystemUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -195,21 +196,37 @@ public class ChatHelper implements AsSubscriber {
     final int SWP_SHOWWINDOW = 0x0040;
 
     private void gameToFront() {
-        User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
-            char[] className = new char[512];
-            User32.INSTANCE.GetClassName(hWnd, className, 512);
-            String wText = Native.toString(className);
+        if (SystemUtils.IS_OS_WINDOWS) {
+            User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
+                char[] className = new char[512];
+                User32.INSTANCE.GetClassName(hWnd, className, 512);
+                String wText = Native.toString(className);
 
-            if (wText.isEmpty()) {
+                if (wText.isEmpty()) {
+                    return true;
+                }
+                if (wText.equals("POEWindowClass")) {
+                    User32.INSTANCE.SetForegroundWindow(hWnd);
+                    User32.INSTANCE.SetFocus(hWnd);
+                    return false;
+                }
                 return true;
-            }
-            if (wText.equals("POEWindowClass")) {
-                User32.INSTANCE.SetForegroundWindow(hWnd);
-                User32.INSTANCE.SetFocus(hWnd);
-                return false;
-            }
+            }, null);
+        }
+    }
+
+    private boolean isGameOpen() {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            WinDef.HWND poeWindowClass = WindowUtils.getAllWindows(false).stream().filter(window -> {
+                char[] className = new char[512];
+                User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+                return Native.toString(className).equals("POEWindowClass");
+            }).map(DesktopWindow::getHWND).findFirst().orElse(null);
+
+            return poeWindowClass != null;
+        } else {
             return true;
-        }, null);
+        }
     }
 
     private boolean isGameOpen() {

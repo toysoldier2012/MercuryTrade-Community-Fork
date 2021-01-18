@@ -287,46 +287,51 @@ public class FramesManager implements AsSubscriber {
     }
 
     private void createTrayIcon() {
-        PopupMenu trayMenu = new PopupMenu();
-        MenuItem exit = new MenuItem("Exit");
-        exit.addActionListener(e -> {
-            exit();
-        });
-        MenuItem restore = new MenuItem("Restore default location");
-        restore.addActionListener(e -> {
-            FramesManager.INSTANCE.restoreDefaultLocation();
-        });
-
-        MenuItem settings = new MenuItem("Settings");
-        settings.addActionListener(e -> {
-            FramesManager.INSTANCE.showFrame(SettingsFrame.class);
-        });
-
-        CheckboxMenuItem vulkanSupport = new CheckboxMenuItem("Vulkan support");
-        vulkanSupport.setState(VulkanManager.INSTANCE.getSetting());
-        vulkanSupport.addItemListener(e -> {
-            VulkanManager.INSTANCE.changeSetting();
-            MercuryStoreUI.settingsSaveSubject.onNext(true);
-        });
-        trayMenu.add(restore);
-        trayMenu.add(settings);
-        trayMenu.add(vulkanSupport);
-        trayMenu.add(exit);
-
-        BufferedImage icon = null;
         try {
-            icon = ImageIO.read(getClass().getClassLoader().getResource(IconConst.APP_ICON));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.trayIcon = new TrayIcon(icon, "MercuryTrade", trayMenu);
-        this.trayIcon.setImageAutoSize(true);
+            PopupMenu trayMenu = new PopupMenu();
+            MenuItem exit = new MenuItem("Exit");
+            exit.addActionListener(e -> {
+                exit();
+            });
+            MenuItem restore = new MenuItem("Restore default location");
+            restore.addActionListener(e -> {
+                FramesManager.INSTANCE.restoreDefaultLocation();
+            });
 
-        SystemTray tray = SystemTray.getSystemTray();
-        try {
-            tray.add(this.trayIcon);
-        } catch (AWTException e) {
-            e.printStackTrace();
+
+            MenuItem settings = new MenuItem("Settings");
+            settings.addActionListener(e -> {
+                FramesManager.INSTANCE.showFrame(SettingsFrame.class);
+            });
+
+            CheckboxMenuItem vulkanSupport = new CheckboxMenuItem("Vulkan support");
+            vulkanSupport.setState(VulkanManager.INSTANCE.getSetting());
+            vulkanSupport.addItemListener(e -> {
+                VulkanManager.INSTANCE.changeSetting();
+                MercuryStoreUI.settingsSaveSubject.onNext(true);
+            });
+            trayMenu.add(restore);
+            trayMenu.add(settings);
+            trayMenu.add(vulkanSupport);
+            trayMenu.add(exit);
+
+            BufferedImage icon = null;
+            try {
+                icon = ImageIO.read(getClass().getClassLoader().getResource(IconConst.APP_ICON));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            this.trayIcon = new TrayIcon(icon, "MercuryTrade", trayMenu);
+            this.trayIcon.setImageAutoSize(true);
+
+            SystemTray tray = SystemTray.getSystemTray();
+            try {
+                tray.add(this.trayIcon);
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            //Hide error for linux/mac system
         }
     }
 

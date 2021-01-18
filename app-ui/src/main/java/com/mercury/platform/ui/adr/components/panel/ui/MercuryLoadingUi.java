@@ -17,6 +17,7 @@ public class MercuryLoadingUi extends ComponentUI {
 
     @Override
     public void paint(Graphics g, JComponent c) {
+        super.paint(g,c);
         if (component.getWidth() == 0) {
             return;
         }

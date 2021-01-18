@@ -19,14 +19,20 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 
 public class AppMain {
+
     private static final Logger logger = LogManager.getLogger(AppMain.class);
     private static boolean shouldLogPerformance = false;
-    private final static String MERCURY_TRADE_FOLDER = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
+    private static String MERCURY_TRADE_FOLDER = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
 
 
     public static void main(String[] args) {
         System.setProperty("sun.java2d.d3d", "false");
         System.setProperty("jna.nosys", "true");
+
+        if (System.getenv("USERPROFILE") == null) {
+            MERCURY_TRADE_FOLDER = "AppData/Local/MercuryTrade";
+        }
+
         new ErrorHandler();
         Thread mercuryLoadingFrameThread = new Thread(() -> {
             MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
@@ -50,7 +56,7 @@ public class AppMain {
                 GamePathChooser gamePathChooser = new GamePathChooser();
                 gamePathChooser.init();
             } else {
-                gamePath = gamePath + "\\";
+                gamePath = gamePath + "/";
                 Configuration.get().applicationConfiguration().get().setGamePath(gamePath);
                 MercuryStoreCore.saveConfigSubject.onNext(true);
                 new FileMonitor().start();
@@ -75,14 +81,18 @@ public class AppMain {
     }
 
     private static String getGamePath() {
-        return WindowUtils.getAllWindows(false).stream().filter(window -> {
-            char[] className = new char[512];
-            User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
-            return Native.toString(className).equals("POEWindowClass");
-        }).map(it -> {
-            String filePath = it.getFilePath();
-            return StringUtils.substringBeforeLast(filePath, "\\");
-        }).findAny().orElse(null);
+        try {
+            return WindowUtils.getAllWindows(false).stream().filter(window -> {
+                char[] className = new char[512];
+                User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+                return Native.toString(className).equals("POEWindowClass");
+            }).map(it -> {
+                String filePath = it.getFilePath();
+                return StringUtils.substringBeforeLast(filePath, "\\");
+            }).findAny().orElse(null);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private static void checkCreateAppDataFolder() {

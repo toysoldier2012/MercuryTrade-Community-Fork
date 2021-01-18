@@ -126,7 +126,6 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                     panel.remove(quadGridPanel);
                     panel.add(defaultGridPanel, BorderLayout.CENTER);
                 }
-
                 this.pack();
                 this.repaint();
             }

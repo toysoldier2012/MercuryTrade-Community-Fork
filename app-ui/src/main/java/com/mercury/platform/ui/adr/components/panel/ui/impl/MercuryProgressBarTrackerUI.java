@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
 public class MercuryProgressBarTrackerUI extends BasicMercuryIconTrackerUI<AdrProgressBarDescriptor> {
     @Override
     public void paint(Graphics g, JComponent c) {
+        super.paint(g,c);
         if (!tracker.isShowCase()) {
             if (!descriptor.isVisible()) {
                 return;
