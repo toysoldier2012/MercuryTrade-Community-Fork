@@ -50,6 +50,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
     @Override
     public void onViewInit() {
         this.root = new JPanel(new BorderLayout());
+        this.setBackground(AppThemeColor.FRAME);
         MenuPanel menuPanel = new MenuPanel();
         JPanel leftPanel = this.componentsFactory.getJPanel(new BorderLayout());
         leftPanel.add(menuPanel, BorderLayout.CENTER);
@@ -69,9 +70,11 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
 
     public void setContentPanel(JPanel panel) {
         if (currentPanel != null) {
-            this.root.remove(currentPanel);
+            this.root.removeAll();
         }
         this.root.add(panel, BorderLayout.CENTER);
+        this.getContentPane().setBackground(AppThemeColor.ADR_BG); //TODO: Only for linux -> check on windows
+        this.setBackground(AppThemeColor.ADR_BG); //TODO: only for linux -> check on windows
         this.currentPanel = panel;
         this.pack();
         this.repaint();

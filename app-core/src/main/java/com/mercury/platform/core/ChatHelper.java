@@ -229,16 +229,6 @@ public class ChatHelper implements AsSubscriber {
         }
     }
 
-    private boolean isGameOpen() {
-        WinDef.HWND poeWindowClass = WindowUtils.getAllWindows(false).stream().filter(window -> {
-            char[] className = new char[512];
-            User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
-            return Native.toString(className).equals("POEWindowClass");
-        }).map(DesktopWindow::getHWND).findFirst().orElse(null);
-
-        return poeWindowClass != null;
-    }
-
     @Override
     public void subscribe() {
         MercuryStoreCore.chatCommandSubject.subscribe(this::executeMessage);
