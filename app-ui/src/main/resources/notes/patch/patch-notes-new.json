@@ -1,0 +1,127 @@
+[
+  {
+    "version": "1.1.5",
+    "features": [
+      {
+        "changed": "Automatic hotkeyless whisper after copy trade message is now available"
+      },
+      {
+        "changed": "Changing sounds of notification is now available (check README.txt in MercuryTrade/resources/app"
+      }
+    ],
+    "minorChanges": [
+      {
+        "changed": "Speed up startup time"
+      }
+    ]
+  },
+  {
+    "version": "1.1.4",
+    "fix": [
+      {
+        "changed": "Fixed part of keyboard not working when using Portuguese (Brazil) language"
+      }
+    ]
+  },
+  {
+    "version": "1.1.3",
+    "fix": [
+      {
+        "changed": "Showing items when they are placed into quad tabs"
+      }
+    ],
+    "features": [
+      {
+        "changed": "When stash tab is open and name of item is pressed in notification window it will be copied into stash tab search"
+      },
+      {
+        "changed": "Added rational fractions instead of decimal ratios while buying/selling currency"
+      }
+    ],
+    "minorChanges": [
+      {
+        "changed": "Added changelog into \"About\" section including releases from 1.1.0"
+      }
+    ]
+  },
+  {
+    "version": "1.1.2",
+    "fix": [
+      {
+        "changed": "Fixed restoring default location of windows"
+      },
+      {
+        "changed": "Updated dependencies (security reasons)"
+      }
+    ],
+    "features": [
+      {
+        "changed": "Added Vulkan support, it's possible to turn it on from tray settings icon or from settings menu of MT"
+      },
+      {
+        "changed": "Added button to dismiss all stash tabs options from grid aligner"
+      }
+    ],
+    "minorChanges": [
+      {
+        "changed": "Added support for poemap.live bulk trades"
+      },
+      {
+        "changed": "Added access to settings from tray menu"
+      }
+    ]
+  },
+  {
+    "version": "1.1.1",
+    "fix": [
+      {
+        "changed": "Leaving party button when outgoing message was send was trying to kick other player not yourself"
+      },
+      {
+        "changed": "Fixed infinite Loading on Startup"
+      },
+      {
+        "changed": "Updated dependencies for security reasons"
+      },
+      {
+        "changed": "Fixed naming of messages kick feature from release 1.1.0"
+      },
+      {
+        "changed": "Fixed incoming/outgoing messages for poemap.live"
+      }
+    ]
+  },
+  {
+    "version": "1.1.0",
+    "fix": [
+      {
+        "changed": "Fixed occasional crashes"
+      },
+      {
+        "changed": "Fixed issue with nullpointer exception while message was corrupted"
+      }
+    ],
+    "features": [
+      {
+        "changed": "Expanded scale values from 90-150% to 50-200%"
+      },
+      {
+        "changed": "Added kick/leave feature which can be set up for incoming messages responses"
+      }
+    ],
+    "minorChanges": [
+      {
+        "changed": "Changed font size of game path to make it more readable"
+      },
+      {
+        "changed": "Deleted all paypal and discord links"
+      },
+      {
+        "changed": "Changed github repo links from Exslims to this Fork"
+      },
+      {
+        "changed": "Disabled not working update service (startup is faster now)"
+      }
+    ]
+  }
+]

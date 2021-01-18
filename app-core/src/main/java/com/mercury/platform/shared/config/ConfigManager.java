@@ -11,6 +11,8 @@ public interface ConfigManager {
 
     PlainConfigurationService<ApplicationDescriptor> applicationConfiguration();
 
+    PlainConfigurationService<VulkanDescriptor> vulkanConfiguration();
+
     PlainConfigurationService<NotificationSettingsDescriptor> notificationConfiguration();
 
     PlainConfigurationService<TaskBarDescriptor> taskBarConfiguration();

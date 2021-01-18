@@ -6,6 +6,7 @@ import com.mercury.platform.shared.FrameVisibleState;
 import com.mercury.platform.shared.config.descriptor.HotKeyDescriptor;
 import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.config.descriptor.SoundDescriptor;
+import com.mercury.platform.shared.config.descriptor.VulkanDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrVisibleState;
 import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
@@ -22,7 +23,9 @@ public class MercuryStoreCore {
     public static final PublishSubject<MessageInterceptor> addInterceptorSubject = PublishSubject.create();
     public static final PublishSubject<MessageInterceptor> removeInterceptorSubject = PublishSubject.create();
     public static final PublishSubject<String> chatCommandSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> chatClipboardSubject = PublishSubject.create();
     public static final PublishSubject<String> openChatSubject = PublishSubject.create();
+    public static final PublishSubject<String> findInStashTab = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> messageSubject = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> outMessageSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> appLoadingSubject = PublishSubject.create();
@@ -60,4 +63,6 @@ public class MercuryStoreCore {
     public static final PublishSubject<PlainMessageDescriptor> newScannerMessageSubject = PublishSubject.create();
     public static final PublishSubject<PlainMessageDescriptor> removeScannerNotificationSubject = PublishSubject.create();
     public static final PublishSubject<NotificationDescriptor> expiredNotificationSubject = PublishSubject.create();
+
+    public static final PublishSubject<VulkanDescriptor> vulkanSupportSubject = PublishSubject.create();
 }

@@ -1,6 +1,7 @@
 package com.mercury.platform.ui.components.panel.notification;
 
 
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.descriptor.ResponseButtonDescriptor;
 import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -145,7 +146,7 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
     }
 
     protected JLabel getHistoryButton() {
-        JLabel chatHistory = componentsFactory.getIconLabel("app/chat_history.png", 15);
+        JLabel chatHistory = componentsFactory.getIconLabel(IconConst.CHAT_HISTORY, 15);
         chatHistory.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         chatHistory.addMouseListener(new MouseAdapter() {
             Border prevBorder;
@@ -192,13 +193,16 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
                           String.valueOf(curCount);
         }
         if (!Objects.equals(curCountStr, "") && curIconPath != null) {
-            JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + curIconPath + ".png", 26);
+            JButton currencyButton = componentsFactory.getIconButton("currency/" + curIconPath + ".png", 24, AppThemeColor.TRANSPARENT, "Find in stashtab");
+            currencyButton.addActionListener((action) -> {
+                MercuryStoreCore.findInStashTab.onNext(curIconPath);
+            });
             JPanel curPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.MSG_HEADER);
             curPanel.setAlignmentX(SwingConstants.LEFT);
             JLabel countLabel = this.componentsFactory.getTextLabel(curCountStr, FontStyle.BOLD, 17f);
             countLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             curPanel.add(countLabel);
-            curPanel.add(currencyLabel);
+            curPanel.add(currencyButton);
             return curPanel;
         }
         return null;

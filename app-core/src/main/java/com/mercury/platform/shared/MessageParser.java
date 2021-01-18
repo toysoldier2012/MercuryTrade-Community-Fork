@@ -4,8 +4,10 @@ import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescr
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
+import com.sun.jna.Native;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,12 +19,16 @@ public class MessageParser {
     private final static String poeAppPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String poeAppBulkCurrenciesPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String poeCurrencyPattern = "^(.*\\s)?(.+): (.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*))$";
-    private final static String poeMapLiveRegex = "^(.*\\s)?(.+): (I'd like to exchange my (T\\d+:\\s\\([\\s\\S,]+) for your (T\\d+:\\s\\([\\S,\\s]+) in\\s+?(.+?)\\.)";
+    private final static String poeMapLiveRegex = "^(.*\\s)?(.+): (I'd like to exchange my (.+:\\s\\([\\s\\S,]+) for your (.+:\\s\\([\\S,\\s]+) in\\s+?(.+?)\\.)";
+    private final static String poeTradeKoreanRegex = "^(.*\\s)?(.+): 안녕하세요, 강탈\\(보관함 탭 \"(.*)\", 위치: 왼쪽 (\\d+), 상단 (\\d+)\\)에\\s+?([\\d\\.]*)\\s*(.*)\\s*\\(으\\)로 올려놓은\\s*(.*)s*(.*)\\(을\\)를\\s구매하고 싶습니다";
+    private final static String strTradeStashTabKorPa = "^(.*\\s)?(.+): (안녕하세요, (.+?)\\s*\\(보관함 탭 \"(.*)\", 위치: 왼쪽 (\\d+), 상단 (\\d+)\\)에\\s+?([\\d\\.]*)\\s*(.*)\\s*\\(으\\)로 올려놓은\\s*(.*)을\\(를\\) 구매하고 싶습니다\\s*(.*))$";
+    private final static String strBulkCurrenciesKorP = "^(.*\\s)?(.+): (안녕하세요, (.+?)\\s*에\\s+?올려놓은\\s*(.*)을\\(를\\) 제 ([\\d\\.]*)\\s*(.*)\\s*\\(으\\)로 구매하고 싶습니다\\s*(.*))$";
     private Pattern poeAppItemPattern;
     private Pattern poeTradeStashItemPattern;
     private Pattern poeTradeItemPattern;
     private Pattern poeTradeCurrencyPattern;
     private Pattern poeMapLivePattern;
+    private Pattern poeTradeKoreanPattern;
 
     public MessageParser() {
         this.poeAppItemPattern = Pattern.compile(poeAppPattern);
@@ -30,6 +36,7 @@ public class MessageParser {
         this.poeTradeItemPattern = Pattern.compile(poeTradePattern);
         this.poeTradeCurrencyPattern = Pattern.compile(poeCurrencyPattern);
         this.poeMapLivePattern = Pattern.compile(poeMapLiveRegex);
+        this.poeTradeKoreanPattern = Pattern.compile(poeTradeKoreanRegex);
     }
 
     public NotificationDescriptor parse(String fullMessage) {
@@ -120,15 +127,50 @@ public class MessageParser {
 			ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
 			tradeNotification.setWhisperNickname(poeTradeMapLiveMatcher.group(2));
 			tradeNotification.setSourceString(poeTradeMapLiveMatcher.group(3));
-			tradeNotification.setItemName(poeTradeMapLiveMatcher.group(5));
-			tradeNotification.setOffer(poeTradeMapLiveMatcher.group(4));
+
+            String itemsWanted = poeTradeMapLiveMatcher.group(5);
+            if (itemsWanted.contains(",")) {
+                String[] splitItemsWanted = itemsWanted.split(",");
+                tradeNotification.setItemsWanted(Arrays.asList(splitItemsWanted));
+            }
+            tradeNotification.setItemName(itemsWanted);
+
+
+            String itemsOffered = poeTradeMapLiveMatcher.group(4);
+            if (itemsOffered.contains(",")) {
+                String[] splitItemsWanted = itemsOffered.split(",");
+                tradeNotification.setItemsOffered(Arrays.asList(splitItemsWanted));
+            }
+            tradeNotification.setOffer(itemsOffered);
+
+
 			tradeNotification.setLeague(poeTradeMapLiveMatcher.group(6));
-			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
 			tradeNotification.setCurCount(0d);
-			tradeNotification.setCurrency("");
+			tradeNotification.setCurrency(itemsWanted);
 			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
 			return tradeNotification;
 		}
+        Matcher poeTradeKoreanMatcher = poeTradeKoreanPattern.matcher(fullMessage);
+		if (poeTradeKoreanMatcher.find()) {
+            ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
+            tradeNotification.setWhisperNickname(poeTradeKoreanMatcher.group(2));
+            tradeNotification.setSourceString(poeTradeKoreanMatcher.group(3));
+            tradeNotification.setItemName(poeTradeKoreanMatcher.group(8));
+            if (poeTradeKoreanMatcher.group(6) != null) {
+                tradeNotification.setCurCount(Double.parseDouble(poeTradeKoreanMatcher.group(6)));
+                tradeNotification.setCurrency(poeTradeKoreanMatcher.group(7));
+            } else {
+                tradeNotification.setCurCount(0d);
+                tradeNotification.setCurrency("???");
+            }
+            tradeNotification.setLeague(poeTradeKoreanMatcher.group(8));
+            tradeNotification.setTabName(poeTradeKoreanMatcher.group(3));
+            tradeNotification.setLeft(Integer.parseInt(poeTradeKoreanMatcher.group(4)));
+            tradeNotification.setTop(Integer.parseInt(poeTradeKoreanMatcher.group(5)));
+//            tradeNotification.setOffer(poeTradeKoreanMatcher.group(12));
+            tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+            return tradeNotification;
+        }
         return null;
     }
 }

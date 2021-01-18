@@ -2,6 +2,7 @@ package com.mercury.platform.ui.components.panel.taskbar;
 
 import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
@@ -15,6 +16,7 @@ import com.mercury.platform.ui.misc.TooltipConstants;
 import lombok.NonNull;
 
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -52,24 +54,24 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         JButton visibleMode = componentsFactory.getIconButton(
-                "app/visible-always-mode.png",
+                IconConst.VISIBLE_ALWAYS_MODE,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.VISIBLE_MODE);
         componentsFactory.setUpToggleCallbacks(visibleMode,
                 () -> {
-                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-dnd-mode.png", 24));
+                    visibleMode.setIcon(componentsFactory.getIcon(IconConst.VISIBLE_DND_MODE, 24));
                     controller.enableDND();
                 },
                 () -> {
-                    visibleMode.setIcon(componentsFactory.getIcon("app/visible-always-mode.png", 24));
+                    visibleMode.setIcon(componentsFactory.getIcon(IconConst.VISIBLE_ALWAYS_MODE, 24));
                     controller.disableDND();
                 },
                 true
         );
 
         JButton itemGrid = componentsFactory.getIconButton(
-                "app/item-grid-enable.png",
+                IconConst.ITEM_GRID_ENABLE,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.ITEM_GRID);
@@ -83,7 +85,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         this.toHideout = componentsFactory.getIconButton(
-                "app/hideout.png",
+                IconConst.HIDEOUT,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.HIDEOUT);
@@ -92,7 +94,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         this.showHelpIG = componentsFactory.getIconButton(
-                "app/helpIG_icon.png",
+                IconConst.HELP_IG,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.HELPIG);
@@ -101,7 +103,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         JButton adr = componentsFactory.getIconButton(
-                "app/overseer_icon.png",
+                IconConst.OVERSEER,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.ADR_SETTINGS);
@@ -113,7 +115,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         JButton chatFilter = componentsFactory.getIconButton(
-                "app/chat-filter.png",
+                IconConst.CHAT_FILTER,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.CHAT_FILTER);
@@ -122,7 +124,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         JButton historyButton = componentsFactory.getIconButton(
-                "app/history.png",
+                IconConst.HISTORY,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.HISTORY);
@@ -131,7 +133,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         JButton pinButton = componentsFactory.getIconButton(
-                "app/drag_and_drop.png",
+                IconConst.DRAG_AND_DROP,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.SETUP_FRAMES_LOCATION);
@@ -145,7 +147,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         JButton scaleButton = componentsFactory.getIconButton(
-                "app/scale-settings.png",
+                IconConst.SCALE_SETTINGS,
                 24,
                 AppThemeColor.FRAME,
                 TooltipConstants.SCALE_SETTINGS);
@@ -159,10 +161,10 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         JButton settingsButton = componentsFactory.getIconButton(
-                "app/settings.png",
+                IconConst.SETTINGS,
                 26,
                 AppThemeColor.FRAME,
-                "");
+                TooltipConstants.SETTINGS);
         settingsButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -176,10 +178,10 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         });
 
         JButton exitButton = componentsFactory.getIconButton(
-                "app/exit.png",
+                IconConst.EXIT,
                 24,
                 AppThemeColor.FRAME,
-                "");
+                TooltipConstants.EXIT);
         exitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

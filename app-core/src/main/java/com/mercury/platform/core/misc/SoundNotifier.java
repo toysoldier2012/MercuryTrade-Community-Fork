@@ -5,10 +5,10 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 public class SoundNotifier {
     private final Logger logger = LogManager.getLogger(SoundNotifier.class);
@@ -30,18 +30,31 @@ public class SoundNotifier {
     private void play(String wavPath, float db) {
         if (!dnd && db > -40) {
             ClassLoader classLoader = getClass().getClassLoader();
-            try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
-                Clip clip = AudioSystem.getClip();
-                clip.open(stream);
-                if (db != 0.0) {
-                    FloatControl gainControl =
-                            (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                    gainControl.setValue(db);
+            File file = new File("./resources/" + wavPath);
+            if (file.exists()) {
+                try (AudioInputStream stream = AudioSystem.getAudioInputStream(file)) {
+                    play(stream, db);
+                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                    logger.error("Cannot start playing wav file: ", e);
                 }
-                clip.start();
-            } catch (Exception e) {
-                logger.error("Cannot start playing wav file: ", e);
+            } else {
+                try (AudioInputStream stream = AudioSystem.getAudioInputStream(classLoader.getResource(wavPath))) {
+                    play(stream, db);
+                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                    logger.error("Cannot start playing wav file: ", e);
+                }
             }
         }
+    }
+
+    private void play(AudioInputStream stream, float db) throws LineUnavailableException, IOException {
+        Clip clip = AudioSystem.getClip();
+        clip.open(stream);
+        if (db != 0.0) {
+            FloatControl gainControl =
+                    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(db);
+        }
+        clip.start();
     }
 }

@@ -66,7 +66,10 @@ public class ComponentsFactory {
             ITALIC_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Italic.ttf"));
             REGULAR_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-Regular.ttf"));
             SMALLCAPS_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/Fontin-SmallCaps.ttf"));
-            DEFAULT_FONT = new Font("Tahoma", Font.BOLD, (int) (scale * 14));
+            DEFAULT_FONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("font/HayashiSerif.ttf"));
+            DEFAULT_FONT = DEFAULT_FONT.deriveFont(16f * scale);
+            GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            genv.registerFont(DEFAULT_FONT);
 
         } catch (Exception e) {
             log.error(e);
@@ -251,7 +254,7 @@ public class ComponentsFactory {
         try {
             BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
             icon = Scalr.resize(buttonIcon, (int) (scale * iconSize));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (icon != null) {
@@ -451,7 +454,7 @@ public class ComponentsFactory {
 
         JFormattedTextField field = new JFormattedTextField(formatter);
         field.setValue(value);
-        field.setFont(REGULAR_FONT.deriveFont(scale * 18));
+        field.setFont(DEFAULT_FONT.deriveFont(scale * 18));
         field.setFocusLostBehavior(JFormattedTextField.PERSIST);
         field.setForeground(AppThemeColor.TEXT_DEFAULT);
         field.setCaretColor(AppThemeColor.TEXT_DEFAULT);
@@ -570,7 +573,7 @@ public class ComponentsFactory {
 //        slider.setPaintLabels(true);
 //        slider.setUI(new WindowsSliderUI(slider));
         slider.setForeground(AppThemeColor.TEXT_DEFAULT);
-        slider.setFont(REGULAR_FONT.deriveFont(15f));
+        slider.setFont(DEFAULT_FONT.deriveFont(15f));
         slider.setRequestFocusEnabled(false);
         slider.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
@@ -668,7 +671,7 @@ public class ComponentsFactory {
         area.setLineWrap(true);
         area.setBackground(AppThemeColor.FRAME);
         area.setBorder(null);
-        area.setFont(REGULAR_FONT.deriveFont(scale * 16f));
+        area.setFont(DEFAULT_FONT.deriveFont(scale * 16f));
         area.setForeground(AppThemeColor.TEXT_DEFAULT);
         return area;
     }
@@ -679,6 +682,16 @@ public class ComponentsFactory {
         area.setAlignmentX(SwingConstants.LEFT);
         area.setAlignmentY(SwingConstants.CENTER);
         return area;
+    }
+
+    public JPanel getSeparator() {
+        JPanel panel = getTransparentPanel();
+        JTextPane textPane = new JTextPane();
+        textPane.setBackground(AppThemeColor.FRAME);
+        textPane.setContentType("text/html");
+        textPane.setText("<hr>");
+        panel.add(textPane);
+        return panel;
     }
 
     public float getScale() {
@@ -777,21 +790,21 @@ public class ComponentsFactory {
         JPopupMenu contextMenu = new JPopupMenu();
         contextMenu.setBackground(AppThemeColor.FRAME);
         contextMenu.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
-        contextMenu.setFont(REGULAR_FONT.deriveFont(scale * 16f));
+        contextMenu.setFont(DEFAULT_FONT.deriveFont(scale * 16f));
         contextMenu.setForeground(AppThemeColor.TEXT_DEFAULT);
         return contextMenu;
     }
 
     public JMenuItem getMenuItem(String text) {
         JMenuItem menuItem = new JMenuItem(text);
-        menuItem.setFont(REGULAR_FONT.deriveFont(scale * 16f));
+        menuItem.setFont(DEFAULT_FONT.deriveFont(scale * 16f));
         menuItem.setForeground(AppThemeColor.TEXT_DEFAULT);
         return menuItem;
     }
 
     public JMenuItem getMenu(String text) {
         JMenu menu = new JMenu(text);
-        menu.setFont(REGULAR_FONT.deriveFont(scale * 16f));
+        menu.setFont(DEFAULT_FONT.deriveFont(scale * 16f));
         menu.setForeground(AppThemeColor.TEXT_DEFAULT);
         return menu;
     }

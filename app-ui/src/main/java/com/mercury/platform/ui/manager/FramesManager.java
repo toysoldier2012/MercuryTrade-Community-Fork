@@ -2,7 +2,10 @@ package com.mercury.platform.ui.manager;
 
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.IconConst;
+import com.mercury.platform.shared.VulkanManager;
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.configration.impl.FramesConfigurationServiceImpl;
 import com.mercury.platform.shared.config.descriptor.ApplicationDescriptor;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -23,22 +26,32 @@ import com.mercury.platform.ui.manager.routing.SettingsRoutManager;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
+import com.sun.jna.Native;
+import com.sun.jna.platform.WindowUtils;
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FramesManager implements AsSubscriber {
+    private final static Logger logger = LogManager.getLogger(FramesManager.class);
     public static FramesManager INSTANCE = FramesManagerHolder.HOLDER_INSTANCE;
     private Map<Class, AbstractOverlaidFrame> framesMap;
     private SetUpLocationCommander locationCommander;
     private SetUpScaleCommander scaleCommander;
     private AdrManager adrManager;
     private TrayIcon trayIcon;
+
     private FramesManager() {
         this.framesMap = new HashMap<>();
         this.locationCommander = new SetUpLocationCommander();
@@ -47,26 +60,29 @@ public class FramesManager implements AsSubscriber {
     }
 
     public void start() {
-        this.createTrayIcon();
+        Thread baseInitThread = new Thread(() -> {
+            this.createTrayIcon();
 
-        AbstractOverlaidFrame incMessageFrame = new NotificationFrame();
-        this.framesMap.put(NotificationFrame.class, incMessageFrame);
+            AbstractOverlaidFrame incMessageFrame = new NotificationFrame();
+            this.framesMap.put(NotificationFrame.class, incMessageFrame);
+            AbstractOverlaidFrame itemsMeshFrame = new ItemsGridFrame();
+            this.framesMap.put(ItemsGridFrame.class, itemsMeshFrame);
+            this.locationCommander.addFrame((AbstractMovableComponentFrame) incMessageFrame);
+            this.locationCommander.addFrame((AbstractMovableComponentFrame) itemsMeshFrame);
+
+            this.scaleCommander.addFrame((AbstractScalableComponentFrame) incMessageFrame);
+            this.scaleCommander.addFrame((AbstractScalableComponentFrame) itemsMeshFrame);
+        });
+        baseInitThread.start();
+
         AbstractOverlaidFrame taskBarFrame = new TaskBarFrame();
-        AbstractOverlaidFrame itemsMeshFrame = new ItemsGridFrame();
-        this.framesMap.put(ItemsGridFrame.class, itemsMeshFrame);
-        this.locationCommander.addFrame((AbstractMovableComponentFrame) incMessageFrame);
         this.locationCommander.addFrame((AbstractMovableComponentFrame) taskBarFrame);
-        this.locationCommander.addFrame((AbstractMovableComponentFrame) itemsMeshFrame);
-
-        this.scaleCommander.addFrame((AbstractScalableComponentFrame) incMessageFrame);
         this.scaleCommander.addFrame((AbstractScalableComponentFrame) taskBarFrame);
-        this.scaleCommander.addFrame((AbstractScalableComponentFrame) itemsMeshFrame);
 
         NotesLoader notesLoader = new NotesLoader();
 
         List<Note> notesOnFirstStart = notesLoader.getNotesOnFirstStart();
         this.framesMap.put(NotesFrame.class, new NotesFrame(notesOnFirstStart, NotesFrame.NotesType.INFO));
-
         this.framesMap.put(HistoryFrame.class, new HistoryFrame());
         SettingsFrame settingsFrame = new SettingsFrame();
         this.framesMap.put(SettingsFrame.class, settingsFrame);
@@ -83,22 +99,62 @@ public class FramesManager implements AsSubscriber {
         this.framesMap.put(AlertFrame.class, new AlertFrame());
         this.framesMap.put(HelpIGFrame.class, new HelpIGFrame());
 
-        this.framesMap.forEach((k, v) -> v.init());
-
-        ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
-        this.framesMap.forEach((k, frame) -> {
-            if (frame instanceof AbstractComponentFrame) {
-                if (config.getFadeTime() > 0) {
-                    ((AbstractComponentFrame) frame).enableHideEffect(config.getFadeTime(), config.getMinOpacity(), config.getMaxOpacity());
-                } else {
-                    ((AbstractComponentFrame) frame).disableHideEffect();
-                    frame.setOpacity(config.getMaxOpacity() / 100f);
+        Thread framesMapInit = new Thread(() -> {
+            List<Thread> loopThread = new ArrayList<>();
+            this.framesMap.forEach((k, v) -> {
+                loopThread.add(new Thread(v::init));
+            });
+            loopThread.forEach(Thread::start);
+            loopThread.forEach((thread) -> {
+                try {
+                    thread.join();
+                } catch (Exception e) {
+                    logger.error(e);
                 }
-            }
+            });
         });
-        new SettingsRoutManager(settingsFrame);
+        framesMapInit.start();
+        ApplicationDescriptor config = Configuration.get().applicationConfiguration().get();
+        Thread framesMap = new Thread(() -> {
+            List<Thread> loopThread = new ArrayList<>();
+            this.framesMap.forEach((k, frame) -> {
+                loopThread.add(new Thread(() -> {
+                    if (frame instanceof AbstractComponentFrame) {
+                        if (config.getFadeTime() > 0) {
+                            ((AbstractComponentFrame) frame).enableHideEffect(config.getFadeTime(), config.getMinOpacity(), config.getMaxOpacity());
+                        } else {
+                            ((AbstractComponentFrame) frame).disableHideEffect();
+                            frame.setOpacity(config.getMaxOpacity() / 100f);
+                        }
+                    }
+                }));
+            });
+            loopThread.forEach(Thread::start);
+            loopThread.forEach((thread) -> {
+                try {
+                    thread.join();
+                } catch (Exception e) {
+                    logger.error(e);
+                }
+            });
+        });
+        framesMap.start();
+        Thread routManager = new Thread(() -> {
+            new SettingsRoutManager(settingsFrame);
+        });
+        routManager.start();
         this.subscribe();
         this.adrManager.load();
+
+        try {
+            baseInitThread.join();
+            framesMapInit.join();
+            framesMap.join();
+            routManager.join();
+
+        } catch (InterruptedException e) {
+            logger.error(e);
+        }
         MercuryStoreCore.uiLoadedSubject.onNext(true);
     }
 
@@ -183,18 +239,54 @@ public class FramesManager implements AsSubscriber {
 
     public void restoreDefaultLocation() {
         this.framesMap.forEach((k, v) -> {
-            FrameDescriptor settings = Configuration.get().framesConfiguration().get(k.getSimpleName());
-            if (!v.getClass().equals(ItemsGridFrame.class) && settings != null) {
-                v.setLocation(settings.getFrameLocation());
-                if (v instanceof AbstractMovableComponentFrame) {
-                    ((AbstractMovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
+            FramesConfigurationServiceImpl service = (FramesConfigurationServiceImpl) Configuration.get().framesConfiguration();
+            if (service != null) {
+                FrameDescriptor settings = service.getDefault().get(k.getSimpleName());
+                if (settings != null) {
+                    v.setLocation(settings.getFrameLocation());
+                    if (v instanceof AbstractMovableComponentFrame) {
+                        ((AbstractMovableComponentFrame) v).onLocationChange(settings.getFrameLocation());
+                    }
                 }
             }
         });
     }
 
-    private void createTrayIcon() {
+    public void setLocationToCurrentMonitor() {
+        this.framesMap.forEach((k, v) -> {
+            if (v.getClass().equals(ItemsGridFrame.class)) {
+                Point location = v.getLocation();
+                System.out.println(location);
+            }
+            Point frameLocation = v.getLocation();
+            frameLocation.x += getWindowLeftLocation();
+            v.setLocation(frameLocation);
+            if (v instanceof AbstractMovableComponentFrame) {
+                ((AbstractMovableComponentFrame) v).onLocationChange(frameLocation);
+            }
+        });
 
+        this.adrManager.getFrames().forEach((v) -> {
+            Point frameLocation = v.getLocation();
+            frameLocation.x += getWindowLeftLocation();
+            v.setLocation(frameLocation);
+        });
+    }
+
+
+    private int getWindowLeftLocation() {
+        return WindowUtils.getAllWindows(false).stream().filter(window -> {
+            char[] className = new char[512];
+            User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+            return Native.toString(className).equals("POEWindowClass");
+        }).map(it -> {
+            WinDef.RECT rect = new WinDef.RECT();
+            User32.INSTANCE.GetWindowRect(it.getHWND(), rect);
+            return rect.left;
+        }).findAny().orElse(0);
+    }
+
+    private void createTrayIcon() {
         try {
             PopupMenu trayMenu = new PopupMenu();
             MenuItem exit = new MenuItem("Exit");

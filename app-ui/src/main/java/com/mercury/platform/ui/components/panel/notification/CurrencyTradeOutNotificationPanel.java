@@ -5,6 +5,7 @@ import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescr
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.mercury.platform.ui.misc.Ratio;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -72,15 +73,19 @@ public class CurrencyTradeOutNotificationPanel extends TradeOutNotificationPanel
     private JPanel getCurrencyRatePanel() {
         Double currForSaleCount = this.data.getCurrForSaleCount();
         Double curCount = this.data.getCurCount();
-        double rate = curCount / currForSaleCount;
-        DecimalFormat decimalFormat = new DecimalFormat("#.####");
+
         JPanel ratePanel = componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.FRAME);
-        ratePanel.add(componentsFactory.
-                getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_DEFAULT, TextAlignment.CENTER, 18f, null, "("), BorderLayout.LINE_START);
+        ratePanel.add(componentsFactory.getTextLabel(FontStyle.BOLD,
+                                                     AppThemeColor.TEXT_DEFAULT,
+                                                     TextAlignment.CENTER,
+                                                     18f,
+                                                     null,
+                                                     "( " + Ratio.getRatio(currForSaleCount, curCount)),
+                      BorderLayout.LINE_START);
         JLabel currencyLabel = componentsFactory.getIconLabel("currency/" + this.data.getCurrency() + ".png", 26);
         currencyLabel.setFont(this.componentsFactory.getFont(FontStyle.BOLD, 18f));
         currencyLabel.setForeground(AppThemeColor.TEXT_DEFAULT);
-        currencyLabel.setText(decimalFormat.format(rate) + ")");
+        currencyLabel.setText(")");
         currencyLabel.setBorder(null);
         ratePanel.add(currencyLabel, BorderLayout.CENTER);
         return ratePanel;
