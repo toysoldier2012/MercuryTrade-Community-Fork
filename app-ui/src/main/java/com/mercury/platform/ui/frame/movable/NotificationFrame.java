@@ -66,7 +66,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
         this.buffer = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.TRANSPARENT);
-        this.buffer.setPreferredSize(new Dimension(8, 0));
+        this.buffer.setPreferredSize(new Dimension(8, BUFFER_DEFAULT_HEIGHT));
         this.setLocation(new Point(this.getLocation().x, this.getLocation().y - BUFFER_DEFAULT_HEIGHT));
 
         this.expandPanel = this.getExpandPanel();
@@ -232,7 +232,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
             this.root.add(this.stubExpandPanel, BorderLayout.LINE_START);
         }
         if (this.notificationPanels.size() == 0) {
-            this.buffer.setPreferredSize(new Dimension(0, 0));
+            this.buffer.setPreferredSize(new Dimension(10, BUFFER_DEFAULT_HEIGHT));
         }
         this.pack();
         this.repaint();
@@ -261,7 +261,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
 
     public void changeBufferSize(int delta) {
         if (this.flowDirections.equals(FlowDirections.UPWARDS)) {
-            this.buffer.setPreferredSize(new Dimension(0, 0));
+            this.buffer.setPreferredSize(new Dimension(10, this.buffer.getPreferredSize().height + delta));
         }
     }
 

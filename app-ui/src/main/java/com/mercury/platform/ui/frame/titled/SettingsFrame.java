@@ -17,6 +17,7 @@ import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -73,8 +74,10 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
             this.root.removeAll();
         }
         this.root.add(panel, BorderLayout.CENTER);
-        this.getContentPane().setBackground(AppThemeColor.ADR_BG); //TODO: Only for linux -> check on windows
-        this.setBackground(AppThemeColor.ADR_BG); //TODO: only for linux -> check on windows
+        if (!SystemUtils.IS_OS_WINDOWS) {
+            this.getContentPane().setBackground(AppThemeColor.ADR_BG); //TODO: Only for linux -> check on windows
+            this.setBackground(AppThemeColor.ADR_BG); //TODO: only for linux -> check on windows
+        }
         this.currentPanel = panel;
         this.pack();
         this.repaint();
