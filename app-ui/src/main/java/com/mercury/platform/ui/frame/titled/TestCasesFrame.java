@@ -4,6 +4,8 @@ import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.misc.AppThemeColor;
+import com.sun.awt.AWTUtilities;
+import com.sun.jna.platform.WindowUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,6 +57,17 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         buttonColumn.gridy++;
         JLabel textLabel = componentsFactory.getTextLabel("Random incoming item message");
         testPanel.add(textLabel, titleColumn);
+        titleColumn.gridy++;
+
+        JButton button0 = componentsFactory.getBorderedButton("Click");
+        button0.addActionListener(action -> {
+            clickThroughWindow();
+        });
+        ;
+        testPanel.add(button0, buttonColumn);
+        buttonColumn.gridy++;
+        JLabel textLabel0 = componentsFactory.getTextLabel("Transparent clickthrough window test");
+        testPanel.add(textLabel0, titleColumn);
         titleColumn.gridy++;
 
         JButton button1 = componentsFactory.getBorderedButton("Click");
@@ -132,6 +145,25 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
 
         testPanel.setBackground(AppThemeColor.TRANSPARENT);
         return testPanel;
+    }
+
+    private void clickThroughWindow() {
+        final JFrame parent = new JFrame();
+//        parent.setOpacity(0.5f);
+        System.setProperty("sun.java2d.noddraw", "true");
+        parent.setAlwaysOnTop(true);
+        parent.setUndecorated(true);
+        parent.setOpacity(0.3f);
+        parent.setLayout(new BorderLayout(4, 4));
+        parent.setPreferredSize(new Dimension(400, 400));
+        parent.setSize(new Dimension(400, 400));
+        parent.setLocation(250, 200);
+
+        parent.pack();
+        parent.setVisible(true);
+
+        AWTUtilities.setWindowOpaque(parent, false);
+
     }
 
     @Override

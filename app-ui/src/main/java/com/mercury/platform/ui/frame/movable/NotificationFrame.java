@@ -20,6 +20,8 @@ import com.mercury.platform.ui.components.panel.notification.factory.Notificatio
 import com.mercury.platform.ui.frame.titled.TestEngine;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
+import com.sun.awt.AWTUtilities;
+import org.apache.commons.lang3.SystemUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +31,8 @@ import java.util.Map;
 
 
 public class NotificationFrame extends AbstractMovableComponentFrame {
-    private static int BUFFER_DEFAULT_HEIGHT = 1500;
+    private static int BUFFER_DEFAULT_HEIGHT = SystemUtils.IS_OS_WINDOWS ? 1500 : 0;
+    private static int BUFFER_DEFAULT_WIDTH = SystemUtils.IS_OS_WINDOWS ? 10 : 0;
     private List<NotificationPanel> notificationPanels;
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
     private NotificationPanelFactory providersFactory;
@@ -61,12 +64,15 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     public void onViewInit() {
         this.getRootPane().setBorder(null);
         this.setBackground(AppThemeColor.TRANSPARENT);
+//        this.setOpacity(0.2f);
+//        this.setUndecorated(true);
+//        AWTUtilities.setWindowOpaque(this, false);
         this.container = new JPanel();
         this.container.setBackground(AppThemeColor.TRANSPARENT);
         this.container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
         this.buffer = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.TRANSPARENT);
-        this.buffer.setPreferredSize(new Dimension(8, BUFFER_DEFAULT_HEIGHT));
+        this.buffer.setPreferredSize(new Dimension(BUFFER_DEFAULT_WIDTH, BUFFER_DEFAULT_HEIGHT));
         this.setLocation(new Point(this.getLocation().x, this.getLocation().y - BUFFER_DEFAULT_HEIGHT));
 
         this.expandPanel = this.getExpandPanel();
@@ -77,7 +83,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.root.add(this.container, BorderLayout.CENTER);
         this.add(this.buffer, BorderLayout.CENTER);
         this.add(root, BorderLayout.PAGE_END);
-        this.setVisible(true);
+        this.setVisible(false);
         this.pack();
     }
 
@@ -179,6 +185,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
 
     private void addNotification(NotificationPanel notificationPanel) {
         this.notificationPanels.add(notificationPanel);
+        this.setVisible(true);
         if (this.flowDirections.equals(FlowDirections.UPWARDS)) {
             this.container.add(
                     this.componentsFactory.wrapToSlide(
@@ -232,7 +239,10 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
             this.root.add(this.stubExpandPanel, BorderLayout.LINE_START);
         }
         if (this.notificationPanels.size() == 0) {
-            this.buffer.setPreferredSize(new Dimension(10, BUFFER_DEFAULT_HEIGHT));
+            this.buffer.setPreferredSize(new Dimension(BUFFER_DEFAULT_WIDTH, BUFFER_DEFAULT_HEIGHT));
+            this.setVisible(false);
+        } else {
+            this.setVisible(true);
         }
         this.pack();
         this.repaint();
@@ -261,7 +271,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
 
     public void changeBufferSize(int delta) {
         if (this.flowDirections.equals(FlowDirections.UPWARDS)) {
-            this.buffer.setPreferredSize(new Dimension(10, this.buffer.getPreferredSize().height + delta));
+            this.buffer.setPreferredSize(new Dimension(BUFFER_DEFAULT_WIDTH, this.buffer.getPreferredSize().height + delta));
         }
     }
 
@@ -371,6 +381,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
             this.expanded = !this.expanded;
             this.pack();
             this.repaint();
+            this.revalidate();
         });
         expandButton.setAlignmentY(SwingConstants.CENTER);
         root.add(expandButton, BorderLayout.CENTER);

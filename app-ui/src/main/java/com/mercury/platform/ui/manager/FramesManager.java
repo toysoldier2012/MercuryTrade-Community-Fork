@@ -121,7 +121,9 @@ public class FramesManager implements AsSubscriber {
                 loopThread.add(new Thread(() -> {
                     if (frame instanceof AbstractComponentFrame) {
                         if (config.getFadeTime() > 0) {
-                            ((AbstractComponentFrame) frame).enableHideEffect(config.getFadeTime(), config.getMinOpacity(), config.getMaxOpacity());
+                            ((AbstractComponentFrame) frame).enableHideEffect(config.getFadeTime(),
+                                                                              config.getMinOpacity(),
+                                                                              config.getMaxOpacity());
                         } else {
                             ((AbstractComponentFrame) frame).disableHideEffect();
                             frame.setOpacity(config.getMaxOpacity() / 100f);
@@ -169,7 +171,10 @@ public class FramesManager implements AsSubscriber {
             patchNotesFrame.showComponent();
         });
         MercuryStoreUI.packSubject.subscribe(className -> this.framesMap.get(className).pack());
-        MercuryStoreUI.repaintSubject.subscribe(className -> this.framesMap.get(className).repaint());
+        MercuryStoreUI.repaintSubject.subscribe(className -> {
+            this.framesMap.get(className).repaint();
+            this.framesMap.get(className).revalidate();
+        });
     }
 
     public void exit() {
@@ -239,7 +244,8 @@ public class FramesManager implements AsSubscriber {
 
     public void restoreDefaultLocation() {
         this.framesMap.forEach((k, v) -> {
-            FramesConfigurationServiceImpl service = (FramesConfigurationServiceImpl) Configuration.get().framesConfiguration();
+            FramesConfigurationServiceImpl service = (FramesConfigurationServiceImpl) Configuration.get()
+                                                                                                   .framesConfiguration();
             if (service != null) {
                 FrameDescriptor settings = service.getDefault().get(k.getSimpleName());
                 if (settings != null) {

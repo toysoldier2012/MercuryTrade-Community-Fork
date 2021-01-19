@@ -75,8 +75,8 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         }
         this.root.add(panel, BorderLayout.CENTER);
         if (!SystemUtils.IS_OS_WINDOWS) {
-            this.getContentPane().setBackground(AppThemeColor.ADR_BG); //TODO: Only for linux -> check on windows
-            this.setBackground(AppThemeColor.ADR_BG); //TODO: only for linux -> check on windows
+            this.getContentPane().setBackground(AppThemeColor.SETTINGS_BG);
+            this.setBackground(AppThemeColor.SETTINGS_BG);
         }
         this.currentPanel = panel;
         this.pack();
