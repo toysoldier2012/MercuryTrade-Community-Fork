@@ -4,10 +4,8 @@ import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescr
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
-import com.sun.jna.Native;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,9 +86,12 @@ public class MessageParser {
         if (poeTradeCurrencyMatcher.find()) {
             CurrencyTradeNotificationDescriptor tradeNotification = new CurrencyTradeNotificationDescriptor();
 
-            if (poeTradeCurrencyMatcher.group(6).contains("&") || poeTradeCurrencyMatcher.group(6).contains(",")) {  //todo this shit for bulk map
+            if (poeTradeCurrencyMatcher.group(6).contains("&") || poeTradeCurrencyMatcher.group(6)
+                                                                                         .contains(",")) {  //todo this shit for bulk map
                 String bulkItems = poeTradeCurrencyMatcher.group(4) + " " + poeTradeCurrencyMatcher.group(6);
-                tradeNotification.setItems(Arrays.stream(StringUtils.split(bulkItems, ",&")).map(String::trim).collect(Collectors.toList()));
+                tradeNotification.setItems(Arrays.stream(StringUtils.split(bulkItems, ",&"))
+                                                 .map(String::trim)
+                                                 .collect(Collectors.toList()));
             } else {
                 tradeNotification.setCurrForSaleCount(Double.parseDouble(poeTradeCurrencyMatcher.group(4)));
                 tradeNotification.setCurrForSaleTitle(poeTradeCurrencyMatcher.group(6));
@@ -123,10 +124,10 @@ public class MessageParser {
             return tradeNotification;
         }
         Matcher poeTradeMapLiveMatcher = poeMapLivePattern.matcher(fullMessage);
-		if (poeTradeMapLiveMatcher.find()) {
-			ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
-			tradeNotification.setWhisperNickname(poeTradeMapLiveMatcher.group(2));
-			tradeNotification.setSourceString(poeTradeMapLiveMatcher.group(3));
+        if (poeTradeMapLiveMatcher.find()) {
+            ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
+            tradeNotification.setWhisperNickname(poeTradeMapLiveMatcher.group(2));
+            tradeNotification.setSourceString(poeTradeMapLiveMatcher.group(3));
 
             String itemsWanted = poeTradeMapLiveMatcher.group(5);
             if (itemsWanted.contains(",")) {
@@ -144,14 +145,14 @@ public class MessageParser {
             tradeNotification.setOffer(itemsOffered);
 
 
-			tradeNotification.setLeague(poeTradeMapLiveMatcher.group(6));
-			tradeNotification.setCurCount(0d);
-			tradeNotification.setCurrency(itemsWanted);
-			tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
-			return tradeNotification;
-		}
+            tradeNotification.setLeague(poeTradeMapLiveMatcher.group(6));
+            tradeNotification.setCurCount(0d);
+            tradeNotification.setCurrency(itemsWanted);
+            tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+            return tradeNotification;
+        }
         Matcher poeTradeKoreanMatcher = poeTradeKoreanPattern.matcher(fullMessage);
-		if (poeTradeKoreanMatcher.find()) {
+        if (poeTradeKoreanMatcher.find()) {
             ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
             tradeNotification.setWhisperNickname(poeTradeKoreanMatcher.group(2));
             tradeNotification.setSourceString(poeTradeKoreanMatcher.group(3));

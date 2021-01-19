@@ -31,6 +31,7 @@ import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -281,19 +282,23 @@ public class FramesManager implements AsSubscriber {
 
 
     private int getWindowLeftLocation() {
-        return WindowUtils.getAllWindows(false).stream().filter(window -> {
-            char[] className = new char[512];
-            User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
-            return Native.toString(className).equals("POEWindowClass");
-        }).map(it -> {
-            WinDef.RECT rect = new WinDef.RECT();
-            User32.INSTANCE.GetWindowRect(it.getHWND(), rect);
-            return rect.left;
-        }).findAny().orElse(0);
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return WindowUtils.getAllWindows(false).stream().filter(window -> {
+                char[] className = new char[512];
+                User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+                return Native.toString(className).equals("POEWindowClass");
+            }).map(it -> {
+                WinDef.RECT rect = new WinDef.RECT();
+                User32.INSTANCE.GetWindowRect(it.getHWND(), rect);
+                return rect.left;
+            }).findAny().orElse(0);
+        } else {
+            return 0;
+        }
     }
 
     private void createTrayIcon() {
-        try {
+        if (SystemUtils.IS_OS_WINDOWS) {
             PopupMenu trayMenu = new PopupMenu();
             MenuItem exit = new MenuItem("Exit");
             exit.addActionListener(e -> {
@@ -336,8 +341,6 @@ public class FramesManager implements AsSubscriber {
             } catch (AWTException e) {
                 e.printStackTrace();
             }
-        } catch (Exception e) {
-            //Hide error for linux/mac system
         }
     }
 

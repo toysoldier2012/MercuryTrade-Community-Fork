@@ -12,6 +12,7 @@ import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
 import lombok.Getter;
+import org.apache.commons.lang3.SystemUtils;
 import rx.Subscription;
 
 import java.awt.*;
@@ -66,12 +67,14 @@ public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends
     }
 
     private void setTransparent(Component w) {
-        this.componentHwnd = getHWnd(w);
-        this.settingWl = User32.INSTANCE.GetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE);
-        int transparentWl = User32.INSTANCE.GetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE) |
-                WinUser.WS_EX_LAYERED |
-                WinUser.WS_EX_TRANSPARENT;
-        User32.INSTANCE.SetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE, transparentWl);
+        if (SystemUtils.IS_OS_WINDOWS) {
+            this.componentHwnd = getHWnd(w);
+            this.settingWl = User32.INSTANCE.GetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE);
+            int transparentWl = User32.INSTANCE.GetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE) |
+                                WinUser.WS_EX_LAYERED |
+                                WinUser.WS_EX_TRANSPARENT;
+            User32.INSTANCE.SetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE, transparentWl);
+        }
     }
 
     @Override
@@ -83,7 +86,9 @@ public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends
     public abstract void setPanel(AdrComponentPanel panel);
 
     public void enableSettings() {
-        User32.INSTANCE.SetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE, settingWl);
+        if (SystemUtils.IS_OS_WINDOWS) {
+            User32.INSTANCE.SetWindowLong(componentHwnd, WinUser.GWL_EXSTYLE, settingWl);
+        }
     }
 
     public void disableSettings() {

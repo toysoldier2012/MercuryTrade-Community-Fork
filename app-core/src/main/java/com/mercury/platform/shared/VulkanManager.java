@@ -9,6 +9,8 @@ import com.sun.jna.platform.DesktopWindow;
 import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
+import org.apache.commons.lang3.SystemUtils;
+import sun.plugin2.util.SystemUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,20 +48,25 @@ public class VulkanManager {
 
     private boolean setVulkanSupport() {
         if (this.vulkanSnapshot.isVulkanSupportEnabled()) {
-            HWND poeWindowClass = WindowUtils.getAllWindows(false).stream().filter(window -> {
-                char[] className = new char[512];
-                User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
-                return Native.toString(className).equals("POEWindowClass");
-            }).map(DesktopWindow::getHWND).findFirst().orElse(null);
-            if (poeWindowClass == null) {
+            if (SystemUtils.IS_OS_WINDOWS) {
+
+                HWND poeWindowClass = WindowUtils.getAllWindows(false).stream().filter(window -> {
+                    char[] className = new char[512];
+                    User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+                    return Native.toString(className).equals("POEWindowClass");
+                }).map(DesktopWindow::getHWND).findFirst().orElse(null);
+                if (poeWindowClass == null) {
+                    return false;
+                }
+                int windowLong = User32.INSTANCE.GetWindowLong(poeWindowClass, -16);
+                if (windowLong == WS_VISIBLE) {
+                    return true;
+                }
+                User32.INSTANCE.SetWindowLong(poeWindowClass, -16, WS_VISIBLE);
+                return true;
+            } else {
                 return false;
             }
-            int windowLong = User32.INSTANCE.GetWindowLong(poeWindowClass, -16);
-            if (windowLong == WS_VISIBLE) {
-                return true;
-            }
-            User32.INSTANCE.SetWindowLong(poeWindowClass, -16, WS_VISIBLE);
-            return true;
         }
         return false;
     }

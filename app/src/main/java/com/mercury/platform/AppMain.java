@@ -8,13 +8,16 @@ import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.frame.other.MercuryLoadingFrame;
 import com.mercury.platform.ui.frame.titled.GamePathChooser;
+import com.mercury.platform.ui.frame.titled.TestCasesFrame;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.sun.jna.Native;
 import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sun.plugin2.util.SystemUtil;
 
 import java.io.File;
 
@@ -73,6 +76,7 @@ public class AppMain {
         } catch (InterruptedException ex) {
             logger.error(ex);
         }
+        FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
     }
 
     private static boolean isValidGamePath(String gamePath) {
@@ -81,7 +85,7 @@ public class AppMain {
     }
 
     private static String getGamePath() {
-        try {
+        if (SystemUtils.IS_OS_WINDOWS) {
             return WindowUtils.getAllWindows(false).stream().filter(window -> {
                 char[] className = new char[512];
                 User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
@@ -90,7 +94,7 @@ public class AppMain {
                 String filePath = it.getFilePath();
                 return StringUtils.substringBeforeLast(filePath, "\\");
             }).findAny().orElse(null);
-        } catch (Exception e) {
+        } else {
             return null;
         }
     }
