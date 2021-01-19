@@ -9,6 +9,7 @@ import com.mercury.platform.shared.config.descriptor.*;
 import com.mercury.platform.shared.config.json.JSONHelper;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -117,15 +118,15 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
         try {
             File configFile = new File(dataSource.getConfigurationFilePath());
             File configFolder = new File(dataSource.getConfigurationPath());
-            File iconFolder = new File(dataSource.getConfigurationPath() + "\\icons");
+            File iconFolder = new File(dataSource.getConfigurationPath() +  (SystemUtils.IS_OS_WINDOWS ? "\\" : "/") + "icons");
             if (!configFolder.exists() || !configFile.exists() || !iconFolder.exists()) {
-                new File(dataSource.getConfigurationPath() + "\\temp").mkdir();
-                new File(dataSource.getConfigurationPath() + "\\icons").mkdir();
+                new File(dataSource.getConfigurationPath() +  (SystemUtils.IS_OS_WINDOWS ? "\\" : "/") + "temp").mkdir();
+                new File(dataSource.getConfigurationPath() +  (SystemUtils.IS_OS_WINDOWS ? "\\" : "/") + "icons").mkdir();
                 new File(dataSource.getConfigurationFilePath()).createNewFile();
 
                 ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
                 InputStream resourceAsStream = classLoader.getResourceAsStream("app/local-updater.jar");
-                File dest = new File(dataSource.getConfigurationPath() + "\\local-updater.jar");
+                File dest = new File(dataSource.getConfigurationPath() + (SystemUtils.IS_OS_WINDOWS ? "\\" : "/") + "local-updater.jar");
                 FileUtils.copyInputStreamToFile(resourceAsStream, dest);
             }
             this.profileDescriptors = this.jsonHelper.readArrayData(new TypeToken<List<ProfileDescriptor>>() {

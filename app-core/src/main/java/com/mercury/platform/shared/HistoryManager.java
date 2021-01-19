@@ -1,6 +1,7 @@
 package com.mercury.platform.shared;
 
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -15,7 +16,7 @@ import java.util.Arrays;
 
 public class HistoryManager {
     public static HistoryManager INSTANCE = HistoryManager.HistoryManagerHolder.HOLDER_INSTANCE;
-    private final String HISTORY_FILE = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\history.json";
+    private final String HISTORY_FILE = SystemUtils.IS_OS_WINDOWS ? System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\history.json" : "AppData/Local/MercuryTrade/history.json" ;
     private Logger logger = LogManager.getLogger(HistoryManager.class);
     private String[] messages;
     private int curIndex = 0;

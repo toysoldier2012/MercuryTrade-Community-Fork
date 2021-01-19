@@ -1,7 +1,5 @@
 package com.mercury.platform.shared;
 
-import com.mercury.platform.shared.config.Configuration;
-import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.VulkanDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.sun.jna.Native;
@@ -10,7 +8,6 @@ import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import org.apache.commons.lang3.SystemUtils;
-import sun.plugin2.util.SystemUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;

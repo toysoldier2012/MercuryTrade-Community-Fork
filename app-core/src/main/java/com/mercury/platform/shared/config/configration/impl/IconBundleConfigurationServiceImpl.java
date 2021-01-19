@@ -6,6 +6,7 @@ import com.mercury.platform.shared.config.descriptor.ProfileDescriptor;
 import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -17,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class IconBundleConfigurationServiceImpl extends BaseConfigurationService<List<String>> implements IconBundleConfigurationService {
-    private static final String ICONS_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\icons\\";
+    private static final String ICONS_PATH = SystemUtils.IS_OS_WINDOWS ? System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\icons" : "AppData/Local/MercuryTrade/icons";
     private Map<String, URL> iconBundle = new HashMap<>();
 
     public IconBundleConfigurationServiceImpl(ProfileDescriptor selectedProfile) {

@@ -17,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.plugin2.util.SystemUtil;
 
 import java.io.File;
 
@@ -25,16 +24,12 @@ public class AppMain {
 
     private static final Logger logger = LogManager.getLogger(AppMain.class);
     private static boolean shouldLogPerformance = false;
-    private static String MERCURY_TRADE_FOLDER = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade";
+    private static String MERCURY_TRADE_FOLDER = SystemUtils.IS_OS_WINDOWS ? System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade" : "AppData/Local/MercuryTrade";
 
 
     public static void main(String[] args) {
         System.setProperty("sun.java2d.d3d", "false");
         System.setProperty("jna.nosys", "true");
-
-        if (System.getenv("USERPROFILE") == null) {
-            MERCURY_TRADE_FOLDER = "AppData/Local/MercuryTrade";
-        }
 
         new ErrorHandler();
         Thread mercuryLoadingFrameThread = new Thread(() -> {
@@ -76,7 +71,6 @@ public class AppMain {
         } catch (InterruptedException ex) {
             logger.error(ex);
         }
-        FramesManager.INSTANCE.showFrame(TestCasesFrame.class);
     }
 
     private static boolean isValidGamePath(String gamePath) {

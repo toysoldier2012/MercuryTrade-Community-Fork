@@ -1,6 +1,7 @@
 package com.mercury.platform.shared;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,8 +9,8 @@ import java.io.File;
 
 public class UpdateManager {
     private final static Logger logger = LogManager.getLogger(UpdateManager.class.getSimpleName());
-    private final static String LOCAL_UPDATER_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\local-updater.jar";
-    private static final String JAR_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\temp\\MercuryTrade.jar";
+    private final static String LOCAL_UPDATER_PATH = SystemUtils.IS_OS_WINDOWS ? System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\local-updater.jar" : "AppData/Local/MercuryTrade/local-updater.jar" ;
+    private static final String JAR_FILE_PATH = SystemUtils.IS_OS_WINDOWS ? System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\MercuryTrade.jar" : "AppData/Local/MercuryTrade/MercuryTrade.jar";
 
     public void doUpdate() {
         try {

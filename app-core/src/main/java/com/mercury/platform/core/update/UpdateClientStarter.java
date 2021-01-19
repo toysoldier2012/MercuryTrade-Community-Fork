@@ -5,6 +5,7 @@ import com.mercury.platform.core.MercuryConstants;
 import com.mercury.platform.core.update.core.UpdaterClient;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.store.MercuryStoreCore;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +18,7 @@ import java.nio.file.StandardOpenOption;
  */
 public class UpdateClientStarter implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger(UpdateClientStarter.class.getSimpleName());
-    private static final String JARS_FILE_PATH = System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\temp";
+    private static final String JARS_FILE_PATH = SystemUtils.IS_OS_WINDOWS ? System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade\\temp" : "AppData/Local/MercuryTrade/temp" ;
 
     private UpdaterClient updaterClient;
 
