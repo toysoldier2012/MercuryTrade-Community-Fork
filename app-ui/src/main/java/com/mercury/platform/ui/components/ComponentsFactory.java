@@ -443,6 +443,12 @@ public class ComponentsFactory {
         return textField;
     }
 
+    public JPasswordField getPasswordField(String text) {
+        JPasswordField passwordField = getPasswordField(text, null, scale * 16);
+        passwordField.setFont(DEFAULT_FONT);
+        return passwordField;
+    }
+
     public JFormattedTextField getIntegerTextField(Integer min, Integer max, Integer value) {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new NumberFormatter(format);
@@ -479,6 +485,21 @@ public class ComponentsFactory {
         ));
         textField.setBackground(AppThemeColor.HEADER);
         return textField;
+    }
+
+    public JPasswordField getPasswordField(String text, FontStyle style, float fontSize) {
+        JPasswordField passwordField = new JPasswordField(text);
+        if (style != null) {
+            passwordField.setFont(getSelectedFont(style).deriveFont(scale * fontSize));
+        }
+        passwordField.setForeground(AppThemeColor.TEXT_DEFAULT);
+        passwordField.setCaretColor(AppThemeColor.TEXT_DEFAULT);
+        passwordField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 3)
+                                                              ));
+        passwordField.setBackground(AppThemeColor.HEADER);
+        return passwordField;
     }
 
     public JCheckBox getCheckBox(String tooltip) {

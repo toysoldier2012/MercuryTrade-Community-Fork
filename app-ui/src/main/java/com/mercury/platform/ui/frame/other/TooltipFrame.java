@@ -47,12 +47,16 @@ public class TooltipFrame extends AbstractOverlaidFrame {
                 this.pack();
                 this.repaint();
                 this.tooltipTimer = new Timer(500, e -> {
-                    Point cursorPoint = MouseInfo.getPointerInfo().getLocation();
-                    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-                    if (cursorPoint.y + this.getPreferredSize().height > dim.height) {
-                        this.setLocation(cursorPoint.x + 4, cursorPoint.y - this.getPreferredSize().height);
-                    } else {
-                        this.setLocation(new Point(cursorPoint.x + 4, cursorPoint.y));
+                    try {
+                        Point cursorPoint = MouseInfo.getPointerInfo().getLocation();
+                        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                        if (cursorPoint.y + this.getPreferredSize().height > dim.height) {
+                            this.setLocation(cursorPoint.x + 4, cursorPoint.y - this.getPreferredSize().height);
+                        } else {
+                            this.setLocation(new Point(cursorPoint.x + 4, cursorPoint.y));
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                     this.tooltipTimer.stop();
                     setVisible(true);

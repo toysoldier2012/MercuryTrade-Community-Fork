@@ -3,6 +3,7 @@ package com.mercury.platform.ui.components.panel.settings.page;
 
 import com.mercury.platform.core.misc.WhisperNotifierStatus;
 import com.mercury.platform.shared.CloneHelper;
+import com.mercury.platform.shared.PushBulletManager;
 import com.mercury.platform.shared.VulkanManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
@@ -109,6 +110,28 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
             }
         });
 
+        JPasswordField pushbulletTextField = this.componentsFactory.getPasswordField(this.applicationSnapshot.getPushbulletAccessToken(), FontStyle.REGULAR, 16);
+        pushbulletTextField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppThemeColor.BORDER, 1),
+                BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 2)
+                                                                  ));
+        pushbulletTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                applicationSnapshot.setPushbulletAccessToken(pushbulletTextField.getText());
+                PushBulletManager.INSTANCE.reloadAccessToken();
+            }
+        });
+
+        JButton testPush = this.componentsFactory.getButton("Test push");
+        testPush.addActionListener((actionEvent) -> {
+            PushBulletManager.INSTANCE.sendPush("Test push");
+        });
+
+        JPanel pushbulletPanel = componentsFactory.getTransparentPanel(new BorderLayout(4, 4));
+        pushbulletPanel.add(pushbulletTextField, BorderLayout.CENTER);
+        pushbulletPanel.add(testPush, BorderLayout.LINE_END);
+
         root.add(this.componentsFactory.getTextLabel("Notify me when an update is available", FontStyle.REGULAR, 16));
         root.add(checkEnable);
         root.add(this.componentsFactory.getTextLabel("Vulkan support enabled", FontStyle.REGULAR, 16));
@@ -123,6 +146,8 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         root.add(this.componentsFactory.wrapToSlide(notifierStatusPicker, AppThemeColor.ADR_BG, 0, 0, 0, 2));
         root.add(this.componentsFactory.getTextLabel("Path of Exile folder: ", FontStyle.REGULAR, 16));
         root.add(this.componentsFactory.wrapToSlide(poeFolderPanel, AppThemeColor.ADR_BG, 0, 0, 2, 2));
+        root.add(this.componentsFactory.getTextLabel("Pushbullet AccessToken ", FontStyle.REGULAR, 16));
+        root.add(this.componentsFactory.wrapToSlide(pushbulletPanel, AppThemeColor.ADR_BG, 0, 0, 0, 2));
 
         this.container.add(this.componentsFactory.wrapToSlide(root));
     }
@@ -132,6 +157,7 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         HideSettingsManager.INSTANCE.apply(applicationSnapshot.getFadeTime(), applicationSnapshot.getMinOpacity(), applicationSnapshot.getMaxOpacity());
         this.applicationConfig.set(CloneHelper.cloneObject(this.applicationSnapshot));
         this.vulkanConfig.set(CloneHelper.cloneObject(this.vulkanSnapshot));
+        PushBulletManager.INSTANCE.reloadAccessToken();
     }
 
     @Override

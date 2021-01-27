@@ -31,7 +31,7 @@ import java.util.Map;
 
 
 public class NotificationFrame extends AbstractMovableComponentFrame {
-    private static int BUFFER_DEFAULT_HEIGHT = SystemUtils.IS_OS_WINDOWS ? 1500 : 0;
+    private static int BUFFER_DEFAULT_HEIGHT = SystemUtils.IS_OS_WINDOWS ? 0 : 0;
     private static int BUFFER_DEFAULT_WIDTH = SystemUtils.IS_OS_WINDOWS ? 10 : 0;
     private List<NotificationPanel> notificationPanels;
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
