@@ -18,6 +18,7 @@ public class MercuryStoreCore {
     public static final PublishSubject<SoundType> soundSubject = PublishSubject.create();
     public static final PublishSubject<SoundDescriptor> soundSettingsSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> dndSubject = PublishSubject.create();
+    public static final PublishSubject<Boolean> pushbulletSubject = PublishSubject.create();
     public static final PublishSubject<FrameVisibleState> frameVisibleSubject = PublishSubject.create();
     public static final PublishSubject<Boolean> uiLoadedSubject = PublishSubject.create();
     public static final PublishSubject<MessageInterceptor> addInterceptorSubject = PublishSubject.create();

@@ -17,6 +17,7 @@ public class TooltipConstants {
     public static final String ITEM_GRID = "Item Grid. Align this grid with your in-game stash.";
     public static final String SCALE_SETTINGS = "Scale. Adjust MercuryTrade components size to your taste.";
     public static final String EXIT = "Exit";
+    public static final String PUSHBULLET_NOTIFICATION_ACTIVE = "Pushbullet notifications on trade messages";
 
     //Timer tooltips
     public static final String PLAY = "Start";

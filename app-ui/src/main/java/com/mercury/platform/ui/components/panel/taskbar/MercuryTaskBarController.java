@@ -26,6 +26,20 @@ public class MercuryTaskBarController implements TaskBarController {
     }
 
     @Override
+    public void enablePushbullet() {
+        MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
+        MercuryStoreCore.alertSubject.onNext("Pushbullet notifications on");
+        MercuryStoreCore.pushbulletSubject.onNext(true);
+    }
+
+    @Override
+    public void disablePushbullet() {
+        MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
+        MercuryStoreCore.alertSubject.onNext("Pushbullet notifications off");
+        MercuryStoreCore.pushbulletSubject.onNext(false);
+    }
+
+    @Override
     public void showITH() {
         FramesManager.INSTANCE.enableOrDisableMovementDirect(ItemsGridFrame.class);
     }

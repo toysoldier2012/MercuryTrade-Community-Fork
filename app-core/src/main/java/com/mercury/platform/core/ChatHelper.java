@@ -245,5 +245,9 @@ public class ChatHelper implements AsSubscriber {
                 }
             }
         });
+        MercuryStoreCore.pushbulletSubject.subscribe(state -> {
+            TaskBarDescriptor config = Configuration.get().taskBarConfiguration().get();
+            config.setPushbulletOn(state);
+        });
     }
 }
