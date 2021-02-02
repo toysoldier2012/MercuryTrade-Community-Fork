@@ -1,5 +1,21 @@
 [
   {
+    "version": "1.1.6",
+    "features": [
+      {
+        "changed": "Added support for pushbullet notifications. Check 'General' section in Settings for API key."
+      }
+    ],
+    "fix": [
+      {
+        "changed": "Fixed persistent tooltips error"
+      },
+      {
+        "changed": "Fixed notifications not showing in specific circumstances (works only for downward direction of notifications"
+      }
+    ]
+  },
+  {
     "version": "1.1.5.2",
     "fix": [
       {
