@@ -7,6 +7,7 @@ import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.SendableFilePush;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.SendableNotePush;
 import com.mercury.platform.shared.config.Configuration;
+import com.mercury.platform.shared.config.descriptor.TaskBarDescriptor;
 import com.mercury.platform.shared.config.descriptor.VulkanDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.sun.jna.Native;
@@ -22,7 +23,7 @@ import java.util.TimerTask;
 
 public class PushBulletManager {
     public static PushBulletManager INSTANCE = PushBulletManagerHolder.HOLDER_INSTANCE;
-    protected VulkanDescriptor vulkanSnapshot = new VulkanDescriptor();
+    protected TaskBarDescriptor config;
     private String pushbulletAccessToken;
     private Pushbullet pushbullet;
 
@@ -32,6 +33,7 @@ public class PushBulletManager {
 
     public void reloadAccessToken() {
         pushbulletAccessToken = Configuration.get().applicationConfiguration().get().getPushbulletAccessToken();
+        config = Configuration.get().taskBarConfiguration().get();
         if (pushbulletAccessToken != null && !pushbulletAccessToken.isEmpty()) {
             pushbulletAccessToken = pushbulletAccessToken.replace(" ", "");
             pushbullet = new Pushbullet(pushbulletAccessToken);
@@ -39,11 +41,24 @@ public class PushBulletManager {
     }
 
     public void sendPush(String content) {
-        if (pushbullet != null) {
+        config = Configuration.get().taskBarConfiguration().get();
+        if (pushbullet != null && config.isPushbulletOn()) {
             pushbullet.push(new SendableNotePush("MercuryTrade", content));
         }
     }
 
+    public void sendPush(String content, String nickName) {
+        config = Configuration.get().taskBarConfiguration().get();
+        if (pushbullet != null && config.isPushbulletOn()) {
+            pushbullet.push(new SendableNotePush("MercuryTrade - " + nickName, content));
+        }
+    }
+
+    public void testPush() {
+        if (pushbullet != null && config.isPushbulletOn()) {
+            pushbullet.push(new SendableNotePush("MercuryTrade" , "Test notification"));
+        }
+    }
     private static class PushBulletManagerHolder {
         static final PushBulletManager HOLDER_INSTANCE = new PushBulletManager();
     }

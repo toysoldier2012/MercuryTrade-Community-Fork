@@ -28,5 +28,7 @@ public class IconConst {
     public final static String SETTINGS = PREFIX + "settings.png";
     public final static String EXIT = PREFIX + "exit.png";
     public final static String APP_ICON = PREFIX + "app-icon.png";
+    public final static String PUSHBULLET_NOTIFICATION = PREFIX + "notification.png";
+    public final static String PUSHBULLET_NOTIFICATION_OFF = PREFIX + "notification_off.png";
 
 }

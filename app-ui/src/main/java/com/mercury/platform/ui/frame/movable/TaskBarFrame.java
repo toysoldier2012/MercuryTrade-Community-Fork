@@ -167,6 +167,16 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
             }
 
             @Override
+            public void enablePushbullet() {
+
+            }
+
+            @Override
+            public void disablePushbullet() {
+
+            }
+
+            @Override
             public void showITH() {
             }
 

@@ -8,6 +8,10 @@ public interface TaskBarController {
 
     void disableDND();
 
+    void enablePushbullet();
+
+    void disablePushbullet();
+
     void showITH();
 
     void performHideout();

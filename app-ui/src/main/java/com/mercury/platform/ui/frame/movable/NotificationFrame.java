@@ -3,6 +3,7 @@ package com.mercury.platform.ui.frame.movable;
 import com.mercury.platform.core.ProdStarter;
 import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.PushBulletManager;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;
@@ -54,6 +55,9 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.notificationPanels = new ArrayList<>();
         this.config = Configuration.get().notificationConfiguration();
         this.flowDirections = this.config.get().getFlowDirections();
+        if (SystemUtils.IS_OS_WINDOWS && this.flowDirections.equals(FlowDirections.UPWARDS)) {
+            BUFFER_DEFAULT_HEIGHT = 1500;
+        }
         this.componentsFactory.setScale(this.scaleConfig.get("notification"));
         this.stubComponentsFactory.setScale(this.scaleConfig.get("notification"));
         this.providersFactory = new NotificationPanelFactory();
@@ -118,6 +122,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 }
                 if (this.preProcessor.isAllowed(notification)) {
                     MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
+                    PushBulletManager.INSTANCE.sendPush(notification.getSourceString(), notification.getWhisperNickname());
                     this.addNotification(notificationPanel);
                 }
             });
@@ -128,6 +133,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                         .setData(message)
                         .setComponentsFactory(this.componentsFactory)
                         .build();
+                PushBulletManager.INSTANCE.sendPush(message.getMessage().replaceAll("\\<[^>]*>",""), message.getNickName());
                 this.addNotification(notificationPanel);
             });
         });
@@ -161,11 +167,24 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         });
     }
 
+    private void sendPushBullet(NotificationDescriptor notification) {
+        if (notification != null) {
+            PushBulletManager.INSTANCE.sendPush(notification.getSourceString(), notification.getWhisperNickname());
+        }
+    }
+
     @SuppressWarnings("all")
     private void validateContainer() {
         List<NotificationPanel> currentPanels = new ArrayList<>(this.notificationPanels);
         currentPanels.forEach(this::removeNotification);
         this.flowDirections = this.config.get().getFlowDirections();
+        if (SystemUtils.IS_OS_WINDOWS && this.flowDirections.equals(FlowDirections.UPWARDS)) {
+            if (this.flowDirections.equals(FlowDirections.UPWARDS)) {
+                BUFFER_DEFAULT_HEIGHT = 1500;
+            } else {
+                BUFFER_DEFAULT_HEIGHT = 0;
+            }
+        }
         currentPanels.forEach(it -> {
             NotificationPanel notificationPanel = null;
             if (it.getData() instanceof NotificationDescriptor) {
@@ -268,6 +287,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         this.setLocation(this.framesConfig.get(this.getClass().getSimpleName()).getFrameLocation());
         super.onScaleUnlock();
     }
+
 
     public void changeBufferSize(int delta) {
         if (this.flowDirections.equals(FlowDirections.UPWARDS)) {

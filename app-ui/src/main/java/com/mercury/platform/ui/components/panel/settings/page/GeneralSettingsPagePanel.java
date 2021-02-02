@@ -125,7 +125,7 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
 
         JButton testPush = this.componentsFactory.getButton("Test push");
         testPush.addActionListener((actionEvent) -> {
-            PushBulletManager.INSTANCE.sendPush("Test push");
+            PushBulletManager.INSTANCE.testPush();
         });
 
         JPanel pushbulletPanel = componentsFactory.getTransparentPanel(new BorderLayout(4, 4));

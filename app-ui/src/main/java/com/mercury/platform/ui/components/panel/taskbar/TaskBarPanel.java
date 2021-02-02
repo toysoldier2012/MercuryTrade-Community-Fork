@@ -70,6 +70,21 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 true
         );
 
+        JButton pushbulletNotification = componentsFactory.getIconButton(
+                taskBarService.get().isPushbulletOn() ? IconConst.PUSHBULLET_NOTIFICATION : IconConst.PUSHBULLET_NOTIFICATION_OFF,
+                24,
+                AppThemeColor.FRAME,
+                TooltipConstants.PUSHBULLET_NOTIFICATION_ACTIVE);
+        componentsFactory.setUpToggleCallbacks(pushbulletNotification,
+                                               () -> {
+                                                   getPushbullet(taskBarService.get().isPushbulletOn(), pushbulletNotification);
+                                               },
+                                               () -> {
+                                                   getPushbullet(taskBarService.get().isPushbulletOn(), pushbulletNotification);
+                                               },
+                                               true
+                                              );
+
         JButton itemGrid = componentsFactory.getIconButton(
                 IconConst.ITEM_GRID_ENABLE,
                 24,
@@ -199,6 +214,8 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(visibleMode);
         this.add(Box.createRigidArea(new Dimension(2, 4)));
+        this.add(pushbulletNotification);
+        this.add(Box.createRigidArea(new Dimension(2, 4)));
         this.add(this.showHelpIG);
         this.add(Box.createRigidArea(new Dimension(2, 4)));
         this.add(historyButton);
@@ -213,6 +230,16 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(exitButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
+    }
+
+    private void getPushbullet(boolean pushbulletEnabled, JButton pushbulletNotification) {
+        if (!pushbulletEnabled) {
+            pushbulletNotification.setIcon(componentsFactory.getIcon(IconConst.PUSHBULLET_NOTIFICATION, 24));
+            controller.enablePushbullet();
+        } else {
+            pushbulletNotification.setIcon(componentsFactory.getIcon(IconConst.PUSHBULLET_NOTIFICATION_OFF, 24));
+            controller.disablePushbullet();
+        }
     }
 
     public int getWidthOf(int elementCount) {

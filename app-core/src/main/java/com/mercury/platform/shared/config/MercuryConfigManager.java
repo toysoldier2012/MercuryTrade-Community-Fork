@@ -187,6 +187,7 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
         }
     }
 
+
     @Override
     public void subscribe() {
         MercuryStoreCore.saveConfigSubject.subscribe(state -> {
