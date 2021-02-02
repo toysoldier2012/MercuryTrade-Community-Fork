@@ -50,9 +50,9 @@ public class ResponseButtonsPanel extends JPanel implements ViewInit {
         headerPanel.add(titleLabel, BorderLayout.LINE_START);
         headerPanel.add(valueLabel, BorderLayout.CENTER);
 
-        JPanel actionsPanel = this.componentsFactory.getJPanel(new BorderLayout(7,7), AppThemeColor.SETTINGS_BG);
-        actionsPanel.add(this.componentsFactory.getIconLabel(IconConst.CLOSE, 15), BorderLayout.LINE_START);
-        actionsPanel.add(this.componentsFactory.getIconLabel(IconConst.KICK, 15), BorderLayout.LINE_END);
+        JPanel actionsPanel = this.componentsFactory.getJPanel(new BorderLayout(10,10), AppThemeColor.SETTINGS_BG);
+        actionsPanel.add(this.componentsFactory.getIconLabel(IconConst.CLOSE, 15), BorderLayout.CENTER);
+//        actionsPanel.add(this.componentsFactory.getIconLabel(IconConst.KICK, 15), BorderLayout.LINE_END);
 
         JPanel miscPanel = this.componentsFactory.getJPanel(new BorderLayout(4,4), AppThemeColor.SETTINGS_BG);
         miscPanel.add(actionsPanel, BorderLayout.LINE_START);
@@ -114,11 +114,11 @@ public class ResponseButtonsPanel extends JPanel implements ViewInit {
         checkboxPanel.add(checkBoxClose, BorderLayout.LINE_START);
 
 
-        JCheckBox checkBoxKick = this.componentsFactory.getCheckBox(descriptor.isKickLeave(), "Kick/Leave after click?");
-        checkBoxKick.addActionListener(action -> {
-            descriptor.setKickLeave(checkBoxKick.isSelected());
-        });
-        checkboxPanel.add(checkBoxKick, BorderLayout.LINE_END);
+//        JCheckBox checkBoxKick = this.componentsFactory.getCheckBox(descriptor.isKickLeave(), "Kick/Leave after click?");
+//        checkBoxKick.addActionListener(action -> {
+//            descriptor.setKickLeave(checkBoxKick.isSelected());
+//        });
+//        checkboxPanel.add(checkBoxKick, BorderLayout.LINE_END);
 
         miscPanel.add(checkboxPanel, BorderLayout.LINE_START);
 

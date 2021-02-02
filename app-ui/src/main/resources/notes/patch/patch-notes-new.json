@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.1.7",
+    "fix": [
+      {
+        "changed": "Removed option to kick player on same click when response message is sended (it was 2 server actions per 1 player action)"
+      }
+    ]
+  },
+  {
     "version": "1.1.6",
     "features": [
       {
@@ -11,7 +19,7 @@
         "changed": "Fixed persistent tooltips error"
       },
       {
-        "changed": "Fixed notifications not showing in specific circumstances (works only for downward direction of notifications"
+        "changed": "Fixed notifications not showing in specific circumstances (works only for downward direction of notifications)"
       }
     ]
   },

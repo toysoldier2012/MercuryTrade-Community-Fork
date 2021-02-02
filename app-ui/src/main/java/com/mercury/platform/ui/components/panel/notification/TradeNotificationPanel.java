@@ -96,18 +96,18 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
             });
             button.addActionListener(e -> {
                 this.controller.performResponse(buttonConfig.getResponseText());
-                if (buttonConfig.isKickLeave()) {
-                    waitForNextAction();
-                    if (out) {
-                        String playerNickname = this.notificationConfig.get().getPlayerNickname();
-                        if (StringUtils.isNotEmpty(playerNickname)) {
-                            this.controller.performKickLeave(playerNickname);
-                        }
-                    } else {
-                        this.controller.performKickLeave(nicknameLabel.getText());
-
-                    }
-                }
+//                if (buttonConfig.isKickLeave()) {
+//                    waitForNextAction();
+//                    if (out) {
+//                        String playerNickname = this.notificationConfig.get().getPlayerNickname();
+//                        if (StringUtils.isNotEmpty(playerNickname)) {
+//                            this.controller.performKickLeave(playerNickname);
+//                        }
+//                    } else {
+//                        this.controller.performKickLeave(nicknameLabel.getText());
+//
+//                    }
+//                }
                 if (buttonConfig.isClose()) {
                     this.controller.performHide();
                 }
