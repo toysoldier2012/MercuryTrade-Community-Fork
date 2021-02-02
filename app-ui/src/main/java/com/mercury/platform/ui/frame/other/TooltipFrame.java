@@ -25,6 +25,7 @@ public class TooltipFrame extends AbstractOverlaidFrame {
     public void subscribe() {
         MercuryStoreCore.tooltipSubject.subscribe(tooltip -> {
             if (tooltip != null) {
+
                 this.getContentPane().removeAll();
                 this.setPreferredSize(null);
                 if (tooltip.toCharArray().length < 85) {
@@ -46,7 +47,7 @@ public class TooltipFrame extends AbstractOverlaidFrame {
                 }
                 this.pack();
                 this.repaint();
-                this.tooltipTimer = new Timer(500, e -> {
+                this.tooltipTimer = new Timer(50, e -> {
                     try {
                         Point cursorPoint = MouseInfo.getPointerInfo().getLocation();
                         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

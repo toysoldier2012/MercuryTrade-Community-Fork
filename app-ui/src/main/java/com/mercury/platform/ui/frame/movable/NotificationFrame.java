@@ -68,9 +68,6 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
     public void onViewInit() {
         this.getRootPane().setBorder(null);
         this.setBackground(AppThemeColor.TRANSPARENT);
-//        this.setOpacity(0.2f);
-//        this.setUndecorated(true);
-//        AWTUtilities.setWindowOpaque(this, false);
         this.container = new JPanel();
         this.container.setBackground(AppThemeColor.TRANSPARENT);
         this.container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));

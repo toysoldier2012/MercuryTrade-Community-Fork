@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.util.Date;
 
 /**
  * Factory for each element which uses in application
@@ -832,23 +833,45 @@ public class ComponentsFactory {
 
     @EqualsAndHashCode(callSuper = true)
     @Data
-    @AllArgsConstructor
     private class TooltipMouseListener extends MouseAdapter {
         private String tooltip;
+        private Timer tooltipTimer;
+        private Timer tempTimer;
+        private boolean fired = false;
+
+        public TooltipMouseListener (String tooltip) {
+            this.tooltip = tooltip;
+        }
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            MercuryStoreCore.tooltipSubject.onNext(tooltip);
+            fired = false;
+            this.tooltipTimer = new Timer(700, action -> {
+                MercuryStoreCore.tooltipSubject.onNext(tooltip);
+                fired = true;
+                this.tooltipTimer.stop();
+            });
+            this.tooltipTimer.start();
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            MercuryStoreCore.tooltipSubject.onNext(null);
+            this.tooltipTimer.stop();
+            if (fired) {
+                MercuryStoreCore.tooltipSubject.onNext(null);
+            }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            MercuryStoreCore.tooltipSubject.onNext(null);
+            tempTimer = new Timer(100, action -> {
+                this.tooltipTimer.stop();
+                if (fired) {
+                    MercuryStoreCore.tooltipSubject.onNext(null);
+                }
+                tempTimer.stop();
+            });
+            tempTimer.start();
         }
     }
 }
