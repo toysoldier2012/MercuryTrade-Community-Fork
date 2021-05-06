@@ -8,10 +8,8 @@ import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescripto
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.messageparser.MessageParser;
-import com.mercury.platform.shared.messageparser.PoeTradeItemKoreanParserTest;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -42,10 +40,10 @@ class TradeOutMessagesInterceptorTest {
      * The relevant implementation of parsing to descriptors is in {@link MessageParser}.
      */
     @ParameterizedTest
-    @MethodSource("provideOutgoingInternationalPoetradeItemPurchase")
-    @Disabled("Fails because russian and korean is not implemented yet.")
+    @MethodSource("provideOutgoingEnglishPoetradeItemPurchase")
     void parseOutgoingInternationalPoetradeItemPurchase(String whisper, String actualNickname, String actualItemName,
-                                                  double actualCurrencyAmount, String actualCurrencyType, int actualLeft, int actualTop) throws Exception {
+                                                        double actualCurrencyAmount, String actualCurrencyType,
+                                                        int actualLeft, int actualTop, String actualLeague) throws Exception {
         // Given
         final TradeOutMessagesInterceptor interceptor = new TradeOutMessagesInterceptor();
         final TestSubscriber<NotificationDescriptor> notifications = new TestSubscriber<>();
@@ -69,32 +67,15 @@ class TradeOutMessagesInterceptorTest {
         assertEquals(actualLeft, tradeDescriptor.getLeft());
         assertEquals(actualCurrencyType, tradeDescriptor.getCurrency());
         assertEquals(actualCurrencyAmount, tradeDescriptor.getCurCount());
-    }
-
-
-    private static Stream<Arguments> provideOutgoingInternationalPoetradeItemPurchase() {
-        return Stream.of(
-                provideOutgoingEnglishPoetradeItemPurchase(),
-                PoeTradeItemKoreanParserTest.provideOutgoingKoreanPoetradeItemPurchase(),
-                provideOutgoingRussianPoetradeItemPurchase()
-        ).flatMap(stream -> stream);
+        assertEquals(actualLeague, tradeDescriptor.getLeague());
     }
 
     private static Stream<Arguments> provideOutgoingEnglishPoetradeItemPurchase() {
         return Stream.of(
                 Arguments.of("@To ClearLudko: Hi, I would like to buy your Plaza Map (T3) listed for 2 chaos in Ultimatum (stash tab \"~price 2 chaos\"; position: left 1, top 1)",
-                        "ClearLudko", "Plaza Map (T3)", 2.0, "chaos", 1, 1),
+                        "ClearLudko", "Plaza Map (T3)", 2.0, "chaos", 1, 1, "Ultimatum"),
                 Arguments.of("@To Hydraulophone: Hi, I would like to buy your level 1 0% Enhance Support listed for 1 chaos in Ultimatum (stash tab \"~b/o 1 chaos\"; position: left 9, top 1)",
-                        "Hydraulophone", "level 1 0% Enhance Support", 1.0, "chaos", 9, 1)
-        );
-    }
-
-    private static Stream<Arguments> provideOutgoingRussianPoetradeItemPurchase() {
-        return Stream.of(
-                Arguments.of("@To Кекичоид: Здравствуйте, хочу купить у вас уровень 1 11% Улучшитель за 1 chaos в лиге Ультиматум (секция \"ТЦ\"; позиция: 11 столбец, 5 ряд)",
-                        "Кекичоид", "уровень 1 11% Улучшитель" /* Level 1 11% Enhance support */, 1.0, "chaos", 11, 5),
-                Arguments.of("@To Destrim: Здравствуйте, хочу купить у вас Табула раса Матерчатая безрукавка за 1 portal в лиге Ультиматум (секция \"Trade 1\"; позиция: 1 столбец, 1 ряд)",
-                        "Destrim", "Табула раса Матерчатая безрукавка" /* Tabula Rasa Simple Robe*/, 1.0, "portal" /*scroll*/, 1, 1)
+                        "Hydraulophone", "level 1 0% Enhance Support", 1.0, "chaos", 9, 1, "Ultimatum")
         );
     }
 
