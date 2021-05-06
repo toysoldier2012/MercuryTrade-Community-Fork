@@ -39,9 +39,9 @@ public class MessageParser {
         this.parsers = Arrays.asList(
                 new PoeAppItemParser(),
                 new PoeTradeStashTabParser(),
-                new PoeTradeItemParser(),
-                new PoeTradeCurrencyParser(),
+                new PoeTradeCurrencyParser(), // Must be before PoeTradeItemParser, because both can parse the same messages
                 new PoeMapLiveParser(),
+                new PoeTradeItemParser(),
                 new PoeTradeItemKoreanParser(),
                 new PoeTradeItemRussianParser()
         );
