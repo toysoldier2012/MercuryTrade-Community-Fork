@@ -11,6 +11,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Parses trade whispers to extract information like
+ * {@link NotificationDescriptor#getWhisperNickname() player nickname},
+ * {@link ItemTradeNotificationDescriptor#getItemName() item name},
+ * {@link ItemTradeNotificationDescriptor#getTabName() stash tab name}
+ * and {@link ItemTradeNotificationDescriptor#getCurCount() item price}.
+ *
+ * The parser does not separate between incoming or outgoing messages,
+ * which should be done in something like a
+ * {@link com.mercury.platform.core.utils.interceptor.TradeOutMessagesInterceptor TradeOutMessagesInterceptor}
+ * or {@link com.mercury.platform.core.utils.interceptor.TradeIncMessagesInterceptor TradeIncMessagesInterceptor} instead.
+ */
 public class MessageParser {
     private final static String poeTradeStashTabPattern = "^(.*\\s)?(.+): (.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*?(.*))$";
     private final static String poeTradePattern = "^(.*\\s)?(.+): (.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.*?))$";
@@ -37,6 +49,13 @@ public class MessageParser {
         this.poeTradeKoreanPattern = Pattern.compile(poeTradeKoreanRegex);
     }
 
+    /**
+     * Parse the whisper message
+     * @param fullMessage the whisper text, after the {@code "@To"} or {@code "@From"}.
+     * @return a NotificationDescriptor with information from the message.
+     *         Can be different subclasses depending on the message contents, like {@link ItemTradeNotificationDescriptor}
+     *         or {@link CurrencyTradeNotificationDescriptor}.
+     */
     public NotificationDescriptor parse(String fullMessage) {
         Matcher poeAppItemMatcher = poeAppItemPattern.matcher(fullMessage);
         if (poeAppItemMatcher.find()) {

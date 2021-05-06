@@ -14,6 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Intercepts outgoing trade messages,
+ * starting with {@code "@To"}, {@code "@Кому"} etc. depending og the game client language.
+ */
 public class TradeOutMessagesInterceptor extends MessageInterceptor {
     private MessageParser messageParser = new MessageParser();
     private PlainConfigurationService<NotificationSettingsDescriptor> config;
