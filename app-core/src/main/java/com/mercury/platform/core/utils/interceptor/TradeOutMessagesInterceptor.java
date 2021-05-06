@@ -1,7 +1,7 @@
 package com.mercury.platform.core.utils.interceptor;
 
 import com.mercury.platform.core.utils.interceptor.filter.MessageMatcher;
-import com.mercury.platform.shared.MessageParser;
+import com.mercury.platform.shared.messageparser.MessageParser;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.PlainConfigurationService;
 import com.mercury.platform.shared.config.descriptor.NotificationSettingsDescriptor;

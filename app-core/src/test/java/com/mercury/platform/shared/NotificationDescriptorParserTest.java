@@ -2,6 +2,7 @@ package com.mercury.platform.shared;
 
 import com.mercury.platform.shared.entity.message.CurrencyTradeNotificationDescriptor;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
+import com.mercury.platform.shared.messageparser.MessageParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

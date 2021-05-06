@@ -8,6 +8,7 @@ import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescripto
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.messageparser.MessageParser;
+import com.mercury.platform.shared.messageparser.PoeTradeItemKoreanParserTest;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -74,7 +75,7 @@ class TradeOutMessagesInterceptorTest {
     private static Stream<Arguments> provideOutgoingInternationalPoetradeItemPurchase() {
         return Stream.of(
                 provideOutgoingEnglishPoetradeItemPurchase(),
-                provideOutgoingKoreanPoetradeItemPurchase(),
+                PoeTradeItemKoreanParserTest.provideOutgoingKoreanPoetradeItemPurchase(),
                 provideOutgoingRussianPoetradeItemPurchase()
         ).flatMap(stream -> stream);
     }
@@ -94,17 +95,6 @@ class TradeOutMessagesInterceptorTest {
                         "Кекичоид", "уровень 1 11% Улучшитель" /* Level 1 11% Enhance support */, 1.0, "chaos", 11, 5),
                 Arguments.of("@To Destrim: Здравствуйте, хочу купить у вас Табула раса Матерчатая безрукавка за 1 portal в лиге Ультиматум (секция \"Trade 1\"; позиция: 1 столбец, 1 ряд)",
                         "Destrim", "Табула раса Матерчатая безрукавка" /* Tabula Rasa Simple Robe*/, 1.0, "portal" /*scroll*/, 1, 1)
-        );
-    }
-
-    private static Stream<Arguments> provideOutgoingKoreanPoetradeItemPurchase() {
-        return Stream.of(
-                Arguments.of("@To Ultimatum_stop: 안녕하세요, 결전(보관함 탭 \"잼 \", 위치: 왼쪽 12, 상단 12)에 1 chaos(으)로 올려놓은 레벨 1 0% 향상 보조(을)를 구매하고 싶습니다",
-                        "Ultimatum_stop", "레벨 1 0% 향상 보조", 1.0, "chaos", 12, 12),
-                Arguments.of("@To 해그톡식: 안녕하세요, 결전(보관함 탭 \"판매\", 위치: 왼쪽 2, 상단 5)에 7 exalted(으)로 올려놓은 레벨 5 23% 각성한 치명적인 상태 이상 보조(을)를 구매하고 싶습니다",
-                        "해그톡식", "레벨 5 23% 각성한 치명적인 상태 이상 보조" /* Level 4 23% Awakened Deadly Ailments Support */, 7.0, "exalted", 2, 5),
-                Arguments.of("@To 조이맘: 안녕하세요, 결전(보관함 탭 \"~price 1 chaos\", 위치: 왼쪽 1, 상단 2)에 1 chaos(으)로 올려놓은 광장 지도(Plaza Map)(T6)(을)를 구매하고 싶습니다",
-                        "조이맘", "광장 지도(Plaza Map)(T6)", 1.0, "chaos", 1, 2)
         );
     }
 
