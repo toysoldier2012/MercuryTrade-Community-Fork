@@ -77,7 +77,9 @@ class TradeOutMessagesInterceptorTest {
                 Arguments.of("@To Hydraulophone: Hi, I would like to buy your level 1 0% Enhance Support listed for 1 chaos in Ultimatum (stash tab \"~b/o 1 chaos\"; position: left 9, top 1)",
                         "Hydraulophone", "level 1 0% Enhance Support", 1.0, "chaos", 9, 1, "Ultimatum"),
                 Arguments.of("@To Ultimatum_stop: 안녕하세요, 결전(보관함 탭 \"잼 \", 위치: 왼쪽 12, 상단 12)에 1 chaos(으)로 올려놓은 레벨 1 0% 향상 보조(을)를 구매하고 싶습니다",
-                        "Ultimatum_stop", "레벨 1 0% 향상 보조", 1.0, "chaos", 12, 12, "결전")
+                        "Ultimatum_stop", "레벨 1 0% 향상 보조", 1.0, "chaos", 12, 12, "결전"),
+                Arguments.of(" Кекичоид: Здравствуйте, хочу купить у вас уровень 1 11% Улучшитель за 1 chaos в лиге Ультиматум (секция \"ТЦ\"; позиция: 11 столбец, 5 ряд)",
+                        "Кекичоид", "уровень 1 11% Улучшитель" /* Level 1 11% Enhance support */, 1.0, "chaos", 11, 5, "Ультиматум")
         );
     }
 
