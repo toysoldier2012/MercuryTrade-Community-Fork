@@ -33,7 +33,7 @@ public class PoeTradeItemKoreanParserTest {
 
         final ItemTradeNotificationDescriptor tradeDescriptor = (ItemTradeNotificationDescriptor) descriptor;
         assertEquals(actualNickname, tradeDescriptor.getWhisperNickname());
-        assertEquals(actualItemName, tradeDescriptor.getItemName()); // Level 4 23% Awakened Deadly Ailments Support
+        assertEquals(actualItemName, tradeDescriptor.getItemName());
         assertEquals(actualCurrencyAmount, tradeDescriptor.getCurCount());
         assertEquals(actualCurrencyType, tradeDescriptor.getCurrency());
         assertEquals(actualLeft, tradeDescriptor.getLeft());

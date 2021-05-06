@@ -40,7 +40,7 @@ class TradeOutMessagesInterceptorTest {
      * The relevant implementation of parsing to descriptors is in {@link MessageParser}.
      */
     @ParameterizedTest
-    @MethodSource("provideOutgoingEnglishPoetradeItemPurchase")
+    @MethodSource("provideOutgoingPoetradeItemPurchase")
     void parseOutgoingInternationalPoetradeItemPurchase(String whisper, String actualNickname, String actualItemName,
                                                         double actualCurrencyAmount, String actualCurrencyType,
                                                         int actualLeft, int actualTop, String actualLeague) throws Exception {
@@ -70,12 +70,14 @@ class TradeOutMessagesInterceptorTest {
         assertEquals(actualLeague, tradeDescriptor.getLeague());
     }
 
-    private static Stream<Arguments> provideOutgoingEnglishPoetradeItemPurchase() {
+    private static Stream<Arguments> provideOutgoingPoetradeItemPurchase() {
         return Stream.of(
                 Arguments.of("@To ClearLudko: Hi, I would like to buy your Plaza Map (T3) listed for 2 chaos in Ultimatum (stash tab \"~price 2 chaos\"; position: left 1, top 1)",
                         "ClearLudko", "Plaza Map (T3)", 2.0, "chaos", 1, 1, "Ultimatum"),
                 Arguments.of("@To Hydraulophone: Hi, I would like to buy your level 1 0% Enhance Support listed for 1 chaos in Ultimatum (stash tab \"~b/o 1 chaos\"; position: left 9, top 1)",
-                        "Hydraulophone", "level 1 0% Enhance Support", 1.0, "chaos", 9, 1, "Ultimatum")
+                        "Hydraulophone", "level 1 0% Enhance Support", 1.0, "chaos", 9, 1, "Ultimatum"),
+                Arguments.of("@To Ultimatum_stop: 안녕하세요, 결전(보관함 탭 \"잼 \", 위치: 왼쪽 12, 상단 12)에 1 chaos(으)로 올려놓은 레벨 1 0% 향상 보조(을)를 구매하고 싶습니다",
+                        "Ultimatum_stop", "레벨 1 0% 향상 보조", 1.0, "chaos", 12, 12, "결전")
         );
     }
 
