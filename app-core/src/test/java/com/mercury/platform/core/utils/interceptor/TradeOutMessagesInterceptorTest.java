@@ -8,18 +8,16 @@ import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescripto
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.NotificationType;
 import com.mercury.platform.shared.store.MercuryStoreCore;
-import com.sun.org.apache.xpath.internal.Arg;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import rx.observers.TestSubscriber;
 
+import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TradeOutMessagesInterceptorTest {
 
@@ -38,7 +36,7 @@ class TradeOutMessagesInterceptorTest {
 
     @ParameterizedTest
     @MethodSource("provideOutgoingInternationalPoetradeItemPurchase")
-    @Disabled("Fails because russian and korean is not implemented yet.")
+    //@Disabled("Fails because russian and korean is not implemented yet.")
     void parseOutgoingInternationalPoetradeItemPurchase(String whisper, String actualNickname, String actualItemName,
                                                   double actualCurrencyAmount, String actualCurrencyType, int actualLeft, int actualTop) throws Exception {
         // Given
@@ -47,10 +45,12 @@ class TradeOutMessagesInterceptorTest {
         MercuryStoreCore.newNotificationSubject.subscribe(notifications);
 
         // When
-        interceptor.match(whisper);
-        final NotificationDescriptor descriptor = notifications.getOnNextEvents().get(0);
+        final boolean matched = interceptor.match(whisper);
+        final List<NotificationDescriptor> onNextEvents = notifications.getOnNextEvents();
+        final NotificationDescriptor descriptor = onNextEvents.isEmpty() ? null : onNextEvents.get(0);
 
         // Then
+        assertTrue(matched, "The interceptor did not find any matches for this whisper");
         assertNotNull(descriptor);
         assertEquals(actualNickname, descriptor.getWhisperNickname());
         assertEquals(NotificationType.OUT_ITEM_MESSAGE, descriptor.getType());
