@@ -6,17 +6,17 @@ import com.mercury.platform.shared.entity.message.NotificationType;
 
 import java.util.regex.Matcher;
 
-class PoeTradeItemKoreanParser extends BaseRegexParser {
+class PoeTradeItemRussianParser extends BaseRegexParser {
 
-    /** Any text between {@code \Q} and {@code \E} will be matched as raw text (escaped). */
-    private final static String poeTradeKoreanRegex = "^\\s*(?<name>.*?): \\Q안녕하세요, \\E(?<league>.*)\\Q(보관함 탭 \"\\E(?<stashtab>[^\"]*)\\Q\", 위치: 왼쪽 \\E(?<left>\\d+)\\Q, 상단 \\E(?<top>\\d+)\\Q)에 \\E(?<price>[\\d.]*)\\s+(?<currency>.*)\\Q(으)로 올려놓은 \\E(?<item>.*)\\Q(을)를 구매하고 싶습니다\\E";
+    private static final String poeTradeItemRussianRegex = "^\\s*(?<name>.*?)\\Q: Здравствуйте, хочу купить у вас \\E(?<item>.*)\\Q за \\E(?<price>[\\d.]*)\\s(?<currency>.*)\\Q в лиге \\E(?<league>.*)\\Q (секция \"\\E(?<stashtab>[^\"]*)\\Q\"; позиция: \\E(?<left>\\d+)\\Q столбец, \\E(?<top>\\d+)\\Q ряд)\\E";
 
-    public PoeTradeItemKoreanParser() {
-        super(poeTradeKoreanRegex);
+    public PoeTradeItemRussianParser() {
+        super(poeTradeItemRussianRegex);
     }
 
     @Override
     protected NotificationDescriptor parse(Matcher matcher, String whisper) {
+        // Copy-paste of PoeTradeItemKoreanParser.
         ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
         tradeNotification.setWhisperNickname(matcher.group("name"));
         tradeNotification.setSourceString(matcher.group("stashtab"));
