@@ -16,6 +16,7 @@ import java.io.File;
 
 public class GamePathChooser extends AbstractTitledComponentFrame {
     private final Logger logger = LogManager.getLogger(GamePathChooser.class.getSimpleName());
+    private final static String defaultGamePath = "C:\\Program Files (x86)\\Grinding Gear Games\\Path of Exile\\";
     private JLabel statusLabel;
     private String gamePath;
     private boolean readyToStart = false;
@@ -50,7 +51,7 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
 
         JPanel chooserPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JTextField textField = componentsFactory.getTextField("Example: \"C:\\Program Files (x86)\\Grinding Gear Games\\Path of Exile\"");
+        JTextField textField = componentsFactory.getTextField(defaultGamePath);
         textField.setPreferredSize(new Dimension(450, 26));
         textField.setMinimumSize(new Dimension(450, 26));
         textField.addMouseListener(new MouseAdapter() {
@@ -98,6 +99,9 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!readyToStart) {
+                    if (gamePath == null) {
+                        gamePath = defaultGamePath;
+                    }
                     if (isValidGamePath(gamePath)) {
                         readyToStart = true;
                         statusLabel.setText("Success!");
