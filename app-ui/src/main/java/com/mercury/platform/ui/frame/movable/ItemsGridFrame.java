@@ -1,5 +1,6 @@
 package com.mercury.platform.ui.frame.movable;
 
+import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.descriptor.StashTabDescriptor;
 import com.mercury.platform.shared.entity.message.ItemTradeNotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
@@ -164,6 +165,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
                     stashTabsContainer.save();
                     MercuryStoreCore.saveConfigSubject.onNext(true);
                     FramesManager.INSTANCE.disableMovement(ItemsGridFrame.class);
+                    repaint();
                 }
             }
         });
@@ -336,6 +338,7 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
             Dimension size = ItemsGridFrame.this.getSize();
             ItemsGridFrame.this.setMaximumSize(size);
             ItemsGridFrame.this.setMinimumSize(size);
+            ItemsGridFrame.this.setPreferredSize(size);
             panel.setBackground(AppThemeColor.FRAME);
             framesConfig.get(ItemsGridFrame.class.getSimpleName()).setFrameSize(getSize());
         }
