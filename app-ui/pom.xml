@@ -55,6 +55,21 @@
         <dependency>
             <groupId>org.pushingpixels</groupId>
             <artifactId>trident</artifactId>
+            <exclusions>
+                <!-- Remove bloat that we don't use. -->
+                <exclusion>
+                    <groupId>com.google.android</groupId>
+                    <artifactId>android</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.swt.gtk.linux</groupId>
+                    <artifactId>x86</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.swt.gtk.linux</groupId>
+                    <artifactId>x86_64</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.imgscalr</groupId>

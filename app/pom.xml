@@ -53,10 +53,6 @@
             <artifactId>log4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.pushingpixels</groupId>
-            <artifactId>trident</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.arnabk</groupId>
             <artifactId>pgslookandfeel</artifactId>
         </dependency>
