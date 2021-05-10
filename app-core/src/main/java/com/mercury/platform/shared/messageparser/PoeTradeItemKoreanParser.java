@@ -8,7 +8,9 @@ import java.util.regex.Matcher;
 
 class PoeTradeItemKoreanParser extends BaseRegexParser {
 
-    /** Any text between {@code \Q} and {@code \E} will be matched as raw text (escaped). */
+    /**
+     * Any text between {@code \Q} and {@code \E} will be matched as raw text (escaped).
+     */
     private final static String poeTradeKoreanRegex = "^\\s*(?<name>.*?): \\Q안녕하세요, \\E(?<league>.*)\\Q(보관함 탭 \"\\E(?<stashtab>[^\"]*)\\Q\", 위치: 왼쪽 \\E(?<left>\\d+)\\Q, 상단 \\E(?<top>\\d+)\\Q)에 \\E(?<price>[\\d.]*)\\s+(?<currency>.*)\\Q(으)로 올려놓은 \\E(?<item>.*)\\Q(을)를 구매하고 싶습니다\\E";
 
     public PoeTradeItemKoreanParser() {

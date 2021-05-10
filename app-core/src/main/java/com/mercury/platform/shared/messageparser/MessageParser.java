@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class MessageParser {
 
-    // TODO: use these patterns?
+    // TODO: these patterns are not completed yet
     private final static String poeAppBulkCurrenciesPattern = "^(.*\\s)?(.+): (\\s*?wtb\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash\\s+?\"(.*?)\";\\s+?left\\s+?(\\d+?),\\s+?top\\s+(\\d+?)\\)\\s*?(.*))$";
     private final static String strTradeStashTabKorPa = "^(.*\\s)?(.+): (안녕하세요, (.+?)\\s*\\(보관함 탭 \"(.*)\", 위치: 왼쪽 (\\d+), 상단 (\\d+)\\)에\\s+?([\\d\\.]*)\\s*(.*)\\s*\\(으\\)로 올려놓은\\s*(.*)을\\(를\\) 구매하고 싶습니다\\s*(.*))$";
     private final static String strBulkCurrenciesKorP = "^(.*\\s)?(.+): (안녕하세요, (.+?)\\s*에\\s+?올려놓은\\s*(.*)을\\(를\\) 제 ([\\d\\.]*)\\s*(.*)\\s*\\(으\\)로 구매하고 싶습니다\\s*(.*))$";

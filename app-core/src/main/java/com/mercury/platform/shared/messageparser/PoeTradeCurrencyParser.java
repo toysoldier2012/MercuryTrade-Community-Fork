@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
-class PoeTradeCurrencyParser extends BaseRegexParser{
+class PoeTradeCurrencyParser extends BaseRegexParser {
 
     private static final String poeCurrencyPattern = "^(.*\\s)?(.+): (.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*))$";
 
@@ -21,11 +21,11 @@ class PoeTradeCurrencyParser extends BaseRegexParser{
     protected NotificationDescriptor parse(Matcher matcher, String whisper) {
         CurrencyTradeNotificationDescriptor tradeNotification = new CurrencyTradeNotificationDescriptor();
         if (matcher.group(6).contains("&") || matcher.group(6)
-                .contains(",")) {  //todo this shit for bulk map
+                                                     .contains(",")) {  //todo this shit for bulk map
             String bulkItems = matcher.group(4) + " " + matcher.group(6);
             tradeNotification.setItems(Arrays.stream(StringUtils.split(bulkItems, ",&"))
-                    .map(String::trim)
-                    .collect(Collectors.toList()));
+                                             .map(String::trim)
+                                             .collect(Collectors.toList()));
         } else {
             tradeNotification.setCurrForSaleCount(Double.parseDouble(matcher.group(4)));
             tradeNotification.setCurrForSaleTitle(matcher.group(6));

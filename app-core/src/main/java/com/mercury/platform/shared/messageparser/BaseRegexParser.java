@@ -23,7 +23,7 @@ abstract class BaseRegexParser {
             try {
                 return Optional.ofNullable(parse(matcher, whisper));
             } catch (Exception e) {
-                log.warn("Parsing of whisper failed: " + whisper, e);
+                log.error("Parsing of whisper failed: " + whisper, e);
             }
         }
         return Optional.empty();
