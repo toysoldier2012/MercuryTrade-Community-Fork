@@ -34,6 +34,13 @@ class PoeTradeItemRussianParser extends BaseRegexParser {
         tradeNotification.setTop(Integer.parseInt(matcher.group("top")));
 //            tradeNotification.setOffer(matcher.group(12));
         tradeNotification.setType(NotificationType.INC_ITEM_MESSAGE);
+
+        final int indexAfterName = whisper.indexOf(":");
+        if (indexAfterName != -1) {
+            final int sourceStringStart = indexAfterName + ": ".length();
+            tradeNotification.setSourceString(whisper.substring(sourceStringStart));
+        }
+
         return tradeNotification;
     }
 }
