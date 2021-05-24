@@ -19,7 +19,7 @@ public class PoeTradeItemKoreanParserTest {
     @ParameterizedTest
     @MethodSource("provideOutgoingKoreanPoetradeItemPurchase")
     void parseKoreanItemTrade(String whisper, String actualNickname, String actualItemName,
-                              double actualCurrencyAmount, String actualCurrencyType, int actualLeft, int actualTop, String actualLeague) throws Exception {
+                              double actualCurrencyAmount, String actualCurrencyType, int actualLeft, int actualTop, String actualLeague, String actualSourceString) throws Exception {
         // Given
         final PoeTradeItemKoreanParser parser = new PoeTradeItemKoreanParser();
 
@@ -38,6 +38,7 @@ public class PoeTradeItemKoreanParserTest {
         assertEquals(actualCurrencyType, tradeDescriptor.getCurrency());
         assertEquals(actualLeft, tradeDescriptor.getLeft());
         assertEquals(actualTop, tradeDescriptor.getTop());
+        assertEquals(actualSourceString, tradeDescriptor.getSourceString());
 
         /*
         Leagues:
@@ -52,11 +53,11 @@ public class PoeTradeItemKoreanParserTest {
     public static Stream<Arguments> provideOutgoingKoreanPoetradeItemPurchase() {
         return Stream.of(
                 Arguments.of(" Ultimatum_stop: 안녕하세요, 결전(보관함 탭 \"잼 \", 위치: 왼쪽 12, 상단 12)에 1 chaos(으)로 올려놓은 레벨 1 0% 향상 보조(을)를 구매하고 싶습니다",
-                        "Ultimatum_stop", "레벨 1 0% 향상 보조", 1.0, "chaos", 12, 12, "결전"),
+                        "Ultimatum_stop", "레벨 1 0% 향상 보조", 1.0, "chaos", 12, 12, "결전", "안녕하세요, 결전(보관함 탭 \"잼 \", 위치: 왼쪽 12, 상단 12)에 1 chaos(으)로 올려놓은 레벨 1 0% 향상 보조(을)를 구매하고 싶습니다"),
                 Arguments.of(" 해그톡식: 안녕하세요, 결전(보관함 탭 \"판매\", 위치: 왼쪽 2, 상단 5)에 7 exalted(으)로 올려놓은 레벨 5 23% 각성한 치명적인 상태 이상 보조(을)를 구매하고 싶습니다",
-                        "해그톡식", "레벨 5 23% 각성한 치명적인 상태 이상 보조" /* Level 4 23% Awakened Deadly Ailments Support */, 7.0, "exalted", 2, 5, "결전"),
+                        "해그톡식", "레벨 5 23% 각성한 치명적인 상태 이상 보조" /* Level 4 23% Awakened Deadly Ailments Support */, 7.0, "exalted", 2, 5, "결전", "안녕하세요, 결전(보관함 탭 \"판매\", 위치: 왼쪽 2, 상단 5)에 7 exalted(으)로 올려놓은 레벨 5 23% 각성한 치명적인 상태 이상 보조(을)를 구매하고 싶습니다"),
                 Arguments.of(" 조이맘: 안녕하세요, 결전(보관함 탭 \"~price 1 chaos\", 위치: 왼쪽 1, 상단 2)에 1 chaos(으)로 올려놓은 광장 지도(Plaza Map)(T6)(을)를 구매하고 싶습니다",
-                        "조이맘", "광장 지도(Plaza Map)(T6)", 1.0, "chaos", 1, 2, "결전")
+                        "조이맘", "광장 지도(Plaza Map)(T6)", 1.0, "chaos", 1, 2, "결전", "안녕하세요, 결전(보관함 탭 \"~price 1 chaos\", 위치: 왼쪽 1, 상단 2)에 1 chaos(으)로 올려놓은 광장 지도(Plaza Map)(T6)(을)를 구매하고 싶습니다")
         );
     }
 }

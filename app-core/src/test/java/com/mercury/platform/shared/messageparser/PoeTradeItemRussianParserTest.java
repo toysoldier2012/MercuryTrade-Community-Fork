@@ -18,7 +18,7 @@ class PoeTradeItemRussianParserTest {
     @ParameterizedTest
     @MethodSource("provideOutgoingRussianPoetradeItemPurchase")
     void parseRussianItemTrade(String whisper, String actualNickname, String actualItemName,
-                              double actualCurrencyAmount, String actualCurrencyType, int actualLeft, int actualTop, String actualLeague) throws Exception {
+                              double actualCurrencyAmount, String actualCurrencyType, int actualLeft, int actualTop, String actualLeague, String actualSourceString) throws Exception {
         // Given
         final PoeTradeItemRussianParser parser = new PoeTradeItemRussianParser();
 
@@ -37,6 +37,7 @@ class PoeTradeItemRussianParserTest {
         assertEquals(actualCurrencyType, tradeDescriptor.getCurrency());
         assertEquals(actualLeft, tradeDescriptor.getLeft());
         assertEquals(actualTop, tradeDescriptor.getTop());
+        assertEquals(actualSourceString, tradeDescriptor.getSourceString());
 
         /*
         Leagues:
@@ -51,9 +52,9 @@ class PoeTradeItemRussianParserTest {
     private static Stream<Arguments> provideOutgoingRussianPoetradeItemPurchase() {
         return Stream.of(
                 Arguments.of(" Кекичоид: Здравствуйте, хочу купить у вас уровень 1 11% Улучшитель за 1 chaos в лиге Ультиматум (секция \"ТЦ\"; позиция: 11 столбец, 5 ряд)",
-                        "Кекичоид", "уровень 1 11% Улучшитель" /* Level 1 11% Enhance support */, 1.0, "chaos", 11, 5, "Ультиматум"),
+                        "Кекичоид", "уровень 1 11% Улучшитель" /* Level 1 11% Enhance support */, 1.0, "chaos", 11, 5, "Ультиматум", "Здравствуйте, хочу купить у вас уровень 1 11% Улучшитель за 1 chaos в лиге Ультиматум (секция \"ТЦ\"; позиция: 11 столбец, 5 ряд)"),
                 Arguments.of(" Destrim: Здравствуйте, хочу купить у вас Табула раса Матерчатая безрукавка за 1 portal в лиге Ультиматум (секция \"Trade 1\"; позиция: 1 столбец, 1 ряд)",
-                        "Destrim", "Табула раса Матерчатая безрукавка" /* Tabula Rasa Simple Robe*/, 1.0, "portal" /*scroll*/, 1, 1, "Ультиматум")
+                        "Destrim", "Табула раса Матерчатая безрукавка" /* Tabula Rasa Simple Robe*/, 1.0, "portal" /*scroll*/, 1, 1, "Ультиматум", "Здравствуйте, хочу купить у вас Табула раса Матерчатая безрукавка за 1 portal в лиге Ультиматум (секция \"Trade 1\"; позиция: 1 столбец, 1 ряд)")
         );
     }
 }
