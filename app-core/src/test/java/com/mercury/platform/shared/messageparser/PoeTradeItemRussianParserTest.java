@@ -45,7 +45,7 @@ class PoeTradeItemRussianParserTest {
         "Стандарт" - standard
         "Одна жизнь" - hardcore
          */
-        assertEquals(actualLeague, tradeDescriptor.getLeague()); // ultimatum
+        assertEquals(actualLeague, tradeDescriptor.getLeague());
     }
 
     private static Stream<Arguments> provideOutgoingRussianPoetradeItemPurchase() {

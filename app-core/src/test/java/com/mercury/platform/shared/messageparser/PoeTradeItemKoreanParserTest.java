@@ -46,7 +46,7 @@ public class PoeTradeItemKoreanParserTest {
         "스탠다드" - standard
         "하드코어" - hardcore
          */
-        assertEquals(actualLeague, tradeDescriptor.getLeague()); // ultimatum
+        assertEquals(actualLeague, tradeDescriptor.getLeague());
     }
 
     public static Stream<Arguments> provideOutgoingKoreanPoetradeItemPurchase() {

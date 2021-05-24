@@ -60,7 +60,7 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
                    message.contains("구매하고 싶습니다" /* "I would like to buy"*/) ||
                    message.contains("Здравствуйте, хочу купить у вас") /* "Hello, I would like to buy" */ ||
                    (message.contains("wtb") && message.contains("(stash")) ||
-                   message.contains("안녕하세요, 강탈" /* hello, ???*/); //pathofexile.com/trade/ // Is this "wtb" + korean correct? Also in TradeInc[...].java
+                   message.contains("안녕하세요, 강탈" /* hello, ???*/); //pathofexile.com/trade/
         }
 
         public abstract String trimString(String src);
