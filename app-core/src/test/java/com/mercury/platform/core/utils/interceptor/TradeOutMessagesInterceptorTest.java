@@ -48,6 +48,7 @@ class TradeOutMessagesInterceptorTest {
         final TradeOutMessagesInterceptor interceptor = new TradeOutMessagesInterceptor();
         final TestSubscriber<NotificationDescriptor> notifications = new TestSubscriber<>();
         MercuryStoreCore.newNotificationSubject.subscribe(notifications);
+        final String tradeString = whisper.substring(("@To " + actualNickname + ": ").length());
 
         // When
         final boolean matched = interceptor.match(whisper);
@@ -60,6 +61,7 @@ class TradeOutMessagesInterceptorTest {
         assertEquals(actualNickname, descriptor.getWhisperNickname());
         assertEquals(NotificationType.OUT_ITEM_MESSAGE, descriptor.getType());
         assertEquals(descriptor.getClass(), ItemTradeNotificationDescriptor.class);
+        assertEquals(tradeString, descriptor.getSourceString());
 
         final ItemTradeNotificationDescriptor tradeDescriptor = (ItemTradeNotificationDescriptor) descriptor;
         assertEquals(actualItemName, tradeDescriptor.getItemName());
@@ -68,6 +70,7 @@ class TradeOutMessagesInterceptorTest {
         assertEquals(actualCurrencyType, tradeDescriptor.getCurrency());
         assertEquals(actualCurrencyAmount, tradeDescriptor.getCurCount());
         assertEquals(actualLeague, tradeDescriptor.getLeague());
+
     }
 
     private static Stream<Arguments> provideOutgoingPoetradeItemPurchase() {
