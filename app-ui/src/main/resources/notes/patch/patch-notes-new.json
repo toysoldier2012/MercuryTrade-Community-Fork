@@ -6,7 +6,7 @@
         "changed": "Fixed errors on higher jdk than 1.8 (tested on 17)"
       },
       {
-        "changed": "Fixed error which prevented to use openjdk (You still need to use java 1.8)"
+        "changed": "Fixed loading error when betrayal image was deleted"
       }
     ]
   },
