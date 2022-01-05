@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -73,8 +74,10 @@ public class MessageFileHandler implements AsSubscriber {
                 message != null && !message.equals("\n"))
                 .collect(Collectors.toList());
 
+        Pattern p = Pattern.compile("20[2-9][0-9]");
         List<String> resultMessages = filteredMessages.stream().filter(message -> {
-            if (message.contains("2019") || message.contains("2020") || message.contains("2021")) { //todo
+            Matcher m = p.matcher(message);
+            if (m.find()) {
                 Date date = new Date(StringUtils.substring(message, 0, 20));
                 return date.after(lastMessageDate);
             } else {
