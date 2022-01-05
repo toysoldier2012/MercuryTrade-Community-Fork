@@ -1,6 +1,11 @@
 [
   {
     "version": "1.1.8",
+    "features": [
+      {
+        "changed": "Added possibility to change betrayal image for any image you want. Read more in README file located in MercuryTrade/resources/app"
+      }
+    ],
     "fix": [
       {
         "changed": "Fixed error with showing popups after year change"
