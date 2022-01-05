@@ -4,8 +4,6 @@ import com.mercury.platform.core.misc.SoundType;
 import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.sun.awt.AWTUtilities;
-import com.sun.jna.platform.WindowUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -162,7 +160,7 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         parent.pack();
         parent.setVisible(true);
 
-        AWTUtilities.setWindowOpaque(parent, false);
+        //AWTUtilities.setWindowOpaque(parent, false);
 
     }
 

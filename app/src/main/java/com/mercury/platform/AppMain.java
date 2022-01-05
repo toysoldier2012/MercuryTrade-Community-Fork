@@ -26,50 +26,56 @@ public class AppMain {
     private static boolean shouldLogPerformance = false;
     private static String MERCURY_TRADE_FOLDER = SystemUtils.IS_OS_WINDOWS ? System.getenv("USERPROFILE") + "\\AppData\\Local\\MercuryTrade" : "AppData/Local/MercuryTrade";
 
+    private static MercuryLoadingFrame mercuryLoadingFrame;
 
     public static void main(String[] args) {
-        System.setProperty("sun.java2d.d3d", "false");
-        System.setProperty("jna.nosys", "true");
+        Thread mercuryLoadingFrameThread = null;
+        try {
+            System.setProperty("sun.java2d.d3d", "false");
+            System.setProperty("jna.nosys", "true");
 
-        new ErrorHandler();
-        Thread mercuryLoadingFrameThread = new Thread(() -> {
-            MercuryLoadingFrame mercuryLoadingFrame = new MercuryLoadingFrame();
-            mercuryLoadingFrame.init();
-            mercuryLoadingFrame.showComponent();
-        });
-        mercuryLoadingFrameThread.start();
+            new ErrorHandler();
+            mercuryLoadingFrameThread = new Thread(() -> {
+                mercuryLoadingFrame = new MercuryLoadingFrame();
+                mercuryLoadingFrame.init();
+                mercuryLoadingFrame.showComponent();
+                mercuryLoadingFrame.subscribe();
+            });
+            mercuryLoadingFrameThread.start();
 
-        checkCreateAppDataFolder();
-        if (args.length == 0) {
-            new ProdStarter().startApplication();
-        } else {
-            new DevStarter().startApplication();
-        }
-
-        String configGamePath = Configuration.get().applicationConfiguration().get().getGamePath();
-        if (configGamePath.equals("") || !isValidGamePath(configGamePath)) {
-            String gamePath = getGamePath();
-            if (gamePath == null) {
-                MercuryStoreCore.appLoadingSubject.onNext(false);
-                GamePathChooser gamePathChooser = new GamePathChooser();
-                gamePathChooser.init();
+            checkCreateAppDataFolder();
+            if (args.length == 0) {
+                new ProdStarter().startApplication();
             } else {
-                gamePath = gamePath + "/";
-                Configuration.get().applicationConfiguration().get().setGamePath(gamePath);
-                MercuryStoreCore.saveConfigSubject.onNext(true);
+                new DevStarter().startApplication();
+            }
+
+            String configGamePath = Configuration.get().applicationConfiguration().get().getGamePath();
+            if (configGamePath.equals("") || !isValidGamePath(configGamePath)) {
+                String gamePath = getGamePath();
+                if (gamePath == null) {
+                    MercuryStoreCore.appLoadingSubject.onNext(false);
+                    GamePathChooser gamePathChooser = new GamePathChooser();
+                    gamePathChooser.init();
+                } else {
+                    gamePath = gamePath + "/";
+                    Configuration.get().applicationConfiguration().get().setGamePath(gamePath);
+                    MercuryStoreCore.saveConfigSubject.onNext(true);
+                    new FileMonitor().start();
+                    FramesManager.INSTANCE.start();
+                    MercuryStoreCore.appLoadingSubject.onNext(false);
+                }
+            } else {
                 new FileMonitor().start();
                 FramesManager.INSTANCE.start();
                 MercuryStoreCore.appLoadingSubject.onNext(false);
             }
-        } else {
-            new FileMonitor().start();
-            FramesManager.INSTANCE.start();
-            MercuryStoreCore.appLoadingSubject.onNext(false);
-        }
-        try {
+
             mercuryLoadingFrameThread.join();
-        } catch (InterruptedException ex) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error(ex);
+            System.exit(-153);
         }
     }
 

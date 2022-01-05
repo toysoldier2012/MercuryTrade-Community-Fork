@@ -6,7 +6,7 @@ import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.AdrComponentPanel;
 import com.mercury.platform.ui.frame.AbstractOverlaidFrame;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.sun.awt.AWTUtilities;
+//import com.sun.awt.AWTUtilities;
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
@@ -29,7 +29,7 @@ public abstract class AbstractAdrFrame<T extends AdrComponentDescriptor> extends
     protected AbstractAdrFrame(T descriptor) {
         super();
         this.descriptor = descriptor;
-        AWTUtilities.setWindowOpaque(this, false);
+        //AWTUtilities.setWindowOpaque(this, false);
     }
 
     private static WinDef.HWND getHWnd(Component w) {

@@ -1,5 +1,19 @@
 [
   {
+    "version": "1.1.8",
+    "fix": [
+      {
+        "changed": "Fixed error with showing popups after year change"
+      },
+      {
+        "changed": "Fixed error which prevented to use openjdk (You still need to use java 1.8)"
+      },
+      {
+        "changed": "Fixed infinite mercury trade icon loading while error occured"
+      }
+    ]
+  },
+  {
     "version": "1.1.7",
     "fix": [
       {

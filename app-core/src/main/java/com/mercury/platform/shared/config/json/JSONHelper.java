@@ -62,7 +62,7 @@ public class JSONHelper {
                         jsonParser.parse(reader),
                         typeToken.getType());
             }
-        } catch (IOException | IllegalStateException | JsonSyntaxException e) {
+        } catch (Exception e) {
             logger.error(e);
             return null;
         }

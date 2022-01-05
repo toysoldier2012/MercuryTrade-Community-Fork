@@ -1,7 +1,7 @@
 package com.mercury.platform;
 
 import com.mercury.platform.ui.misc.AppThemeColor;
-import com.sun.awt.AWTUtilities;
+
 import com.sun.jna.platform.WindowUtils;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class PackTesting {
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
         frame.setAlwaysOnTop(true);
-        AWTUtilities.setWindowOpaque(frame,false);
+        //AWTUtilities.setWindowOpaque(frame,false);
         frame.setLayout(new BoxLayout(frame.getContentPane(),BoxLayout.Y_AXIS));
         JButton button = new JButton("test");
         button.addMouseListener(new MouseAdapter() {

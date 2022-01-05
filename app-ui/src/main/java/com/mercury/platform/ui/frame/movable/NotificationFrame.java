@@ -21,7 +21,6 @@ import com.mercury.platform.ui.components.panel.notification.factory.Notificatio
 import com.mercury.platform.ui.frame.titled.TestEngine;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-import com.sun.awt.AWTUtilities;
 import org.apache.commons.lang3.SystemUtils;
 
 import javax.swing.*;

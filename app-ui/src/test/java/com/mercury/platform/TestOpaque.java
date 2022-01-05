@@ -1,6 +1,6 @@
 package com.mercury.platform;
 
-import com.sun.awt.AWTUtilities;
+
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
@@ -40,7 +40,7 @@ public class TestOpaque {
         /**
          * This sets the background of the window to be transparent.
          */
-        AWTUtilities.setWindowOpaque(w, false);
+        //AWTUtilities.setWindowOpaque(w, false);
 //        AWTUtilities.setWindowOpacity(w, 0.5f);
         setTransparent(w);
     }
