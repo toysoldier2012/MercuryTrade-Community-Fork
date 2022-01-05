@@ -34,7 +34,11 @@ public class HelpIGFrame extends AbstractOverlaidFrame {
         this.setOpacity(this.applicationConfig.get().getMaxOpacity() / 100f);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
-        ImageIcon icon = this.componentsFactory.getImage("app/helpIGImg.png");
+        ImageIcon icon = this.componentsFactory.getImageLocal("app/helpIGImg.png");
+        if (icon == null) {
+            icon = this.componentsFactory.getImage("app/helpIGImg.png");
+        }
+
         Image image = icon.getImage(); // transform it
         Image newimg = image.getScaledInstance(dim.width - MARGIN, -1,  java.awt.Image.SCALE_SMOOTH);
         if(dim.height-MARGIN < newimg.getHeight(null)) {

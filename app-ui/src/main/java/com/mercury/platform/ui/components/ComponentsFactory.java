@@ -29,8 +29,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.text.NumberFormat;
 import java.util.Date;
 
@@ -676,6 +678,20 @@ public class ComponentsFactory {
         BufferedImage icon = null;
         try {
             icon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
+        } catch (IOException e) {
+            log.error(e);
+        }
+        return new ImageIcon(icon);
+    }
+
+    public ImageIcon getImageLocal(String iconPath) {
+        BufferedImage icon = null;
+        try {
+            String filePath = "./resources/" + iconPath;
+            File file = new File(filePath);
+            if (file.exists()) {
+                icon = ImageIO.read(file);
+            }
         } catch (IOException e) {
             log.error(e);
         }
