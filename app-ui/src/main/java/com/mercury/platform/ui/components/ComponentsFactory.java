@@ -691,6 +691,8 @@ public class ComponentsFactory {
             File file = new File(filePath);
             if (file.exists()) {
                 icon = ImageIO.read(file);
+            } else {
+                return null;
             }
         } catch (IOException e) {
             log.error(e);
