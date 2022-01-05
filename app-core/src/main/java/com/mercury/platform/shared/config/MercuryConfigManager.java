@@ -177,7 +177,9 @@ public class MercuryConfigManager implements ConfigManager, AsSubscriber {
             this.services.add((BaseConfigurationService) this.adrConfigurationService);
             this.services.add((BaseConfigurationService) this.iconBundleConfigurationService);
 
-            this.services.forEach(BaseConfigurationService::validate);
+            for (BaseConfigurationService item : this.services) {
+                item.validate();
+            }
 
 
             this.jsonHelper.writeListObject(this.profileDescriptors, new TypeToken<List<ProfileDescriptor>>() {

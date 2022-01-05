@@ -3,6 +3,7 @@ package com.mercury.platform.shared.config.json.deserializer;
 import com.google.gson.*;
 import com.mercury.platform.shared.config.descriptor.adr.*;
 
+import java.awt.*;
 import java.lang.reflect.Type;
 
 
@@ -12,6 +13,7 @@ public class AdrComponentJsonAdapter implements JsonDeserializer<AdrComponentDes
         JsonPrimitive jsonObj = jsonElement.getAsJsonObject().getAsJsonPrimitive("type");
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(AdrTrackerGroupDescriptor.class, new AdrTrackerGroupDeserializer())
+                .registerTypeAdapter(Color.class, new ColorJsonAdapter())
                 .create();
         switch (AdrComponentType.valueOf(jsonObj.getAsString())) {
             case TRACKER_GROUP: {
@@ -32,7 +34,7 @@ public class AdrComponentJsonAdapter implements JsonDeserializer<AdrComponentDes
 
     @Override
     public JsonElement serialize(AdrComponentDescriptor descriptor, Type type, JsonSerializationContext jsonSerializationContext) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Color.class, new ColorJsonAdapter()).create();
         switch (descriptor.getType()) {
             case TRACKER_GROUP: {
                 return gson.toJsonTree(descriptor, AdrTrackerGroupDescriptor.class);

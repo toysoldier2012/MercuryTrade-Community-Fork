@@ -7,6 +7,7 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescripto
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupContentType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 
+import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class AdrTrackerGroupDeserializer implements JsonDeserializer<AdrTrackerG
     public AdrTrackerGroupDescriptor deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonPrimitive jsonObj = jsonElement.getAsJsonObject().getAsJsonPrimitive("contentType");
         JsonArray cellsObj = jsonElement.getAsJsonObject().getAsJsonArray("cells");
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Color.class, new ColorJsonAdapter()).create();
         AdrTrackerGroupDescriptor descriptor = gson.fromJson(jsonElement.getAsJsonObject(), AdrTrackerGroupDescriptor.class);
         switch (AdrTrackerGroupContentType.valueOf(jsonObj.getAsString())) {
             case PROGRESS_BARS: {

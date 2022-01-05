@@ -1,9 +1,9 @@
 package com.mercury.platform.ui.frame.experimental;
 
+import com.mercury.platform.shared.SwingUtilitiesMorph;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.misc.AppThemeColor;
-import sun.swing.SwingUtilities2;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -114,18 +114,18 @@ class ProgressCircleUI extends BasicProgressBarUI {
                 x, y, width, height);
         Rectangle oldClip = g2.getClipBounds();
         g2.setColor(getSelectionForeground());
-        SwingUtilities2.drawString(progressBar, g2, progressString,
+        SwingUtilitiesMorph.drawString(progressBar, g2, progressString,
                 renderLocation.x, renderLocation.y);
         g2.setColor(getSelectionForeground());
         g2.clipRect(width, y, amountFull, height);
-        SwingUtilities2.drawString(progressBar, g2, progressString,
+        SwingUtilitiesMorph.drawString(progressBar, g2, progressString,
                 renderLocation.x, renderLocation.y);
         g2.setClip(oldClip);
     }
 
     @Override
     public void paint(Graphics g, JComponent c) {
-        super.paint(g,c);
+        super.paint(g, c);
         //public void paintDeterminate(Graphics g, JComponent c) {
         Insets b = progressBar.getInsets(); // area for border
         int barRectWidth = progressBar.getWidth() - b.right - b.left;
@@ -208,4 +208,5 @@ class ProgressListener implements PropertyChangeListener {
             progressBar.setValue(progress);
         }
     }
+
 }

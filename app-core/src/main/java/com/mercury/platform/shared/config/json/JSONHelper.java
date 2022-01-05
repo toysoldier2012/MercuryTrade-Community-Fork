@@ -8,11 +8,13 @@ import com.mercury.platform.shared.config.descriptor.adr.AdrComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrTrackerGroupDescriptor;
 import com.mercury.platform.shared.config.json.deserializer.AdrComponentJsonAdapter;
 import com.mercury.platform.shared.config.json.deserializer.AdrTrackerGroupDeserializer;
+import com.mercury.platform.shared.config.json.deserializer.ColorJsonAdapter;
 import com.mercury.platform.shared.entity.message.MercuryError;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -104,6 +106,7 @@ public class JSONHelper {
         try {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(AdrComponentDescriptor.class, new AdrComponentJsonAdapter())
+                    .registerTypeAdapter(Color.class, new ColorJsonAdapter())
                     .create();
             try (JsonWriter writer = new JsonWriter(new FileWriter(dataSource))) {
                 gson.toJson(object, typeToken.getType(), writer);
@@ -118,6 +121,7 @@ public class JSONHelper {
         try {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(AdrComponentDescriptor.class, new AdrComponentJsonAdapter())
+                    .registerTypeAdapter(Color.class, new ColorJsonAdapter())
                     .create();
             JsonParser jsonParser = new JsonParser();
             try (JsonReader reader = new JsonReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(filePath)))) {

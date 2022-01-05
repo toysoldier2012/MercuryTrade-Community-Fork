@@ -1,11 +1,11 @@
 package com.mercury.platform.ui.adr.components.panel.ui;
 
+import com.mercury.platform.shared.SwingUtilitiesMorph;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.IconBundleConfigurationService;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentOrientation;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
 import lombok.Setter;
-import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -52,7 +52,7 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
             Point renderLocation = getStringPlacement(g2, progressString,
                     x, y, width, height);
             g2.setColor(this.getColorByValue());
-            SwingUtilities2.drawString(tracker, g2, progressString,
+            SwingUtilitiesMorph.drawString(tracker, g2, progressString,
                     renderLocation.x, renderLocation.y);
             if (this.descriptor.getOutlineThickness() > 0) {
                 FontRenderContext frc = g2.getFontRenderContext();
@@ -98,9 +98,9 @@ public abstract class BasicMercuryIconTrackerUI<T extends AdrDurationComponentDe
 
     protected Point getStringPlacement(Graphics g, String progressString,
                                        int x, int y, int width, int height) {
-        FontMetrics fontSizer = SwingUtilities2.getFontMetrics(tracker, g,
+        FontMetrics fontSizer = SwingUtilitiesMorph.getFontMetrics(tracker, g,
                 tracker.getFont());
-        int stringWidth = SwingUtilities2.stringWidth(tracker, fontSizer,
+        int stringWidth = SwingUtilitiesMorph.stringWidth(tracker, fontSizer,
                 progressString);
 
         if (descriptor.getOrientation() == AdrComponentOrientation.HORIZONTAL) {
