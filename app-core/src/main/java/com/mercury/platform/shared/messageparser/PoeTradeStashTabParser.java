@@ -8,7 +8,8 @@ import java.util.regex.Matcher;
 
 class PoeTradeStashTabParser extends BaseRegexParser {
 
-    private static final String poeTradeStashTabPattern = "^(.*\\s)?(.+): (.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*?(.*))$";
+//    private static final String poeTradeStashTabPattern = "^(.*\\s)?(.+): (.+ to buy your\\s+?(.+?)(\\s+?listed for\\s+?([\\d\\.]+?)\\s+?(.+))?\\s+?in\\s+?(.+?)\\s+?\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*?(.*))$";
+    private static final String poeTradeStashTabPattern = "^(.*\\s)?(.+): ((.+ to buy your\\s+?(.+?))listed for\\s+?([\\d\\.]+?)\\s+?(.+)\\s+?in\\s+?(.+?)\\s+?\\(stash tab \"(.*)\"; position: left (\\d+), top (\\d+)\\)\\s*?(.*)$)";
 
     public PoeTradeStashTabParser() {
         super(poeTradeStashTabPattern);
@@ -19,7 +20,7 @@ class PoeTradeStashTabParser extends BaseRegexParser {
         ItemTradeNotificationDescriptor tradeNotification = new ItemTradeNotificationDescriptor();
         tradeNotification.setWhisperNickname(matcher.group(2));
         tradeNotification.setSourceString(matcher.group(3));
-        tradeNotification.setItemName(matcher.group(4));
+        tradeNotification.setItemName(matcher.group(5));
         if (matcher.group(6) != null) {
             tradeNotification.setCurCount(Double.parseDouble(matcher.group(6)));
             tradeNotification.setCurrency(matcher.group(7));

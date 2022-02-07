@@ -26,14 +26,16 @@
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
+    <maxHeapSize>256</maxHeapSize>
+    <opt>-XX:+UseG1GC</opt>
   </jre>
   <versionInfo>
-    <fileVersion>1.1.9.0</fileVersion>
-    <txtFileVersion>1.1.9</txtFileVersion>
+    <fileVersion>1.2.0.0</fileVersion>
+    <txtFileVersion>1.2.0</txtFileVersion>
     <fileDescription>MercuryTrade</fileDescription>
     <copyright>Morph21</copyright>
-    <productVersion>1.1.9.0</productVersion>
-    <txtProductVersion>1.1.9</txtProductVersion>
+    <productVersion>1.2.0.0</productVersion>
+    <txtProductVersion>1.2.0</txtProductVersion>
     <productName>MercuryTrade</productName>
     <companyName>Morph</companyName>
     <internalName>MercuryTrade</internalName>

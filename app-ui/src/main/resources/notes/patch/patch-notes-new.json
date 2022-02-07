@@ -1,5 +1,31 @@
 [
   {
+    "version": "1.2.0",
+    "fix": [
+      {
+        "changed": "Fixed errors while item image was not found"
+      },
+      {
+        "changed": "Added base currency images for pathofexile.com/trade"
+      },
+      {
+        "changed": "Fixed error when item name containted 'in' message was wrongly parsed"
+      },
+      {
+        "changed": "Added max heap size to .exe runner to limit memory usage"
+      },
+      {
+        "changed": "Added better garbage collector to .exe runner to reduce cpu load"
+      },
+      {
+        "changed": "Updated betrayal chart for 3.17 (You are still able to replace that image, more in README.txt"
+      },
+      {
+        "changed": "Changed message ui to be more readable when transaction item does not have image"
+      }
+    ]
+  },
+  {
     "version": "1.1.9",
     "fix": [
       {

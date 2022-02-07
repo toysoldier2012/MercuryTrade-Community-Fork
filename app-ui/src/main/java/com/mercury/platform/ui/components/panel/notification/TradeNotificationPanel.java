@@ -173,14 +173,16 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
     }
 
     protected JPanel getForPanel(String signIconPath) {
-        JPanel forPanel = new JPanel(new BorderLayout());
+        JPanel forPanel = new JPanel(new GridBagLayout());
+        forPanel.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
         forPanel.setBackground(AppThemeColor.MSG_HEADER);
         JLabel separator = componentsFactory.getIconLabel(signIconPath, 16);
-        forPanel.add(separator, BorderLayout.LINE_START);
+        separator.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        forPanel.add(separator);
         separator.setHorizontalAlignment(SwingConstants.CENTER);
         JPanel currencyPanel = this.getCurrencyPanel(this.data.getCurCount(), this.data.getCurrency());
         if (currencyPanel != null) {
-            forPanel.add(currencyPanel, BorderLayout.CENTER);
+            forPanel.add(currencyPanel);
         }
         return forPanel;
     }
@@ -197,9 +199,10 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
             currencyButton.addActionListener((action) -> {
                 MercuryStoreCore.findInStashTab.onNext(curIconPath);
             });
-            JPanel curPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.MSG_HEADER);
+            JPanel curPanel = this.componentsFactory.getJPanel(new GridBagLayout(), AppThemeColor.MSG_HEADER);
             curPanel.setAlignmentX(SwingConstants.LEFT);
             JLabel countLabel = this.componentsFactory.getTextLabel(curCountStr, FontStyle.BOLD, 17f);
+            countLabel.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
             countLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             curPanel.add(countLabel);
             curPanel.add(currencyButton);

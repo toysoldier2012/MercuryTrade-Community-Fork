@@ -201,6 +201,14 @@ public class ComponentsFactory {
         return button;
     }
 
+    public JButton getIconButton(String iconPath, float iconSize, Color background, String tooltip) {
+        int i = iconPath.lastIndexOf("/");
+        String temp = iconPath.substring(i + 1);
+        temp = temp.replace(".png", "");
+        return getIconButton(iconPath, iconSize, background, tooltip, temp);
+    }
+
+
     /**
      * Get button with icon
      *
@@ -208,7 +216,7 @@ public class ComponentsFactory {
      * @param iconSize icon size
      * @return JButton object with icon
      */
-    public JButton getIconButton(String iconPath, float iconSize, Color background, String tooltip) {
+    public JButton getIconButton(String iconPath, float iconSize, Color background, String tooltip, String textIfImgNotFound) {
         JButton button = new JButton("") {
             @Override
             protected void paintBorder(Graphics g) {
@@ -255,14 +263,22 @@ public class ComponentsFactory {
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;
         try {
-            BufferedImage buttonIcon = ImageIO.read(getClass().getClassLoader().getResource(iconPath));
-            icon = Scalr.resize(buttonIcon, (int) (scale * iconSize));
+            URL resource = getClass().getClassLoader().getResource(iconPath);
+            if (resource != null) {
+                BufferedImage buttonIcon = ImageIO.read(resource);
+                icon = Scalr.resize(buttonIcon, (int) (scale * iconSize));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (icon != null) {
             button.setIcon(new ImageIcon(icon));
+        } else {
+            button.setText(textIfImgNotFound);
+            button.setForeground(AppThemeColor.TEXT_DEFAULT);
+            button.setFont(getFont(FontStyle.REGULAR, scale * 14));
         }
+
         return button;
     }
 
