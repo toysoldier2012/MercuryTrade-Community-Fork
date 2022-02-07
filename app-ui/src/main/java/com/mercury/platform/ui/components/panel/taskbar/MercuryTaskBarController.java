@@ -30,6 +30,7 @@ public class MercuryTaskBarController implements TaskBarController {
         MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
         MercuryStoreCore.alertSubject.onNext("Pushbullet notifications on");
         MercuryStoreCore.pushbulletSubject.onNext(true);
+        MercuryStoreCore.saveConfigSubject.onNext(true);
     }
 
     @Override
@@ -37,6 +38,7 @@ public class MercuryTaskBarController implements TaskBarController {
         MercuryStoreUI.repaintSubject.onNext(TaskBarFrame.class);
         MercuryStoreCore.alertSubject.onNext("Pushbullet notifications off");
         MercuryStoreCore.pushbulletSubject.onNext(false);
+        MercuryStoreCore.saveConfigSubject.onNext(true);
     }
 
     @Override

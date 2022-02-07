@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.2.1",
+    "fix": [
+      {
+        "changed": "Fixed saving configuration on pushbullet on/off switch"
+      }
+    ]
+  },
+  {
     "version": "1.2.0",
     "fix": [
       {
