@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.2.2",
+    "fix": [
+      {
+        "changed": "Fixed overlay capture feature"
+      }
+    ]
+  },
+  {
     "version": "1.2.1",
     "fix": [
       {

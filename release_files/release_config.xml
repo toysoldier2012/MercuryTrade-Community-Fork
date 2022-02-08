@@ -30,12 +30,12 @@
     <opt>-XX:+UseG1GC</opt>
   </jre>
   <versionInfo>
-    <fileVersion>1.2.1.0</fileVersion>
-    <txtFileVersion>1.2.1</txtFileVersion>
+    <fileVersion>1.2.2.0</fileVersion>
+    <txtFileVersion>1.2.2</txtFileVersion>
     <fileDescription>MercuryTrade</fileDescription>
     <copyright>Morph21</copyright>
-    <productVersion>1.2.1.0</productVersion>
-    <txtProductVersion>1.2.1</txtProductVersion>
+    <productVersion>1.2.2.0</productVersion>
+    <txtProductVersion>1.2.2</txtProductVersion>
     <productName>MercuryTrade</productName>
     <companyName>Morph</companyName>
     <internalName>MercuryTrade</internalName>
