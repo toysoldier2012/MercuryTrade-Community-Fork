@@ -1,5 +1,27 @@
 [
   {
+    "version": "1.2.3",
+    "minorChanges": [
+      {
+        "changed": "Check for updates, will now show if you have newest version without going to github. (You still need to download it manually)"
+      }
+    ],
+    "fix": [
+      {
+        "changed": "Removed sending pushbullet notification on outgoing notifications"
+      },
+      {
+        "changed": "Fixed high cpu usage"
+      },
+      {
+        "changed": "Fixed tutorial window not resizable"
+      },
+      {
+        "changed": "Fixed history file parsing"
+      }
+    ]
+  },
+  {
     "version": "1.2.2",
     "fix": [
       {

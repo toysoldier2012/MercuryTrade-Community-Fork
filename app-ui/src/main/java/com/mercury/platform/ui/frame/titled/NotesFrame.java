@@ -28,8 +28,8 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         super();
         this.currentNotes = notes;
         this.type = type;
-        this.processEResize = false;
-        this.processSEResize = false;
+        this.processEResize = true;
+        this.processSEResize = true;
         this.progressBarFrame = new ProgressBarFrame();
         this.progressBarFrame.init();
         if (type.equals(NotesType.INFO)) {
@@ -72,7 +72,7 @@ public class NotesFrame extends AbstractTitledComponentFrame {
         JButton gitHub = componentsFactory.getBorderedButton("GitHub");
         gitHub.addActionListener(action -> {
             try {
-                Desktop.getDesktop().browse(new URI("https://github.com/Morph21/MercuryTrade-Community-Fork/releases"));
+                Desktop.getDesktop().browse(new URI("https://github.com/Morph21/MercuryTrade-Community-Fork/releases/latest"));
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -208,7 +208,13 @@ public class NotesFrame extends AbstractTitledComponentFrame {
             textArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
             JPanel imgPanel = componentsFactory.getTransparentPanel(new FlowLayout(FlowLayout.CENTER));
             JPanel textPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-            textPanel.add(textArea, BorderLayout.CENTER);
+
+            JPanel panel = componentsFactory.getTransparentPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(textArea);
+
+
+            textPanel.add(panel, BorderLayout.CENTER);
             imgPanel.add(image);
             innerContent.add(imgPanel);
             innerContent.add(textPanel);

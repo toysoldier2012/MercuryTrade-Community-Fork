@@ -39,7 +39,7 @@
     "title" : "Main feature: History",
     "text" : "Each notification you receive is stored by MercuryTrade in a separate file. \n\nYou won't be losing potential trades due to client crashes or relogs anymore!",
     "image" : "notes/first/3.png",
-    "layout" : "HORIZONTAL"
+    "layout" : "VERTICAL"
   },
   {
     "title" : "Major feature: Chat Scanner",

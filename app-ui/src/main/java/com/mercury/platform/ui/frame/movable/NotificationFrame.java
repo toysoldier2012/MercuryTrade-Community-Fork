@@ -118,7 +118,9 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                 }
                 if (this.preProcessor.isAllowed(notification)) {
                     MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
-                    PushBulletManager.INSTANCE.sendPush(notification.getSourceString(), notification.getWhisperNickname());
+                    if (NotificationType.INC_ITEM_MESSAGE.equals(notification.getType()) || NotificationType.INC_CURRENCY_MESSAGE.equals(notification.getType())) {
+                        PushBulletManager.INSTANCE.sendPush(notification.getSourceString(), notification.getWhisperNickname());
+                    }
                     this.addNotification(notificationPanel);
                 }
             });
@@ -129,7 +131,7 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
                         .setData(message)
                         .setComponentsFactory(this.componentsFactory)
                         .build();
-                PushBulletManager.INSTANCE.sendPush(message.getMessage().replaceAll("\\<[^>]*>",""), message.getNickName());
+                PushBulletManager.INSTANCE.sendPush(message.getMessage().replaceAll("\\<[^>]*>", ""), message.getNickName());
                 this.addNotification(notificationPanel);
             });
         });

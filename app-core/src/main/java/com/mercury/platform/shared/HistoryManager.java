@@ -37,6 +37,11 @@ public class HistoryManager {
                 }
             } catch (Exception e) {
                 logger.error("Error during loading history file: ", e);
+                try {
+                    configFile.delete();
+                } catch (Exception ex) {
+                    logger.error("Cannot delete file: " + configFile.getPath() + " please remove it manually and restart MercuryTrade", ex);
+                }
             }
         } else {
             createEmptyFile();
@@ -70,6 +75,14 @@ public class HistoryManager {
 
         } catch (Exception e) {
             logger.error("Error during adding message to history file: ", e);
+            File configFile = new File(HISTORY_FILE);
+            try {
+                if (configFile.exists()) {
+                    configFile.delete();
+                }
+            } catch (Exception ex) {
+                logger.error("Cannot delete file: " + configFile.getPath() + " please remove it manually and restart MercuryTrade", ex);
+            }
         }
     }
 

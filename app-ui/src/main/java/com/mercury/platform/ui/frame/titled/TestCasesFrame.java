@@ -57,16 +57,16 @@ public class TestCasesFrame extends AbstractTitledComponentFrame {
         testPanel.add(textLabel, titleColumn);
         titleColumn.gridy++;
 
-        JButton button0 = componentsFactory.getBorderedButton("Click");
-        button0.addActionListener(action -> {
-            clickThroughWindow();
-        });
-        ;
-        testPanel.add(button0, buttonColumn);
-        buttonColumn.gridy++;
-        JLabel textLabel0 = componentsFactory.getTextLabel("Transparent clickthrough window test");
-        testPanel.add(textLabel0, titleColumn);
-        titleColumn.gridy++;
+//        JButton button0 = componentsFactory.getBorderedButton("Click");
+//        button0.addActionListener(action -> {
+//            clickThroughWindow();
+//        });
+//        ;
+//        testPanel.add(button0, buttonColumn);
+//        buttonColumn.gridy++;
+//        JLabel textLabel0 = componentsFactory.getTextLabel("Transparent clickthrough window test");
+//        testPanel.add(textLabel0, titleColumn);
+//        titleColumn.gridy++;
 
         JButton button1 = componentsFactory.getBorderedButton("Click");
         button1.addActionListener(action -> {

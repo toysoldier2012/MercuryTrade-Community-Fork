@@ -13,6 +13,8 @@ import com.mercury.platform.shared.entity.message.NotificationDescriptor;
 import com.mercury.platform.shared.entity.message.PlainMessageDescriptor;
 import rx.subjects.PublishSubject;
 
+import java.awt.*;
+
 
 public class MercuryStoreCore {
     public static final PublishSubject<SoundType> soundSubject = PublishSubject.create();
@@ -66,4 +68,5 @@ public class MercuryStoreCore {
     public static final PublishSubject<NotificationDescriptor> expiredNotificationSubject = PublishSubject.create();
 
     public static final PublishSubject<VulkanDescriptor> vulkanSupportSubject = PublishSubject.create();
+    public static final PublishSubject<Component> checkForUpdatesSubject = PublishSubject.create();
 }

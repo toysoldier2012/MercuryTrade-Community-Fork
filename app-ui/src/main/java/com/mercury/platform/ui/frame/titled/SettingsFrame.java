@@ -1,23 +1,31 @@
 package com.mercury.platform.ui.frame.titled;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.mercury.platform.core.MercuryConstants;
 import com.mercury.platform.core.update.core.holder.ApplicationHolder;
 import com.mercury.platform.shared.UpdateManager;
 import com.mercury.platform.shared.config.descriptor.FrameDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrComponentType;
 import com.mercury.platform.shared.config.descriptor.adr.AdrDurationComponentDescriptor;
 import com.mercury.platform.shared.config.descriptor.adr.AdrProgressBarDescriptor;
+import com.mercury.platform.shared.config.json.JSONHelper;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.ui.adr.components.panel.ui.MercuryTracker;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.panel.settings.MenuPanel;
 import com.mercury.platform.ui.components.panel.settings.page.GlobalHotkeyGroup;
+import com.mercury.platform.ui.dialog.AlertDialog;
+import com.mercury.platform.ui.dialog.OkDialog;
 import com.mercury.platform.ui.manager.FramesManager;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
 import com.mercury.platform.ui.misc.note.Note;
 import com.mercury.platform.ui.misc.note.NotesLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.http.HttpConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,12 +33,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class SettingsFrame extends AbstractTitledComponentFrame {
     private final static Logger logger = LogManager.getLogger(SettingsFrame.class.getSimpleName());
     private JPanel currentPanel;
     private JPanel root;
+    private Gson gson = new Gson();
 
     public SettingsFrame() {
         super();
@@ -158,15 +173,24 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         JButton openTutorial = this.getOperationButton("Open tutorial", "app/tutorial.png");
         openTutorial.addActionListener(action -> {
             FramesManager.INSTANCE.hideFrame(SettingsFrame.class);
-            FramesManager.INSTANCE.preShowFrame(NotesFrame.class);
+            FramesManager.INSTANCE.showFrame(NotesFrame.class);
         });
         JButton checkUpdates = this.getOperationButton("Check for updates", "app/check-update.png");
+
         checkUpdates.addActionListener(action -> {
-            try {
-                Desktop.getDesktop().browse(new URI("https://github.com/Morph21/MercuryTrade-Community-Fork/releases"));
-            } catch (Exception e) {
-                logger.error("Opening browser failed", e);
-            }
+            checkUpdates.setText("Hamsters are running");
+            checkUpdates.setEnabled(false);
+            repaint();
+            SwingWorker worker = new SwingWorker() {
+                @Override
+                protected Object doInBackground() throws Exception {
+                    SettingsFrame.this.checkForUpdates();
+                    checkUpdates.setText("Check for updates");
+                    checkUpdates.setEnabled(true);
+                    return null;
+                }
+            };
+            worker.execute();
         });
         JButton openTests = this.getOperationButton("Open tests", "app/open-tests.png");
         openTests.addActionListener(action -> {
@@ -233,4 +257,65 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         super.hideComponent();
         MercuryStoreCore.showingDelaySubject.onNext(true);
     }
+
+    public void checkForUpdates() {
+        GithubReleaseResponse response = getNewestVersion();
+
+        if (response == null) {
+            AlertDialog dialog = new AlertDialog(callback -> {
+                if (callback) {
+                    try {
+                        Desktop.getDesktop().browse(new URI("https://github.com/Morph21/MercuryTrade-Community-Fork/releases/latest"));
+                    } catch (Exception e) {
+                        logger.error(e);
+                    }
+                }
+            }, "There was a problem with checking newest version, do you want to manually check it?", SettingsFrame.this);
+            dialog.setTitle("Check for updates");
+            dialog.setVisible(true);
+        } else if (StringUtils.isNotEmpty(response.getTag_name()) && response.getTag_name().equals(MercuryConstants.APP_VERSION)) {
+            OkDialog dialog = new OkDialog(null, "You have the newest version", SettingsFrame.this);
+            dialog.setTitle("Check for updates");
+            dialog.setVisible(true);
+        } else {
+            AlertDialog dialog = new AlertDialog(callback -> {
+                if (callback) {
+                    try {
+                        Desktop.getDesktop().browse(new URI("https://github.com/Morph21/MercuryTrade-Community-Fork/releases/latest"));
+                    } catch (Exception e) {
+                        logger.error(e);
+                    }
+                }
+            }, "There is a newer version, do you want to go to github?", SettingsFrame.this);
+            dialog.setTitle("Check for updates");
+            dialog.setVisible(true);
+        }
+    }
+
+    private GithubReleaseResponse getNewestVersion() {
+        try {
+            URL url = new URL("https://api.github.com/repos/Morph21/MercuryTrade-Community-Fork/releases/latest");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            int code = con.getResponseCode();
+            if (code == 200) {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+                con.disconnect();
+                return gson.fromJson(content.toString(), GithubReleaseResponse.class);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            logger.error(e);
+            return null;
+        }
+    }
+
 }

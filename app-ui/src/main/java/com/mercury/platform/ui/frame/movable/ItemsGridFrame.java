@@ -21,6 +21,9 @@ import java.awt.event.*;
 import java.util.List;
 import java.util.Map;
 
+import static java.awt.event.ItemEvent.DESELECTED;
+import static java.awt.event.ItemEvent.SELECTED;
+
 public class ItemsGridFrame extends AbstractMovableComponentFrame {
     private ItemsGridPanel itemsGridPanel;
     private HorizontalScrollContainer tabsContainer;
@@ -97,39 +100,63 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         JPanel topPanel = componentsFactory.getTransparentPanel(new BorderLayout());
         topPanel.setBackground(AppThemeColor.FRAME);
         JPanel headerPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        JPanel defaultGridPanel = componentsFactory.getTransparentPanel(new GridLayout(12, 12));
-        defaultGridPanel.setBorder(null);
-        for (int x = 0; x < 12; x++) {
-            for (int y = 0; y < 12; y++) {
-                defaultGridPanel.add(getCellPlaceholder());
-            }
-        }
-        defaultGridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
 
-        JPanel quadGridPanel = componentsFactory.getTransparentPanel(new GridLayout(24, 24));
-        quadGridPanel.setBorder(null);
-        for (int x = 0; x < 24; x++) {
-            for (int y = 0; y < 24; y++) {
-                quadGridPanel.add(getCellPlaceholder());
-            }
-        }
-        quadGridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
+        JPanel defaultGridPanel = createGridPanel(12,12);
+        JPanel quadGridPanel = createGridPanel(24,24);
+
+//        JPanel folderDefaultGridPanel = createGridPanel(12,12);
+//        JPanel folderQuadGridPanel = createGridPanel(24,24);
+//
+//        JPanel separator = componentsFactory.getSeparator();
+
         JPanel labelPanel = componentsFactory.getTransparentPanel(new BorderLayout());
-        JComboBox tabType = componentsFactory.getComboBox(new String[]{"1x1", "4x4"});
+        JComboBox tabType = componentsFactory.getComboBox(new String[]{"1x1", "4x4"});//, "Folder 1x1", "Folder 4x4"});
         tabType.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                String item = (String) e.getItem();
+            String item;
+            switch (e.getStateChange()) {
+                case DESELECTED:
+                    item = (String) e.getItem();
 
-                if (item.equals("4x4")) {
-                    panel.remove(defaultGridPanel);
-                    panel.add(quadGridPanel, BorderLayout.CENTER);
-                } else {
-                    panel.remove(quadGridPanel);
-                    panel.add(defaultGridPanel, BorderLayout.CENTER);
-                }
-                this.pack();
-                this.repaint();
-                this.revalidate();
+                    switch (item) {
+                        case "1x1":
+                            panel.remove(defaultGridPanel);
+                            break;
+                        case "4x4":
+                            panel.remove(quadGridPanel);
+                            break;
+//                        case "Folder 1x1":
+//                            topPanel.remove(separator);
+//                            panel.remove(folderDefaultGridPanel);
+//                            break;
+//                        case "Folder 4x4":
+//                            topPanel.remove(separator);
+//                            panel.remove(folderQuadGridPanel);
+//                            break;
+                    }
+                    break;
+                case SELECTED:
+                    item = (String) e.getItem();
+
+                    switch (item) {
+                        case "1x1":
+                            panel.add(defaultGridPanel, BorderLayout.CENTER);
+                            break;
+                        case "4x4":
+                            panel.add(quadGridPanel, BorderLayout.CENTER);
+                            break;
+//                        case "Folder 1x1":
+//                            topPanel.add(separator, BorderLayout.PAGE_END);
+//                            panel.add(folderDefaultGridPanel, BorderLayout.CENTER);
+//                            break;
+//                        case "Folder 4x4":
+//                            topPanel.add(separator, BorderLayout.PAGE_END);
+//                            panel.add(folderQuadGridPanel, BorderLayout.CENTER);
+//                            break;
+                    }
+                    this.pack();
+                    this.repaint();
+                    this.revalidate();
+                    break;
             }
         });
         tabType.setPreferredSize(new Dimension((int) (componentsFactory.getScale() * 70), tabType.getHeight()));
@@ -144,18 +171,18 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         JButton disableButton = componentsFactory.getBorderedButton(title);
         disableButton.setPreferredSize(new Dimension((int) (90 * componentsFactory.getScale()), (int) (24 * componentsFactory.getScale())));
         componentsFactory.setUpToggleCallbacks(disableButton,
-                                               () -> {
-                                                   disableButton.setText("Enable");
-                                                   titleLabel.setForeground(AppThemeColor.TEXT_DISABLE);
-                                                   applicationConfig.get().setItemsGridEnable(false);
-                                                   repaint();
-                                               },
-                                               () -> {
-                                                   disableButton.setText("Disable");
-                                                   titleLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
-                                                   applicationConfig.get().setItemsGridEnable(true);
-                                                   repaint();
-                                               }, this.applicationConfig.get().isItemsGridEnable());
+                () -> {
+                    disableButton.setText("Enable");
+                    titleLabel.setForeground(AppThemeColor.TEXT_DISABLE);
+                    applicationConfig.get().setItemsGridEnable(false);
+                    repaint();
+                },
+                () -> {
+                    disableButton.setText("Disable");
+                    titleLabel.setForeground(AppThemeColor.TEXT_NICKNAME);
+                    applicationConfig.get().setItemsGridEnable(true);
+                    repaint();
+                }, this.applicationConfig.get().isItemsGridEnable());
         JButton hideButton = componentsFactory.getBorderedButton("Save");
         hideButton.setPreferredSize(new Dimension((int) (90 * componentsFactory.getScale()), (int) (24 * componentsFactory.getScale())));
         hideButton.addMouseListener(new MouseAdapter() {
@@ -228,6 +255,18 @@ public class ItemsGridFrame extends AbstractMovableComponentFrame {
         panel.add(defaultGridPanel, BorderLayout.CENTER);
         setUpResizePanels(panel);
         return panel;
+    }
+
+    private JPanel createGridPanel(int rows, int cols) {
+        JPanel gridPanel = componentsFactory.getTransparentPanel(new GridLayout(rows, cols));
+        gridPanel.setBorder(null);
+        for (int x = 0; x < rows; x++) {
+            for (int y = 0; y < cols; y++) {
+                gridPanel.add(getCellPlaceholder());
+            }
+        }
+        gridPanel.setBackground(AppThemeColor.FRAME_ALPHA);
+        return gridPanel;
     }
 
     private JPanel getCellPlaceholder() {

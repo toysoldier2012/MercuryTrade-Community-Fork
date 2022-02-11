@@ -104,7 +104,7 @@ public abstract class NotificationPanel<T, C> extends JPanel implements AsSubscr
                 this.paintAlphaValue = 1.0f;
             }
         }
-        this.repaint();
+        //this.repaint();
     }
 
     protected JPanel getTimePanel() {
