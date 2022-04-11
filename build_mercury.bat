@@ -1,4 +1,5 @@
 echo off
+cls
 echo MercuryTrade build starting
 echo mvn clean package
 call mvn clean package
