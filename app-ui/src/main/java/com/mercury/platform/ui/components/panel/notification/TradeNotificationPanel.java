@@ -187,6 +187,28 @@ public abstract class TradeNotificationPanel<T extends TradeNotificationDescript
         return forPanel;
     }
 
+    protected JPanel getNicknamePanel(JLabel nicknameLabel) {
+        JPanel nickLabelPanel = this.componentsFactory.getJPanel(new GridLayout(), AppThemeColor.MSG_HEADER);
+        nickLabelPanel.setPreferredSize(new Dimension(80, 20));
+        nickLabelPanel.add(nicknameLabel);
+        nickLabelPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                nickLabelPanel.setPreferredSize(null);
+                nickLabelPanel.revalidate();
+                super.mouseEntered(e);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                nickLabelPanel.setPreferredSize(new Dimension(80, 20));
+                nickLabelPanel.revalidate();
+                super.mouseExited(e);
+            }
+        });
+        return nickLabelPanel;
+    }
+
     protected JPanel getCurrencyPanel(Double curCount, String curIconPath) {
         String curCountStr = " ";
         if (curCount > 0) {

@@ -114,7 +114,7 @@ public class TestEngine {
         currency.add("Orb of Annulment");
         currency.add("Divine Vessel");
 
-        nickNames.add("<QWE> Example1");
+        nickNames.add("<QWE> ExtraLongNicknameExample");
         nickNames.add("Example2");
         nickNames.add("<QWE> Example3");
         nickNames.add("Example4");

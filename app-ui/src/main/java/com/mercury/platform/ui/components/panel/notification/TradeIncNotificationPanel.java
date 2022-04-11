@@ -23,10 +23,13 @@ public abstract class TradeIncNotificationPanel<T extends TradeNotificationDescr
         JPanel nickNamePanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
         this.nicknameLabel = this.componentsFactory.getTextLabel(FontStyle.BOLD, AppThemeColor.TEXT_NICKNAME, TextAlignment.LEFTOP, 15f, this.getNicknameText());
         nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
-        JPanel headerPanel = this.componentsFactory.getJPanel(new GridBagLayout(), AppThemeColor.MSG_HEADER);
-        headerPanel.add(this.getExpandButton());
-        headerPanel.add(this.nicknameLabel);
-        headerPanel.add(this.getForPanel("app/incoming_arrow.png"));
+        JPanel headerPanel = this.componentsFactory.getJPanel(new BorderLayout(), AppThemeColor.MSG_HEADER);
+        headerPanel.add(this.getExpandButton(), BorderLayout.LINE_START);
+
+        JPanel nickLabelPanel = this.getNicknamePanel(this.nicknameLabel);
+
+        headerPanel.add(nickLabelPanel, BorderLayout.CENTER);
+        headerPanel.add(this.getForPanel("app/incoming_arrow.png"), BorderLayout.LINE_END);
         nickNamePanel.add(headerPanel, BorderLayout.LINE_START);
         root.add(nickNamePanel, BorderLayout.CENTER);
 

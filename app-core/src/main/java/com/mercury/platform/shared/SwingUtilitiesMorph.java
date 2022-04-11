@@ -1,9 +1,8 @@
 package com.mercury.platform.shared;
 
-import sun.awt.SunToolkit;
-import sun.font.CharToGlyphMapper;
-import sun.print.ProxyPrintGraphics;
-import sun.swing.PrintColorUIResource;
+//import sun.awt.SunToolkit;
+//import sun.print.ProxyPrintGraphics;
+//import sun.swing.PrintColorUIResource;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +19,10 @@ public class SwingUtilitiesMorph {
     private static final int CHAR_BUFFER_SIZE = 100;
     private static final Object charsBufferLock = new Object();
     private static char[] charsBuffer = new char[CHAR_BUFFER_SIZE];
+    public static final int HI_SURROGATE_START = 0xD800;
+    public static final int HI_SURROGATE_END = 0xDBFF;
+    public static final int LO_SURROGATE_START = 0xDC00;
+    public static final int LO_SURROGATE_END = 0xDFFF;
 
     public static void drawString(JComponent c, Graphics g, String text,
                                   int x, int y) {
@@ -54,9 +57,9 @@ public class SwingUtilitiesMorph {
                     }
                     /* Use alternate print color if specified */
                     Color col = g2d.getColor();
-                    if (col instanceof PrintColorUIResource) {
-                        g2d.setColor(((PrintColorUIResource) col).getPrintColor());
-                    }
+//                    if (col instanceof PrintColorUIResource) {
+//                        g2d.setColor(((PrintColorUIResource) col).getPrintColor());
+//                    }
 
                     layout.draw(g2d, x, y);
 
@@ -145,16 +148,16 @@ public class SwingUtilitiesMorph {
             }
         }
 
-        public static AATextInfo getAATextInfo(boolean lafCondition) {
-            SunToolkit.setAAFontSettingsCondition(lafCondition);
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            Object map = tk.getDesktopProperty(SunToolkit.DESKTOPFONTHINTS);
-            if (map instanceof Map) {
-                return getAATextInfoFromMap((Map) map);
-            } else {
-                return null;
-            }
-        }
+//        public static AATextInfo getAATextInfo(boolean lafCondition) {
+//            SunToolkit.setAAFontSettingsCondition(lafCondition);
+//            Toolkit tk = Toolkit.getDefaultToolkit();
+//            Object map = tk.getDesktopProperty(SunToolkit.DESKTOPFONTHINTS);
+//            if (map instanceof Map) {
+//                return getAATextInfoFromMap((Map) map);
+//            } else {
+//                return null;
+//            }
+//        }
 
         Object aaHint;
         Integer lcdContrastHint;
@@ -200,8 +203,9 @@ public class SwingUtilitiesMorph {
     public static Graphics2D getGraphics2D(Graphics g) {
         if (g instanceof Graphics2D) {
             return (Graphics2D) g;
-        } else if (g instanceof ProxyPrintGraphics) {
-            return (Graphics2D) (((ProxyPrintGraphics) g).getGraphics());
+//        } else if (g instanceof ProxyPrintGraphics) {
+//            return (Graphics2D) (((ProxyPrintGraphics) g).getGraphics());
+//        }
         } else {
             return null;
         }
@@ -272,8 +276,8 @@ public class SwingUtilitiesMorph {
     public static boolean isNonSimpleChar(char ch) {
         return
                 isComplexCharCode(ch) ||
-                        (ch >= CharToGlyphMapper.HI_SURROGATE_START &&
-                                ch <= CharToGlyphMapper.LO_SURROGATE_END);
+                        (ch >= HI_SURROGATE_START &&
+                                ch <= LO_SURROGATE_END);
     }
 
     public static boolean isComplexText(char[] chs, int start, int limit) {

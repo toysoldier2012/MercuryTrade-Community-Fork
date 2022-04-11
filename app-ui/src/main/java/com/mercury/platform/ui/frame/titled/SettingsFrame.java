@@ -296,6 +296,7 @@ public class SettingsFrame extends AbstractTitledComponentFrame {
         try {
             URL url = new URL("https://api.github.com/repos/Morph21/MercuryTrade-Community-Fork/releases/latest");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestProperty("User-Agent", "request");
             con.setRequestMethod("GET");
             int code = con.getResponseCode();
             if (code == 200) {

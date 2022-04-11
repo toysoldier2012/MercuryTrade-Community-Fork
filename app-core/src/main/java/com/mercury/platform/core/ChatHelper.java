@@ -11,6 +11,7 @@ import com.sun.jna.platform.DesktopWindow;
 import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinUser;
 import org.apache.commons.lang3.SystemUtils;
 
 import javax.swing.*;
@@ -39,6 +40,11 @@ public class ChatHelper implements AsSubscriber {
     private void executeClipboardMessage() {
         if (clipboardMessageOn && isGameOpen()) {
             this.gameToFront();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             MercuryStoreCore.blockHotkeySubject.onNext(true);
             robot.keyRelease(KeyEvent.VK_ALT);
             robot.keyPress(KeyEvent.VK_ENTER);
@@ -189,6 +195,7 @@ public class ChatHelper implements AsSubscriber {
         clipboardMessageOn = true;
     }
 
+
     final WinDef.HWND HWND_TOPMOST = new WinDef.HWND(new Pointer(-1));
     final int SWP_NOSIZE = 0x0001;
     final int SWP_NOMOVE = 0x0002;
@@ -196,22 +203,48 @@ public class ChatHelper implements AsSubscriber {
 
     private void gameToFront() {
         if (SystemUtils.IS_OS_WINDOWS) {
-            User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
+            WindowUtils.getAllWindows(false).forEach(window -> {
                 char[] className = new char[512];
-                User32.INSTANCE.GetClassName(hWnd, className, 512);
-                String wText = Native.toString(className);
+                User32.INSTANCE.GetClassName(window.getHWND(), className, 512);
+                if (Native.toString(className).equals("POEWindowClass")) {
+                    User32.INSTANCE.ShowWindow(window.getHWND(), 5);
 
-                if (wText.isEmpty()) {
-                    return true;
+                    boolean isAtFront = User32.INSTANCE.SetForegroundWindow(window.getHWND());
+                    int counter = 0;
+                    while (!isAtFront && counter < 10) {
+                        isAtFront = User32.INSTANCE.SetForegroundWindow(window.getHWND());
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        counter++;
+                    }
+
+                    User32.INSTANCE.SetFocus(window.getHWND());
                 }
-                if (wText.equals("POEWindowClass")) {
-                    User32.INSTANCE.SetForegroundWindow(hWnd);
-                    User32.INSTANCE.SetFocus(hWnd);
-                    return false;
-                }
-                return true;
-            }, null);
+            });
+//            User32.INSTANCE.EnumWindows((hWnd, arg1) -> {
+//                char[] className = new char[512];
+//                User32.INSTANCE.GetClassName(hWnd, className, 512);
+//                String wText = Native.toString(className);
+//
+//
+//                if (wText.isEmpty()) {
+//                    System.out.println("wText is empty");
+//                    return true;
+//                }
+//                if (wText.equals("POEWindowClass")) {
+//                    System.out.println("wText equals poe class");
+//                    User32.INSTANCE.SetForegroundWindow(hWnd);
+//                    User32.INSTANCE.SetFocus(hWnd);
+//                    return false;
+//                }
+//                System.out.println("after if statement");
+//                return true;
+//            }, null);
         }
+
     }
 
     private boolean isGameOpen() {

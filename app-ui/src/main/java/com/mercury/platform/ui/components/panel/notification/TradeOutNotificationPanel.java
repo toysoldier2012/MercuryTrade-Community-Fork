@@ -30,7 +30,10 @@ public abstract class TradeOutNotificationPanel<T extends TradeNotificationDescr
         this.nicknameLabel.setBorder(BorderFactory.createEmptyBorder(0,4,0,4));
         JPanel headerPanel = this.componentsFactory.getJPanel(new GridBagLayout(), AppThemeColor.MSG_HEADER);
         headerPanel.add(this.getExpandButton());
-        headerPanel.add(this.nicknameLabel);
+
+        JPanel nickLabelPanel = this.getNicknamePanel(this.nicknameLabel);
+
+        headerPanel.add(nickLabelPanel);
         headerPanel.add(this.getForPanel("app/outgoing_arrow.png"));
         nickNamePanel.add(headerPanel, BorderLayout.LINE_START);
         root.add(nickNamePanel, BorderLayout.CENTER);
