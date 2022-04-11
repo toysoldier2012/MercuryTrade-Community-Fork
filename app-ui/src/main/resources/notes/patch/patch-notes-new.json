@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.2.4",
+    "fix": [
+      {
+        "changed": "Fixed price going offscreen (nickname is shown shorter now, when you place mouse on name it will show full name)"
+      },
+      {
+        "changed": "Fixed automatic whisper helper, It shouldn't refresh website (Still if you click few times before message is send the issue will occur)"
+      }
+    ]
+  },
+  {
     "version": "1.2.3",
     "minorChanges": [
       {
