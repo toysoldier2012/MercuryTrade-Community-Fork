@@ -255,7 +255,7 @@ public class ComponentsFactory {
                         BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER),
                         BorderFactory.createEmptyBorder(3, 3, 3, 3)));
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                button.requestFocus();
+
             }
 
             @Override
@@ -265,6 +265,9 @@ public class ComponentsFactory {
             }
 
         });
+
+        ToolTipManager.sharedInstance().registerComponent(button);
+        ToolTipManager.sharedInstance().setEnabled(true);
         button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 4));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;

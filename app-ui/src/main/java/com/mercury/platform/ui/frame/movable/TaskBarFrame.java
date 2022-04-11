@@ -176,8 +176,6 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         };
         this.enableCollapseAnimation();
         this.addMouseListener(createHideListener());
-        this.setFocusableWindowState(true);
-        this.setFocusable(true);
         if (Configuration.get().applicationConfiguration().get().isHideTaskbarUntilHover()) {
             TaskBarFrame.this.setOpacity(0.01f);
         }
