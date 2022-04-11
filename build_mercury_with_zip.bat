@@ -26,5 +26,5 @@ echo Zipping with exe file start
 copy MercuryTrade.exe MercuryTrade
 call powershell Compress-Archive MercuryTrade MercuryTrade.exe.zip
 cd MercuryTrade
-del MercuryTrade.jar
+del MercuryTrade.exe
 echo zipping with exe completed
