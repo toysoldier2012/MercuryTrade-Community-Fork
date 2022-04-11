@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.2.5",
+    "minorChanges": [
+      {
+        "changed": "Added option in settings to hide toolbar when mouse isn't over it"
+      },
+      {
+        "changed": "Changed how tooltips are displayed, there shouldn't be floating tooltips anymore."
+      }
+    ]
+  },
+  {
     "version": "1.2.4",
     "fix": [
       {

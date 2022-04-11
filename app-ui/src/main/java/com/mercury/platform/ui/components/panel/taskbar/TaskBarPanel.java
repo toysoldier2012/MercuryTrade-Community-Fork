@@ -20,6 +20,7 @@ import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class TaskBarPanel extends JPanel implements ViewInit {
     private ComponentsFactory componentsFactory;
@@ -27,10 +28,12 @@ public class TaskBarPanel extends JPanel implements ViewInit {
     private PlainConfigurationService<TaskBarDescriptor> taskBarService;
     private JButton toHideout;
     private JButton showHelpIG;
+    private MouseListener taskBarFrameMouseListener;
 
-    public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory) {
+    public TaskBarPanel(@NonNull TaskBarController controller, @NonNull ComponentsFactory factory, MouseListener taskBarFrameMouseListener) {
         this.controller = controller;
         this.componentsFactory = factory;
+        this.taskBarFrameMouseListener = taskBarFrameMouseListener;
         this.onViewInit();
 
         MercuryStoreCore.hotKeySubject.subscribe(hotkeyDescriptor -> {
@@ -69,6 +72,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 },
                 true
         );
+        visibleMode.addMouseListener(taskBarFrameMouseListener);
 
         JButton pushbulletNotification = componentsFactory.getIconButton(
                 taskBarService.get().isPushbulletOn() ? IconConst.PUSHBULLET_NOTIFICATION : IconConst.PUSHBULLET_NOTIFICATION_OFF,
@@ -84,6 +88,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                                                },
                                                true
                                               );
+        pushbulletNotification.addMouseListener(taskBarFrameMouseListener);
 
         JButton itemGrid = componentsFactory.getIconButton(
                 IconConst.ITEM_GRID_ENABLE,
@@ -98,6 +103,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 }
             }
         });
+        itemGrid.addMouseListener(taskBarFrameMouseListener);
 
         this.toHideout = componentsFactory.getIconButton(
                 IconConst.HIDEOUT,
@@ -107,6 +113,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.toHideout.addActionListener(action -> {
             this.controller.performHideout();
         });
+        this.toHideout.addMouseListener(taskBarFrameMouseListener);
 
         this.showHelpIG = componentsFactory.getIconButton(
                 IconConst.HELP_IG,
@@ -116,6 +123,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.showHelpIG.addActionListener(action -> {
             this.controller.showHelpIG();
         });
+        this.showHelpIG.addMouseListener(taskBarFrameMouseListener);
 
         JButton adr = componentsFactory.getIconButton(
                 IconConst.OVERSEER,
@@ -128,6 +136,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
             windowAncestor.setSize(new Dimension(windowAncestor.getMIN_WIDTH(), windowAncestor.getHeight()));
             windowAncestor.pack();
         });
+        adr.addMouseListener(taskBarFrameMouseListener);
 
         JButton chatFilter = componentsFactory.getIconButton(
                 IconConst.CHAT_FILTER,
@@ -137,6 +146,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         chatFilter.addActionListener(action -> {
             this.controller.showChatFiler();
         });
+        chatFilter.addMouseListener(taskBarFrameMouseListener);
 
         JButton historyButton = componentsFactory.getIconButton(
                 IconConst.HISTORY,
@@ -146,6 +156,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         historyButton.addActionListener(action -> {
             this.controller.showHistory();
         });
+        historyButton.addMouseListener(taskBarFrameMouseListener);
 
         JButton pinButton = componentsFactory.getIconButton(
                 IconConst.DRAG_AND_DROP,
@@ -160,6 +171,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 }
             }
         });
+        pinButton.addMouseListener(taskBarFrameMouseListener);
 
         JButton scaleButton = componentsFactory.getIconButton(
                 IconConst.SCALE_SETTINGS,
@@ -174,6 +186,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 }
             }
         });
+        scaleButton.addMouseListener(taskBarFrameMouseListener);
 
         JButton settingsButton = componentsFactory.getIconButton(
                 IconConst.SETTINGS,
@@ -191,6 +204,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 }
             }
         });
+        settingsButton.addMouseListener(taskBarFrameMouseListener);
 
         JButton exitButton = componentsFactory.getIconButton(
                 IconConst.EXIT,
@@ -205,6 +219,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
                 }
             }
         });
+        exitButton.addMouseListener(taskBarFrameMouseListener);
 
         this.add(this.toHideout);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
@@ -230,6 +245,7 @@ public class TaskBarPanel extends JPanel implements ViewInit {
         this.add(Box.createRigidArea(new Dimension(3, 4)));
         this.add(exitButton);
         this.add(Box.createRigidArea(new Dimension(3, 4)));
+        this.setFocusable(true);
     }
 
     private void getPushbullet(boolean pushbulletEnabled, JButton pushbulletNotification) {

@@ -224,6 +224,11 @@ public class ComponentsFactory {
                     super.paintBorder(g);
                 }
             }
+
+            @Override
+            public JToolTip createToolTip() {
+                return ComponentsFactory.this.createTooltip();
+            }
         };
         button.setBackground(background);
         button.setFocusPainted(false);
@@ -233,7 +238,7 @@ public class ComponentsFactory {
             }
         });
         if (tooltip.length() > 0) {
-            button.addMouseListener(new TooltipMouseListener(tooltip));
+            button.setToolTipText(tooltip);
         }
         button.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         button.addActionListener(action -> {
@@ -250,6 +255,7 @@ public class ComponentsFactory {
                         BorderFactory.createLineBorder(AppThemeColor.ADR_SELECTED_BORDER),
                         BorderFactory.createEmptyBorder(3, 3, 3, 3)));
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                button.requestFocus();
             }
 
             @Override
@@ -280,6 +286,15 @@ public class ComponentsFactory {
         }
 
         return button;
+    }
+
+    public JToolTip createTooltip() {
+        JToolTip toolTip = new JToolTip();
+        toolTip.setBackground(AppThemeColor.SETTINGS_BG);
+        toolTip.setForeground(AppThemeColor.TEXT_DEFAULT);
+        toolTip.setFont(getFont(FontStyle.REGULAR, 18));
+        toolTip.setBorder(BorderFactory.createLineBorder(AppThemeColor.BORDER));
+        return toolTip;
     }
 
     public JButton getIconifiedTransparentButton(String iconPath, String tooltip) {
@@ -434,14 +449,19 @@ public class ComponentsFactory {
     }
 
     public JLabel getIconLabel(String iconPath, int size, int alignment, String tooltip) {
-        JLabel iconLabel = new JLabel();
+        JLabel iconLabel = new JLabel() {
+            @Override
+            public JToolTip createToolTip() {
+                return ComponentsFactory.this.createTooltip();
+            }
+        };
+        iconLabel.setToolTipText(tooltip);
         try {
             iconLabel.setIcon(getIcon(iconPath, (int) (scale * size)));
         } catch (Exception e) {
             return getTextLabel(StringUtils.substringBetween(iconPath, "/", "."));
         }
         iconLabel.setHorizontalAlignment(alignment);
-        iconLabel.addMouseListener(new TooltipMouseListener(tooltip));
         return iconLabel;
     }
 
@@ -522,11 +542,16 @@ public class ComponentsFactory {
     }
 
     public JCheckBox getCheckBox(String tooltip) {
-        JCheckBox checkBox = new JCheckBox();
+        JCheckBox checkBox = new JCheckBox() {
+            @Override
+            public JToolTip createToolTip() {
+                return ComponentsFactory.this.createTooltip();
+            }
+        };
+        checkBox.setToolTipText(tooltip);
         checkBox.setFocusPainted(false);
         checkBox.setBackground(AppThemeColor.TRANSPARENT);
 //        checkBox.setUI(new WindowsButtonUI());
-        checkBox.addMouseListener(new TooltipMouseListener(tooltip));
         return checkBox;
     }
 

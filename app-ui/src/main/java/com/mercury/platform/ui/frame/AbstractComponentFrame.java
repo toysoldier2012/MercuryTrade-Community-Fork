@@ -77,7 +77,7 @@ public abstract class AbstractComponentFrame extends AbstractOverlaidFrame imple
             this.HIDE_DELAY = delay * 1000;
             this.minOpacity = minOpacity / 100f;
             this.maxOpacity = maxOpacity / 100f;
-            //this.setOpacity(minOpacity / 100f);
+            this.setOpacity(minOpacity / 100f);
             this.setOpacity(maxOpacity / 100f);
             if (this.hideEffectListener != null) {
                 this.removeMouseListener(hideEffectListener);

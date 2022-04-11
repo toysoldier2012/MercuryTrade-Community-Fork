@@ -1,6 +1,8 @@
 package com.mercury.platform.ui.frame.movable;
 
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.config.ConfigManager;
+import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.ui.components.ComponentsFactory;
 import com.mercury.platform.ui.components.fields.font.FontStyle;
 import com.mercury.platform.ui.components.fields.font.TextAlignment;
@@ -114,10 +116,30 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         onViewInit();
     }
 
+    private MouseListener createHideListener() {
+        return new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (Configuration.get().applicationConfiguration().get().isHideTaskbarUntilHover()) {
+                    TaskBarFrame.this.setOpacity(1);
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (Configuration.get().applicationConfiguration().get().isHideTaskbarUntilHover()) {
+                    TaskBarFrame.this.setOpacity(0.01f);
+                }
+            }
+        };
+    }
+
     @Override
     public void onViewInit() {
         JPanel panel = componentsFactory.getTransparentPanel(new BorderLayout());
-        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(), componentsFactory);
+
+
+        taskBarPanel = new TaskBarPanel(new MercuryTaskBarController(), componentsFactory, createHideListener());
         panel.add(taskBarPanel, BorderLayout.CENTER);
         panel.setBackground(AppThemeColor.FRAME);
         mainContainer = panel;
@@ -153,6 +175,12 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
             }
         };
         this.enableCollapseAnimation();
+        this.addMouseListener(createHideListener());
+        this.setFocusableWindowState(true);
+        this.setFocusable(true);
+        if (Configuration.get().applicationConfiguration().get().isHideTaskbarUntilHover()) {
+            TaskBarFrame.this.setOpacity(0.01f);
+        }
     }
 
     @Override
@@ -213,8 +241,8 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
             }
         };
         JPanel panel = factory.getTransparentPanel(new BorderLayout());
-        TaskBarPanel taskBarPanel = new TaskBarPanel(controller, factory);
-        panel.add(new TaskBarPanel(controller, factory), BorderLayout.CENTER);
+        TaskBarPanel taskBarPanel = new TaskBarPanel(controller, factory, createHideListener());
+        panel.add(taskBarPanel, BorderLayout.CENTER);
         panel.setBackground(AppThemeColor.FRAME);
         this.MIN_WIDTH = taskBarPanel.getWidthOf(4);
         this.MAX_WIDTH = taskBarPanel.getPreferredSize().width;

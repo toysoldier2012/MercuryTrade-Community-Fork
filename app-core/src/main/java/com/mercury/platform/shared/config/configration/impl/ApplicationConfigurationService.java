@@ -46,6 +46,7 @@ public class ApplicationConfigurationService extends BaseConfigurationService<Ap
         descriptor.setShowOnStartUp(true);
         descriptor.setItemsGridEnable(true);
         descriptor.setCheckOutUpdate(true);
+        descriptor.setHideTaskbarUntilHover(false);
         return descriptor;
     }
 

@@ -16,4 +16,5 @@ public class ApplicationDescriptor implements Serializable {
     private boolean showOnStartUp;
     private boolean itemsGridEnable;
     private boolean checkOutUpdate;
+    private boolean hideTaskbarUntilHover;
 }

@@ -52,6 +52,11 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
             this.vulkanSnapshot.setVulkanSupportEnabled(vulkanEnableCheck.isSelected());
         });
 
+        JCheckBox hideTaskbarUntilHover = this.componentsFactory.getCheckBox(this.applicationSnapshot.isHideTaskbarUntilHover(), "Taskbar will be hidden until you hover onto it");
+        hideTaskbarUntilHover.addActionListener(action -> {
+            this.applicationSnapshot.setHideTaskbarUntilHover(hideTaskbarUntilHover.isSelected());
+        });
+
         JSlider fadeTimeSlider = this.componentsFactory.getSlider(0, 10, this.applicationSnapshot.getFadeTime(), AppThemeColor.SLIDE_BG);
         fadeTimeSlider.addChangeListener(e -> {
             this.applicationSnapshot.setFadeTime(fadeTimeSlider.getValue());
@@ -136,6 +141,8 @@ public class GeneralSettingsPagePanel extends SettingsPagePanel {
         root.add(checkEnable);
         root.add(this.componentsFactory.getTextLabel("Vulkan support enabled", FontStyle.REGULAR, 16));
         root.add(vulkanEnableCheck);
+        root.add(this.componentsFactory.getTextLabel("Hide taskbar", FontStyle.REGULAR, 16));
+        root.add(hideTaskbarUntilHover);
         root.add(this.componentsFactory.getTextLabel("Component fade out time: ", FontStyle.REGULAR, 16));
         root.add(fadeTimeSlider);
         root.add(this.componentsFactory.getTextLabel("Min opacity: ", FontStyle.REGULAR, 16));
