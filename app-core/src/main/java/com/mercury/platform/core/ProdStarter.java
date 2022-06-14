@@ -15,8 +15,10 @@ import com.mercury.platform.shared.hotkey.HotKeysInterceptor;
 import com.mercury.platform.shared.store.MercuryStoreCore;
 import com.mercury.platform.shared.wh.WhisperHelperHandler;
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinUser;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +36,8 @@ public class ProdStarter {
     private static final Logger logger = LogManager.getLogger(ProdStarter.class.getSimpleName());
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
     private volatile int delay = 100;
+
+    public static native void removeFromTaskBar(long WindowHandle);
 
     public void startApplication() {
         MercuryConfigManager configuration = new MercuryConfigManager(new MercuryConfigurationSource());
@@ -66,7 +70,7 @@ public class ProdStarter {
                             MercuryStoreCore.adrVisibleSubject.onNext(AdrVisibleState.HIDE);
                         }
 
-                        if (!Native.toString(className).equals("POEWindowClass")) {
+                        if (!Native.toString(className).equals("POEWindowClass") && !Native.toString(title).equals("MercuryTrade")) {
                             if (APP_STATUS == FrameVisibleState.SHOW) {
                                 APP_STATUS = FrameVisibleState.HIDE;
                                 MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
