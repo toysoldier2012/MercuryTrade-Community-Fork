@@ -277,8 +277,6 @@ public class ComponentsFactory {
 
         });
 
-        //ToolTipManager.sharedInstance().registerComponent(button);
-        //ToolTipManager.sharedInstance().setEnabled(true);
         button.setBorder(BorderFactory.createLineBorder(AppThemeColor.TRANSPARENT, 4));
         button.setVerticalAlignment(SwingConstants.CENTER);
         BufferedImage icon = null;

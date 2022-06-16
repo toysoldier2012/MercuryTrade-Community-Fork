@@ -37,8 +37,6 @@ public class ProdStarter {
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
     private volatile int delay = 100;
 
-    public static native void removeFromTaskBar(long WindowHandle);
-
     public void startApplication() {
         MercuryConfigManager configuration = new MercuryConfigManager(new MercuryConfigurationSource());
         configuration.load();
@@ -70,7 +68,7 @@ public class ProdStarter {
                             MercuryStoreCore.adrVisibleSubject.onNext(AdrVisibleState.HIDE);
                         }
 
-                        if (!Native.toString(className).equals("POEWindowClass") && !Native.toString(title).equals("MercuryTrade")) {
+                        if (!Native.toString(className).equals("POEWindowClass")) {
                             if (APP_STATUS == FrameVisibleState.SHOW) {
                                 APP_STATUS = FrameVisibleState.HIDE;
                                 MercuryStoreCore.frameVisibleSubject.onNext(FrameVisibleState.HIDE);
