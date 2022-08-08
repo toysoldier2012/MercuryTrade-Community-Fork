@@ -135,8 +135,9 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
     }
 
     private boolean isValidGamePath(String gamePath) {
-        File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
-        return file.exists();
+        File client = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
+        File kakaoClient = new File(gamePath + File.separator + "logs" + File.separator + "KakaoClient.txt");
+        return client.exists() || kakaoClient.exists();
     }
 
     @Override
