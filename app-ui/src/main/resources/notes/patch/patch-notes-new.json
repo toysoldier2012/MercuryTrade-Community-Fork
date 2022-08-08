@@ -1,5 +1,19 @@
 [
   {
+    "version": "1.2.8",
+    "fix": [
+      {
+        "changed": "Fixed java icon showing in taskbar"
+      },
+      {
+        "changed": "Fixed error which was causing MercuryTrade to stop working when unexpected data was logged in Client.txt file"
+      },
+      {
+        "changed": "Fixed error which prevent from adding path to Korean client"
+      }
+    ]
+  },
+  {
     "version": "1.2.7",
     "fix": [
       {
