@@ -45,6 +45,8 @@ public class AdrManagerFrame extends AbstractTitledComponentFrame {
         super();
         this.processingHideEvent = false;
         this.setTitle("MercuryTrade ADR");
+        this.setFocusable(true);
+        this.setFocusableWindowState(true);
         this.setAlwaysOnTop(false);
         this.selectedProfile = selectedProfile;
         this.exportDialog = new AdrExportDialog(this, new ArrayList<>());
