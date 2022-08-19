@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.3.0",
+    "fix": [
+      {
+        "changed": "Icon in taskbar should look like MercuryTrade instead of java"
+      }
+    ]
+  },
+  {
     "version": "1.2.9",
     "fix": [
       {

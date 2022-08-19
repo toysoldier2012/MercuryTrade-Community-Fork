@@ -2,6 +2,7 @@ package com.mercury.platform.ui.frame;
 
 import com.mercury.platform.shared.AsSubscriber;
 import com.mercury.platform.shared.FrameVisibleState;
+import com.mercury.platform.shared.IconConst;
 import com.mercury.platform.shared.config.Configuration;
 import com.mercury.platform.shared.config.configration.FramesConfigurationService;
 import com.mercury.platform.shared.config.configration.KeyValueConfigurationService;
@@ -36,6 +37,7 @@ public abstract class AbstractOverlaidFrame extends JFrame implements AsSubscrib
             this.applicationConfig = Configuration.get().applicationConfiguration();
             this.scaleConfig = Configuration.get().scaleConfiguration();
         }
+        this.setIconImage(this.componentsFactory.getImage(IconConst.APP_ICON).getImage());
         this.getRootPane().setOpaque(false);
         this.setUndecorated(true);
         this.setLocationRelativeTo(null);
