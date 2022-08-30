@@ -24,7 +24,7 @@ public class MessageFileHandler implements AsSubscriber {
     private String logFilePath;
     private Date lastMessageDate = new Date();
     private Pattern datePattern;
-    private Pattern p = Pattern.compile("20[2-9][0-9]\\/[0-2][0-9]\\/[0-2][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]");
+    private Pattern p = Pattern.compile("20[2-9][0-9]\\/[0-2][0-9]\\/[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]");
 
 
     private List<MessageInterceptor> interceptors = new ArrayList<>();
