@@ -26,7 +26,6 @@ public class NotificationIncomingController implements IncomingPanelController {
     @Override
     public void performInvite() {
         MercuryStoreCore.chatCommandSubject.onNext("/invite " + notificationDescriptor.getWhisperNickname());
-        showITH();
     }
 
     @Override
