@@ -30,6 +30,7 @@ public class NotificationIncomingController implements IncomingPanelController {
         //showITH()
     }
 
+    //Todo: clean nickname
     @Override
     public void performKickLeave(String nickName) {
         MercuryStoreCore.chatCommandSubject.onNext("/kick " + notificationDescriptor.getWhisperNickname());
