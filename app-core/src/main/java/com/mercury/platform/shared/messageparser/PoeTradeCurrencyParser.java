@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 class PoeTradeCurrencyParser extends BaseRegexParser {
 
-    private static final String poeCurrencyPattern = "^(.*\\s)?(.+): (.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in (.*?)\\.\\s*(.*))$";
+    private static final String poeCurrencyPattern = "^(.*\\s)?(.+): (.+ to buy your (\\d+(\\.\\d+)?)? (.+) for my (\\d+(\\.\\d+)?)? (.+) in(.*?)\\.?\\s*(offer.*)?)$";
 
     public PoeTradeCurrencyParser() {
         super(poeCurrencyPattern);
