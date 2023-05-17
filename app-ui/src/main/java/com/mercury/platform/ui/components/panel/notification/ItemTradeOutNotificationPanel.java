@@ -29,7 +29,7 @@ public class ItemTradeOutNotificationPanel extends TradeOutNotificationPanel<Ite
         buttons.add(repeatButton);
         buttons.add(historyLabel);
 
-        JPanel miscPanel = this.componentsFactory.getJPanel(new GridLayout(1, 0, 4, 0), AppThemeColor.FRAME);
+        JPanel miscPanel = this.componentsFactory.getJPanel(new CardLayout(), AppThemeColor.FRAME);
         miscPanel.add(itemsPanel);
 
         JPanel itemsOfferedPanel = getOfferPanel();
