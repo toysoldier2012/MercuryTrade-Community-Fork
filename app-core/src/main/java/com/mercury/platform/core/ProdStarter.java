@@ -37,7 +37,7 @@ public class ProdStarter {
     public static FrameVisibleState APP_STATUS = FrameVisibleState.HIDE;
     private volatile int delay = 100;
 
-    public void startApplication() {
+    public void startApplication(boolean alwaysVisible) {
         MercuryConfigManager configuration = new MercuryConfigManager(new MercuryConfigurationSource());
         configuration.load();
         Configuration.set(configuration);
@@ -49,7 +49,7 @@ public class ProdStarter {
 
         HistoryManager.INSTANCE.load();
 
-        if (SystemUtils.IS_OS_WINDOWS) {
+        if (SystemUtils.IS_OS_WINDOWS && !alwaysVisible) {
             MercuryStoreCore.uiLoadedSubject.subscribe((Boolean state) -> {
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {

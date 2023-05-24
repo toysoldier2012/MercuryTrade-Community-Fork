@@ -13,6 +13,7 @@ import com.mercury.platform.ui.manager.FramesManager;
 import com.sun.jna.Native;
 import com.sun.jna.platform.WindowUtils;
 import com.sun.jna.platform.win32.User32;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class AppMain {
 
@@ -35,21 +38,37 @@ public class AppMain {
             System.setProperty("sun.java2d.d3d", "false");
             System.setProperty("jna.nosys", "true");
 
+            boolean standalone = BooleanUtils.toBoolean(System.getProperty("standalone"));
+            boolean dev = BooleanUtils.toBoolean(System.getProperty("dev"));
+            boolean hideLoadingIcon = BooleanUtils.toBoolean(System.getProperty("hideLoadingIcon"));
+
+            logger.warn("loaded runtime settings: ");
+            logger.warn("standalone=" + standalone);
+            logger.warn("dev=" + dev);
+            logger.warn("hideLoadingIcon=" + hideLoadingIcon);
+
+
             new ErrorHandler();
-            mercuryLoadingFrameThread = new Thread(() -> {
-                mercuryLoadingFrame = new MercuryLoadingFrame();
-                mercuryLoadingFrame.init();
-                mercuryLoadingFrame.showComponent();
-                mercuryLoadingFrame.subscribe();
-            });
-            mercuryLoadingFrameThread.start();
+            if (!hideLoadingIcon) {
+                mercuryLoadingFrameThread = new Thread(() -> {
+                    mercuryLoadingFrame = new MercuryLoadingFrame();
+                    mercuryLoadingFrame.init();
+                    mercuryLoadingFrame.showComponent();
+                    mercuryLoadingFrame.subscribe();
+                });
+                mercuryLoadingFrameThread.start();
+            }
 
             checkCreateAppDataFolder();
-            if (args.length == 0) {
-                new ProdStarter().startApplication();
-            } else {
+
+            if (dev) {
                 new DevStarter().startApplication();
+            } else if (standalone) {
+                new ProdStarter().startApplication(true);
+            } else {
+                new ProdStarter().startApplication(false);
             }
+
 
             String configGamePath = Configuration.get().applicationConfiguration().get().getGamePath();
             if (configGamePath.equals("") || !isValidGamePath(configGamePath)) {
@@ -72,7 +91,9 @@ public class AppMain {
                 MercuryStoreCore.appLoadingSubject.onNext(false);
             }
 
-            mercuryLoadingFrameThread.join();
+            if (!hideLoadingIcon) {
+                mercuryLoadingFrameThread.join();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex);

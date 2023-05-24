@@ -73,6 +73,7 @@ logs/
 
 *dependency-reduced-pom.xml
 
-release_files/MercuryTrad*
+release_files/MercuryTrade.*
 release_files/resources/
+release_files/launch4j.log
 
