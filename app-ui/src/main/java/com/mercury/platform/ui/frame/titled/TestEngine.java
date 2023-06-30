@@ -37,6 +37,8 @@ public class TestEngine {
         items.add("Pain Breaker Blood Sceptre");
         items.add("Freeze Mine");
         items.add("The Lunaris Priestess");
+        items.add("хочу купить у вас Правление Атзири Багровый самоцвет за");
+        items.add("хочу купить у вас Правление Атзири Багровый самоцвет за");
 
         currency.add("alteration");
         currency.add("alchemy");

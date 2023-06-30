@@ -1,5 +1,27 @@
 [
   {
+    "version": "1.3.3",
+    "features": [
+      {
+        "changed": "Added an option to run MT without poe running. Check MercuryTrade.l4j.ini file"
+      },
+      {
+        "changed": "Added an option to disable loading icon while starting MercuryTrade. Check MercuryTrade.l4j.ini file"
+      }
+    ]
+  },
+  {
+    "version": "1.3.2",
+    "fix": [
+      {
+        "changed": "Parsing message in new way to fix characters \"???\" occurring as currency. Thanks to cscullen for that change"
+      },
+      {
+        "changed": "Message was compressed and despite free space \"...\" was shown"
+      }
+    ]
+  },
+  {
     "version": "1.3.1",
     "fix": [
       {

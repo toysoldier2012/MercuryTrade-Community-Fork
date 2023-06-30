@@ -17,9 +17,9 @@ import org.pushingpixels.trident.ease.Spline;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 public class TaskBarFrame extends AbstractMovableComponentFrame {
@@ -37,6 +37,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         this.processEResize = false;
         this.processSEResize = false;
         this.prevState = FrameVisibleState.SHOW;
+
     }
 
     private void enableCollapseAnimation() {
@@ -57,6 +58,8 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
     @Override
     public void subscribe() {
     }
+
+
 
     private void initCollapseAnimations(String state) {
         collapseAnimation = new Timeline(this);
@@ -93,6 +96,7 @@ public class TaskBarFrame extends AbstractMovableComponentFrame {
         super.onLock();
         enableCollapseAnimation();
     }
+
 
     @Override
     protected JPanel getPanelForPINSettings() {
